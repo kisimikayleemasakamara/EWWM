@@ -1,0 +1,75 @@
+﻿@model WasteMangement.Models.youthGroup
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>youthGroup</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.districsId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.districsId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.youthGroupName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.youthGroupName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.youthGroupDescription)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.youthGroupDescription)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.isApproved)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.isApproved)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.address)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.address)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.isDeleted)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.isDeleted)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AspNetUser.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AspNetUser.FirstName)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.youthGroupId }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

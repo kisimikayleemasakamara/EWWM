@@ -1,0 +1,138 @@
+﻿@using WasteMangement.Models
+@{
+    wwmDbEntities1 db = new wwmDbEntities1();
+    var districts = (from d in db.districts
+                     where d.isDeleted == 0
+                     select d).ToList();
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title | eWomen Waste Management</title>
+    @Styles.Render("~/Content/css")
+    
+    <link rel="stylesheet" href="~/Content/sidebarmenu/style.css">
+    @Scripts.Render("~/bundles/modernizr")
+
+</head>
+<body>
+    <div class="container-fluid">
+        <div>
+            <img src="~/Content/images/WasteManagement_1.1.png"  class="img img-responsive" style="height:250px;width:100%;"/>
+        </div>
+    </div>
+    <div class="container-fluid" id="topNav">
+        <div class="navbar navbar-inverse">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    @*@Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        @*<li>@Html.ActionLink("Home", "Index", "Home")</li>*@
+                        <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+                        <li>@Html.ActionLink("Trash is Money", "TrashIsMoney", "Home")</li>
+                        @*<li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
+                        <li class="dropdown">
+                            
+                            <ul class="dropdown-menu" role="menu">
+                                @foreach (var item in districts)
+                                {
+                                    if (item.name == "Bomabali")
+                                    {
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Bomabali <span class="caret"></span></a>
+                                    }
+                                    else
+                                    {
+                                        <li><a href="#">@item.name</a></li>
+                                    }
+
+                                }
+                                
+                                @*<li class="divider"></li>*@
+                            </ul>
+                        </li>
+                    </ul>
+                    @Html.Partial("_LoginPartial")
+                </div>
+            </div>
+        </div>
+    </div>
+    @*<div class="container">
+        @if (ViewBag.heading != null)
+        {
+            <center><h3>@ViewBag.heading</h3></center>
+        }
+    </div>*@
+    @* Left Side Bar Menu Code Goes Below *@
+        <nav class="navbar navbar-inverse sidebar">
+            <div class="container-fluid">
+                <!-- Brand and toggle get grouped for better mobile display -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-sidebar-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    @*<a class="navbar-brand" href="#">Brand</a>*@
+                </div>
+                <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        @*<li class="active"><a href="#">View Youth Groups<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>*@
+                        <li class="active"><a href="@Url.Action("index", "Home")" >Home<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>
+                        <li><a href="@Url.Action("ViewYouthGroups", "Home")">View Youth Groups<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>
+                        <li><a href="@Url.Action("Register", "Account")">Register as Client<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a></li>
+                        <li><a href="#">Make a Complaint<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-envelope"></span></a></li>
+                        @*<li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Settings <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-cog"></span></a>
+                                <ul class="dropdown-menu forAnimate" role="menu">
+                                    <li><a href="#">Action</a></li>
+                                    <li><a href="#">Another action</a></li>
+                                    <li><a href="#">Something else here</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="#">Separated link</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="#">One more separated link</a></li>
+                                </ul>
+                            </li>*@
+                        <li><a href="@Url.Action("CollectionSites", "Home")">Collection Sites<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>
+                        <li><a href="@Url.Action("PublicWasteBins","Home")">Public Waste Bins<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a></li>
+                        @*<li><a href="#">Messages<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-envelope"></span></a></li>
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">Settings <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-cog"></span></a>
+                                <ul class="dropdown-menu forAnimate" role="menu">
+                                    <li><a href="#">Action</a></li>
+                                    <li><a href="#">Another action</a></li>
+                                    <li><a href="#">Something else here</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="#">Separated link</a></li>
+                                    <li class="divider"></li>
+                                    <li><a href="#">One more separated link</a></li>
+                                </ul>
+                            </li>*@
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+            <footer style="padding-left:10%;text-align:center;">
+                <p>&copy; @DateTime.Now.Year - Women Waste Management</p>
+            </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script src="~/Content/sidebarmenu/script.js">
+    @RenderSection("scripts", required: false)
+</body>
+</html>

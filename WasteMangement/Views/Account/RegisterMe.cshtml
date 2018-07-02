@@ -1,0 +1,93 @@
+﻿@model WasteMangement.Models.RegisterViewModel
+@{
+    ViewBag.Title = "Register";
+}
+
+
+<div class="" style="padding-left:10%;margin-bottom:50px;">
+    <div style="border:1px solid black; text-align:center;" class="col-md-10 col-md-offset-2">
+        <center><h2>Register as Client</h2></center>
+        @using (Html.BeginForm("RegisterMe", "Account", FormMethod.Post, new { @class = "form-horizontal body-content", role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+            <hr />
+                @Html.ValidationSummary("", new { @class = "text-danger" })
+
+            <div class="form-group" style="margin-top:50px;">
+                <label class="control-label col-md-5" for="UserName">User Name</label>
+                <input type="text" name="UserName" class="form-control col-md-7" />
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-5" for="Email">Email</label>
+                <input type="email" name="Email" class="form-control col-md-7" />
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-5" for="Password">Password</label>
+                <input type="password" name="Password" class="form-control col-md-7" />
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-5" for="ConfirmPassword">Confirm Password</label>
+                <input type="password" name="ConfirmPassword" class="form-control col-md-7" />
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-5" for="FirstName">First Name</label>
+                <input type="text" name="FirstName" class="form-control col-md-7" />
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-5" for="LastName">Last Name</label>
+                <input type="text" name="LastName" class="form-control col-md-7" />
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-5" for="PhoneNo">Phone Number</label>
+                <input type="text" name="PhoneNo" class="form-control col-md-7" />
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-5" for="FacilityType">Facility Type</label>
+                <select type="text" name="FacilityType" class="form-control col-md-7">
+                    <option value=""> Select Facility Type</option>
+                    @if (ViewBag.fascility != null)
+                    {
+                        foreach (var item in ViewBag.fascility)
+                        {
+                            <option value="@item.Fascility_Id">@item.Fascility_Name</option>
+                        }
+                    }
+                                         
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-5" for="Address">Address</label>
+                <input type="text" name="Address" class="form-control col-md-7" />
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-5" for="YouthGroup">Youth Group</label>
+                <select type="text" name="YouthGroup" class="form-control col-md-7">
+                    <option value=""> Select Group</option>
+                    <option>Group 1</option>
+                    <option>Group 2</option>
+                    <option>Group 3</option>
+                    <option>Group 4</option>
+                </select>
+            </div>
+            <div class="form-group">
+                @Html.Label("User Role", new { @class = "col-md-5 control-label" })
+                <div class="">
+                    @Html.DropDownList("UserRoles", (SelectList)ViewBag.Name, new { @class = "form-control col-md-7" })
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="right" style="">
+                    <input type="submit" class="btn btn-primary btn-lg" value="Register" />
+                </div>
+            </div>
+        }
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

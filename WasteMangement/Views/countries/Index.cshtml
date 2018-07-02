@@ -1,0 +1,175 @@
+﻿@model IEnumerable<WasteMangement.Models.country>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
+}
+
+<div class="limiter">
+    <div class="container-table100">
+        <div class="wrap-table100">
+            <div class="table100">
+                <div class="row">
+                    <div class="col-md-3 pull-left">
+                        <button class="btn btn-dark" data-toggle="modal" data-target="#addCountry" style="color:white;font-size:medium">Add Country</button>
+                    </div>
+                </div>
+
+
+                <table class="table table-hover">
+                    <thead style="background-color:ghostwhite">
+                        <tr>
+                            <th class="text-center">Country Name</th>
+                            <th class="text-center">Country Description</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in Model)
+                            {
+                                <tr class="edit" id="detail">
+                                    <td class="text-center">@item.name</td>
+                                    @if (item.description.Length >= 10)
+                                    {
+                                        <td class="text-center">@item.description.Substring(0, 10)....</td>
+                                    }
+                                    else
+                                    {
+                                        <td class="text-center">@item.description</td>
+                                    }
+
+                                    <td class="text-center">
+                                        <button class="btn btn-info" onclick="EditCountryRecord(@item.countryId)">Edit</button> |
+                                        <span class="btn btn-primary"  style="color: white;">
+                                            @Html.ActionLink("Details", "Details", new { id = item.countryId , style = "color:white" }, null)
+                                        </span> |
+                                        <button class="btn btn-danger" data-toggle="modal" data-target="#delCountry">Delete</button>
+                                    </td>
+                                </tr>
+                                    <div class="modal fade" id="delCountry" role="dialog">
+                                        <div class="modal-dialog">
+
+                                            <!-- Modal content-->
+                                            <div class="modal-content">
+                                                <div class="modal-header" style="background-color:#061435;">
+                                                    <center><h4 class="modal-title" style="text-align: center;font-weight: 700;color: white;">Delete Country</h4></center>
+                                                    <button type="button" class="close" data-dismiss="modal" style="color: white;opacity: 1;">&times;</button>
+                                                    
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form method="POST" action="@Url.Action("Delete", "countries",new { id = item.countryId })">
+                                                        @Html.AntiForgeryToken()
+                                                        <div class="form-group">
+                                                            <label class="control-label">&nbsp;&nbsp;&nbsp;Are you Sure you Want to delete the country?</label>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <input type="submit" value="Sure!" class="btn btn-primary" />
+                                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Not Sure</button>
+                                                        </div>
+
+                                                    </form>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                            }
+                    </tbody>
+                </table>
+                @if (Model != null)
+                {
+
+
+                    <div class="modal fade" id="addCountry" role="dialog">
+                        <div class="modal-dialog">
+
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header" style="background-color:#061435;">
+                                    <h4 class="modal-title" style="text-align:center;font-weight: 700;color: white;">Add Country</h4>
+                                    <button type="button" class="close" data-dismiss="modal" style="color: white;opacity: 1;">&times;</button>
+                                    
+                                </div>
+                                <div class="modal-body">
+                                    <form action="@Url.Action("Create", "countries")" method="post">
+                                        @Html.AntiForgeryToken()
+                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                        <div class="form-group">
+                                            <label class="control-label">&nbsp;&nbsp;&nbsp;Country Name</label>
+                                            <input name="name" class="form-control" type="text">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label">&nbsp;&nbsp;&nbsp;Country Description</label>
+                                            <textarea rows="4" cols="61" name="description" class="form-control"></textarea>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <input type="submit" value="Add Country" class="btn btn-primary" />
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="editCountry" role="dialog">
+                        <div class="modal-dialog">
+
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header" style="background-color:#061435;">
+                                    <h4 class="modal-title" style="text-align: center;font-weight: 700;color: white;">Edit Country</h4>
+                                    <button type="button" class="close" data-dismiss="modal" style="color: white;opacity: 1;">&times;</button>
+                                    
+                                </div>
+                                <div class="modal-body">
+                                    <form method="POST" action="@Url.Action("EditCountry", "countries")">
+                                        @Html.AntiForgeryToken()
+                                        <div class="form-group">
+                                            <label class="control-label">&nbsp;&nbsp;&nbsp;Country Name</label>
+                                            <input name="name" class="form-control" id="CountryName" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label">&nbsp;&nbsp;&nbsp;Country Description</label>
+                                            <textarea rows="4" cols="61" name="description" class="form-control" id="CountryDesc"></textarea>
+                                        </div>
+                                        <input name="countryId" id="countryId" type="hidden" />
+                                        <div class="modal-footer">
+                                            <input type="submit" value="Update Country" class="btn btn-primary" />
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+     function EditCountryRecord(CountryId) {
+         var url = "/countries/Edit/" + CountryId;
+        $("#editCountry").modal();
+        $.ajax({
+            type: "GET",
+            url: url,
+            success: function (data) {
+                var obj = JSON.parse(data);
+                console.log(data);
+                console.log(obj);
+                $("#countryId").val(obj.countryId);
+                $("#CountryName").val(obj.name);
+                $("#CountryDesc").val(obj.description);
+
+            }
+        })
+     }
+</script>

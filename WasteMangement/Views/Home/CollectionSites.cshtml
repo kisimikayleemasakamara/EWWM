@@ -1,0 +1,42 @@
+﻿
+@{
+    ViewBag.Title = "Collection Sites";
+}
+
+<center><h3>Wards in Bombali District</h3></center>
+
+<div style="padding-left:10%;">
+    <p style="font-size:large;">
+        Click a ward in Bombali District to know view all the collection sites of that ward.
+         Click the link “<a href="@Url.Action("AllCollectionSites","Home")">All Collection Sites</a>” to view all collection sites of a District.
+    </p>
+    <div style="border:1px solid black;">
+        <div class="row" style="margin-top:20px;">
+            <div class="col-md-4" style="text-align:center;">
+                <a href="@Url.Action("CollectionSiteWard", "Home",new { wardNumber = 1 })"><div class="badge" style="text-align:center;">Ward 1</div></a>
+            </div>
+
+            <div class="col-md-4" style="text-align:center;">
+                <a href="@Url.Action("CollectionSiteWard", "Home",new { wardNumber = 2 })"><div class="badge" style="text-align:center;">Ward 2</div></a>
+            </div>
+
+            <div class="col-md-4" style="text-align:center;">
+                <a href="@Url.Action("CollectionSiteWard", "Home",new { wardNumber = 3 })"><div class="badge" style="text-align:center;">Ward 3</div></a>
+            </div>
+
+            <div class="col-md-4" style="text-align:center;">
+                <a href="@Url.Action("CollectionSiteWard", "Home",new { wardNumber = 4 })"><div class="badge" style="text-align:center;">Ward 4</div></a>
+            </div>
+
+            <div class="col-md-4" style="text-align:center;">
+                <a href="@Url.Action("CollectionSiteWard", "Home",new { wardNumber = 5 })"><div class="badge" style="text-align:center;">Ward 5</div></a>
+            </div>
+
+            <div class="col-md-4" style="text-align:center;">
+                <a href="@Url.Action("CollectionSiteWard", "Home",new { wardNumber = 6 })"><div class="badge" style="text-align:center;">Ward 6</div></a>
+            </div>
+
+        </div>
+    </div>
+</div>
+

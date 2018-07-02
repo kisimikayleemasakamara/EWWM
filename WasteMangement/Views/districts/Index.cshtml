@@ -1,0 +1,303 @@
+﻿@model IEnumerable<WasteMangement.Models.district>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
+}
+
+
+
+<div class="limiter">
+    <div class="container-table100">
+        <div class="wrap-table100">
+            <div class="table100">
+                <div class="row">
+                    <div class="col-md-3 pull-left">
+                        <button class="btn btn-dark" onclick="RegionList()" style="color:white;font-size:medium">Add District</button>
+                    </div>
+                </div>
+
+
+                <table class="table table-hover">
+                    <thead style="background-color:ghostwhite">
+                        <tr>
+                            <th class="text-center">District Name</th>
+                            <th class="text-center">Region</th>
+                            <th class="text-center">District Admin</th>
+                            <th class="text-center">District Description</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @if (Model != null)
+                        {
+                            foreach (var item in Model)
+                            {
+                                <tr class="edit" id="detail">
+                                    <td class="text-center">@item.name</td>
+                                    <td class="text-center">@item.regionName</td>
+                                    <td class="text-center">@item.AdminName</td>
+                                    @if (item.description.Length >= 10)
+                                    {
+                                        <td class="text-center">@item.description.Substring(0, 10)....</td>
+                                    }
+                                    else
+                                    {
+                                        <td class="text-center">@item.description</td>
+                                    }
+                                    <td class="text-center">
+                                        <button class="btn btn-info" onclick="EditDistrict(@item.districtsId)">Edit</button> |
+                                        <span class="btn btn-primary" style="color: white;">
+                                            @Html.ActionLink("Details", "Details", new { id = item.districtsId })
+                                        </span> |
+                                        <button class="btn btn-danger" data-toggle="modal" data-target="#delDistrict">Delete</button>
+                                    </td>
+                                </tr>
+                                <div class="modal fade" id="delDistrict" role="dialog">
+                                    <div class="modal-dialog">
+
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <div class="modal-header" style="background-color:#061435;">
+                                                <h4 class="modal-title" style="text-align: center;font-weight: 700;color: white;">Delete District</h4>
+                                                <button type="button" class="close" data-dismiss="modal" style="color: white;opacity: 1;">&times;</button>
+                                               
+                                            </div>
+                                            <div class="modal-body">
+                                                <form method="POST" action="@Url.Action("Delete", "districts",new { id = item.districtsId })">
+                                                    @Html.AntiForgeryToken()
+                                                    <div class="form-group">
+                                                        <label class="control-label">&nbsp;&nbsp;&nbsp;Are you Sure you Want to delete the district?</label>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <input type="submit" value="Sure!" class="btn btn-primary" />
+                                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Not Sure</button>
+                                                    </div>
+
+                                                </form>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </tbody>
+                </table>
+                @if (Model != null)
+                {
+                    <div class="modal fade" id="addDistrict" role="dialog">
+                        <div class="modal-dialog">
+
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header" style="background-color:#061435;">
+                                    <h4 class="modal-title" style="text-align:center;font-weight: 700;color: white;">Add District</h4>
+                                    <button type="button" class="close" data-dismiss="modal" style="color: white;opacity: 1;">&times;</button>
+                                    
+                                </div>
+                                <div class="modal-body">
+                                    <form action="@Url.Action("Create", "districts")" method="post">
+                                        @Html.AntiForgeryToken()
+                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                        <div class="form-group">
+                                            <label class="control-label">&nbsp;&nbsp;&nbsp;Select Country</label>
+                                            @Html.DropDownList("countryID",
+                                                new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"),
+                                                new { @class = "form-control", @id = "countryID" })
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label">&nbsp;&nbsp;&nbsp;Select Region</label>
+                                            @Html.DropDownList("regionId",
+                                            new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"),
+                                            new { @class = "form-control", @id = "regionId" ,Name = "regionId" })
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label">&nbsp;&nbsp;&nbsp;Select Admin</label>
+                                            @Html.DropDownList("districtAdminId",
+                                                 new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"),
+                                                 new { @class = "form-control", @id = "districtAdminId", Name = "districtAdminId" })
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label">&nbsp;&nbsp;&nbsp;District Name</label>
+                                            <input name="name" class="form-control" type="text">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label">&nbsp;&nbsp;&nbsp;District Description</label>
+                                            <textarea rows="4" cols="61" name="description" class="form-control"></textarea>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <input type="submit" value="Add District" class="btn btn-primary" />
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="editDistrict" role="dialog">
+                        <div class="modal-dialog">
+
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header" style="background-color:#061435;">
+                                    <h4 class="modal-title" style="text-align:center;font-weight: 700;color: white;">Edit District</h4>
+                                    <button type="button" class="close" data-dismiss="modal" style="color: white;opacity: 1;">&times;</button>
+                                   
+                                </div>
+                                <div class="modal-body">
+                                    <form action="@Url.Action("Edit", "districts")" method="post">
+                                        @Html.AntiForgeryToken()
+                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                        <div class="form-group">
+                                            <label class="control-label">&nbsp;&nbsp;&nbsp;Select Country</label>
+                                            @Html.DropDownList("countryid",
+                                                new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"),
+                                                new { @class = "form-control", @id = "countryid" })
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label">&nbsp;&nbsp;&nbsp;Select Region</label>
+                                            @Html.DropDownList("regionID",
+                                            new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"),
+                                            new { @class = "form-control", @id = "regionID", Name = "regionId" })
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label">&nbsp;&nbsp;&nbsp;Select Admin</label>
+                                            @Html.DropDownList("districtAdminID",
+                                                 new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"),
+                                                 new { @class = "form-control", @id = "districtAdminID", Name = "districtAdminId" })
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label">&nbsp;&nbsp;&nbsp;District Name</label>
+                                            <input name="name" class="form-control" type="text" id="DistrictName">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label">&nbsp;&nbsp;&nbsp;District Description</label>
+                                            <textarea rows="4" cols="61" name="description" class="form-control" id="DistrictDesc"></textarea>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <input type="hidden" id="districtsId" name="districtsId" />
+                                            <input type="submit" value="Update District" class="btn btn-primary" />
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function RegionList() {
+        
+        $("#addDistrict").modal();
+        $.ajax({
+            url: '/districts/admins',
+            type: "GET",
+            dataType: "JSON",
+            success: function (admins) {
+                $('#districtAdminId').html("");
+                $.each(admins, function (i, admin) {
+                    $('#districtAdminId').append(
+                        $('<option></option>').val(admin.Value).html(admin.Text));
+                });
+            }
+        });
+        $.ajax({
+            url: '/districts/countries',
+            type: "GET",
+            dataType: "JSON",
+            success: function (countries) {
+                $('#countryID').html("");
+                $.each(countries, function (i, country) {
+                    $('#countryID').append(
+                        $('<option></option>').val(country.Value).html(country.Text));
+                });
+            }
+        });
+        $('#countryID').change(function () {
+            var catId = $('#countryID').val();
+            $.ajax({
+                url: '/districts/FillRegion',
+                type: "GET",
+                dataType: "JSON",
+                data: { state: catId },
+                success: function (categories) {
+                    $('#regionId').html("");
+                    $.each(categories, function (i, subCat) {
+                        $('#regionId').append(
+                            $('<option></option>').val(subCat.Value).html(subCat.Text));
+                    });
+                }
+            });
+        });
+    }
+</script>
+
+<script>
+    function EditDistrict(districtID) {
+        var url = "/districts/Edit/" + districtID;
+        $("#editDistrict").modal();
+        $.ajax({
+            type: "GET",
+            url: url,
+            success: function (data) {
+                var obj = JSON.parse(data);
+                console.log(obj.name);
+                $("#districtsId").val(obj.districtsId);
+                $("#DistrictName").val(obj.name);
+                $("#DistrictDesc").val(obj.description);
+
+            }
+        });
+        $.ajax({
+            url: '/districts/admins',
+            type: "GET",
+            dataType: "JSON",
+            success: function (admins) {
+                $('#districtAdminID').html("");
+                $.each(admins, function (i, admin) {
+                    $('#districtAdminID').append(
+                        $('<option></option>').val(admin.Value).html(admin.Text));
+                });
+            }
+        });
+        $.ajax({
+            url: '/districts/countries',
+            type: "GET",
+            dataType: "JSON",
+            success: function (countries) {
+                $('#countryid').html("");
+                $.each(countries, function (i, country) {
+                    $('#countryid').append(
+                        $('<option></option>').val(country.Value).html(country.Text));
+                });
+            }
+        });
+        $('#countryid').change(function () {
+            var catId = $('#countryid').val();
+            $.ajax({
+                url: '/districts/FillRegion',
+                type: "GET",
+                dataType: "JSON",
+                data: { state: catId },
+                success: function (categories) {
+                    $('#regionID').html("");
+                    $.each(categories, function (i, subCat) {
+                        $('#regionID').append(
+                            $('<option></option>').val(subCat.Value).html(subCat.Text));
+                    });
+                }
+            });
+        });
+    }
+</script>

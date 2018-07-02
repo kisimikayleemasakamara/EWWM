@@ -1,0 +1,215 @@
+﻿@model IEnumerable<WasteMangement.Models.region>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
+}
+
+
+<div class="limiter">
+    <div class="container-table100">
+        <div class="wrap-table100">
+            <div class="table100">
+                <div class="row">
+                    <div class="col-md-3 pull-left">
+                        <button class="btn btn-dark" onclick="CountryList()" style="color:white;font-size:medium">Add Region</button>
+                    </div>
+                </div>
+
+
+                <table class="table table-hover">
+                    <thead style="background-color:ghostwhite">
+                        <tr>
+                            <th class="text-center">Region Name</th>
+                            <th class="text-center">Region Description</th>
+                            <th class="text-center">Country</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @if(Model != null)
+                        {
+                        foreach (var item in Model)
+                        {
+                            <tr class="edit" id="detail">
+                                <td class="text-center">@item.region_name</td>
+                                @if (item.description.Length >= 10)
+                                {
+                                    <td class="text-center">@item.description.Substring(0, 10)....</td>
+                                }
+                                else
+                                {
+                                    <td class="text-center">@item.description</td>
+                                }
+                                <td class="text-center">@item.name</td>
+                                <td class="text-center">
+                                    <button class="btn btn-info" onclick="EditRegionRecord(@item.regionId)">Edit</button> |
+                                    <span class="btn btn-primary" style="color: white;">
+                                        @Html.ActionLink("Details", "Details", new { id = item.regionId })
+                                    </span> |
+                                    <button class="btn btn-danger" data-toggle="modal" data-target="#delRegion">Delete</button>
+                                </td>
+                            </tr>
+                                <div class="modal fade" id="delRegion" role="dialog">
+                                    <div class="modal-dialog">
+
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <div class="modal-header" style="background-color:#061435;">
+                                                <h4 class="modal-title" style="text-align: center;font-weight: 700;color: white;">Delete Region</h4>
+                                                <button type="button" class="close" data-dismiss="modal" style="color: white;opacity: 1;">&times;</button>
+                                                
+                                            </div>
+                                            <div class="modal-body">
+                                                <form method="POST" action="@Url.Action("Delete", "regions",new { id = item.regionId })">
+                                                    @Html.AntiForgeryToken()
+                                                    <div class="form-group">
+                                                        <label class="control-label">&nbsp;&nbsp;&nbsp;Are you Sure you Want to delete the region?</label>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <input type="submit" value="Sure!" class="btn btn-primary" />
+                                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Not Sure</button>
+                                                    </div>
+
+                                                </form>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                        }
+                        }
+                    </tbody>
+                </table>
+                @if(Model != null)
+                {
+                <div class="modal fade" id="addRegion" role="dialog">
+                        <div class="modal-dialog">
+
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header" style="background-color:#061435;">
+                                    <h4 class="modal-title" style="text-align:center;font-weight: 700;color: white;">Add Region</h4>
+                                    <button type="button" class="close" data-dismiss="modal" style="color: white;opacity: 1;">&times;</button>
+                                    
+                                </div>
+                                <div class="modal-body">
+                                    <form action="@Url.Action("Create", "regions")" method="post">
+                                        @Html.AntiForgeryToken()
+                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                        <div class="form-group">
+                                            <label class="control-label">&nbsp;&nbsp;&nbsp;Select Country</label>
+                                            @Html.DropDownList("countryId",
+                                                 new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"),
+                                                 new { @class = "form-control", @id = "countryId", Name = "countryId" })
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label">&nbsp;&nbsp;&nbsp;Region Name</label>
+                                            <input name="region_name" class="form-control" type="text">
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label">&nbsp;&nbsp;&nbsp;Region Description</label>
+                                            <textarea rows="4" cols="61" name="description" class="form-control"></textarea>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <input type="submit" value="Add Region" class="btn btn-primary" />
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="editRegion" role="dialog">
+                        <div class="modal-dialog">
+
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header" style="background-color:#061435;">
+                                    <h4 class="modal-title" style="text-align: center;font-weight: 700;color: white;">Edit Region</h4>
+                                    <button type="button" class="close" data-dismiss="modal" style="color: white;opacity: 1;">&times;</button>
+                                    
+                                </div>
+                                <div class="modal-body">
+                                    <form method="POST" action="@Url.Action("Edit", "regions")">
+                                        @Html.AntiForgeryToken()
+                                        <div class="form-group">
+                                            <label class="control-label">&nbsp;&nbsp;&nbsp;Select Country</label>
+                                            @Html.DropDownList("countryId",
+                                                 new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"),
+                                                 new { @class = "form-control", @id = "countryID", Name = "countryId" })
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label">&nbsp;&nbsp;&nbsp;Region Name</label>
+                                            <input name="region_name" class="form-control" id="RegionName" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label">&nbsp;&nbsp;&nbsp;Region Description</label>
+                                            <textarea rows="4" cols="61" name="description" class="form-control" id="RegionDesc"></textarea>
+                                        </div>
+                                        <input name="regionId" id="regionId" type="hidden" />
+                                        <div class="modal-footer">
+                                            <input type="submit" value="Update Region" class="btn btn-primary" />
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function EditRegionRecord(regionId) {
+        var url = "/regions/Edit/" + regionId;
+        $("#editRegion").modal();
+        $.ajax({
+            url: '/regions/Countries',
+            type: "GET",
+            dataType: "JSON",
+            success: function (countries) {
+                $('#countryID').html("");
+                $.each(countries, function (i, country) {
+                    $('#countryID').append(
+                        $('<option></option>').val(country.Value).html(country.Text));
+                });
+            }
+        }),
+        $.ajax({
+            type: "GET",
+            url: url,
+            success: function (data) {
+                var obj = JSON.parse(data);
+                $("#regionId").val(obj.regionId);
+                $("#RegionName").val(obj.region_name);
+                $("#RegionDesc").val(obj.description);
+
+            }
+        });
+        
+    }
+</script>
+<script>
+    function CountryList() {
+        $("#addRegion").modal();
+        $.ajax({
+            url: '/regions/Countries',
+            type: "GET",
+            dataType: "JSON",
+            success: function (countries) {
+                $('#countryId').html("");
+                $.each(countries, function (i, country) {
+                    $('#countryId').append(
+                        $('<option></option>').val(country.Value).html(country.Text));
+                });
+            }
+        });
+    }
+</script>

@@ -1,0 +1,403 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="wwmDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="collectionSite">
+    <Key>
+      <PropertyRef Name="collectionSiteId" />
+    </Key>
+    <Property Name="collectionSiteId" Type="Int32" Nullable="false" />
+    <Property Name="communitiesId" Type="Int32" Nullable="false" />
+    <Property Name="collectionSiteManager" Type="Binary" MaxLength="50" FixedLength="false" />
+    <Property Name="collectionSiteName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="collectionSiteNumber" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="collectionSiteDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="community" Relationship="Self.FK_collectionSite_communities" FromRole="collectionSite" ToRole="communities" />
+  </EntityType>
+  <EntityType Name="community">
+    <Key>
+      <PropertyRef Name="communitiesId" />
+    </Key>
+    <Property Name="communitiesId" Type="Int32" Nullable="false" />
+    <Property Name="sectionId" Type="Int32" Nullable="false" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="collectionSites" Relationship="Self.FK_collectionSite_communities" FromRole="communities" ToRole="collectionSite" />
+    <NavigationProperty Name="section" Relationship="Self.FK_communities_section" FromRole="communities" ToRole="section" />
+    <NavigationProperty Name="publicWasteBins" Relationship="Self.FK_publicWasteBin_communities" FromRole="communities" ToRole="publicWasteBin" />
+  </EntityType>
+  <EntityType Name="complaint">
+    <Key>
+      <PropertyRef Name="complaintId" />
+    </Key>
+    <Property Name="complaintId" Type="Int32" Nullable="false" />
+    <Property Name="districtsId" Type="Int32" Nullable="false" />
+    <Property Name="complaintBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="dateOfComplaint" Type="DateTime" Precision="0" />
+    <Property Name="isSolved" Type="Boolean" Nullable="false" />
+    <Property Name="complaintDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="district" Relationship="Self.FK_complaint_districts" FromRole="complaint" ToRole="districts" />
+  </EntityType>
+  <EntityType Name="constituency">
+    <Key>
+      <PropertyRef Name="constituenciesId" />
+    </Key>
+    <Property Name="constituenciesId" Type="Int32" Nullable="false" />
+    <Property Name="districtsId" Type="Int32" Nullable="false" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="description" Type="Binary" MaxLength="50" FixedLength="false" Nullable="false" />
+    <NavigationProperty Name="district" Relationship="Self.FK_constituencies_districts" FromRole="constituencies" ToRole="districts" />
+    <NavigationProperty Name="wards" Relationship="Self.FK_ward_constituencies" FromRole="constituencies" ToRole="ward" />
+  </EntityType>
+  <EntityType Name="country">
+    <Key>
+      <PropertyRef Name="countryId" />
+    </Key>
+    <Property Name="countryId" Type="Int32" Nullable="false" />
+    <Property Name="systemAdminId" Type="Int32" Nullable="false" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="description" Type="Binary" MaxLength="50" FixedLength="false" Nullable="false" />
+    <NavigationProperty Name="systemAdmin" Relationship="Self.FK_country_systemAdmin" FromRole="country" ToRole="systemAdmin" />
+    <NavigationProperty Name="regions" Relationship="Self.FK_region_country" FromRole="country" ToRole="region" />
+  </EntityType>
+  <EntityType Name="districtAdmin">
+    <Key>
+      <PropertyRef Name="districtAdminId" />
+    </Key>
+    <Property Name="districtAdminId" Type="Int32" Nullable="false" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="description" Type="Binary" MaxLength="50" FixedLength="false" Nullable="false" />
+    <NavigationProperty Name="districts" Relationship="Self.FK_districts_districtAdmin" FromRole="districtAdmin" ToRole="districts" />
+  </EntityType>
+  <EntityType Name="district">
+    <Key>
+      <PropertyRef Name="districtsId" />
+    </Key>
+    <Property Name="districtsId" Type="Int32" Nullable="false" />
+    <Property Name="regionId" Type="Int32" Nullable="false" />
+    <Property Name="districtAdminId" Type="Int32" Nullable="false" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="description" Type="Binary" MaxLength="50" FixedLength="false" Nullable="false" />
+    <NavigationProperty Name="complaints" Relationship="Self.FK_complaint_districts" FromRole="districts" ToRole="complaint" />
+    <NavigationProperty Name="constituencies" Relationship="Self.FK_constituencies_districts" FromRole="districts" ToRole="constituencies" />
+    <NavigationProperty Name="districtAdmin" Relationship="Self.FK_districts_districtAdmin" FromRole="districts" ToRole="districtAdmin" />
+    <NavigationProperty Name="region" Relationship="Self.FK_districts_region" FromRole="districts" ToRole="region" />
+    <NavigationProperty Name="staffs" Relationship="Self.FK_staff_districts" FromRole="districts" ToRole="staff" />
+    <NavigationProperty Name="youthGroups" Relationship="Self.FK_youthGroup_districts1" FromRole="districts" ToRole="youthGroup" />
+  </EntityType>
+  <EntityType Name="publicWasteBin">
+    <Key>
+      <PropertyRef Name="publicWasteBinId" />
+    </Key>
+    <Property Name="publicWasteBinId" Type="Int32" Nullable="false" />
+    <Property Name="communitiesId" Type="Int32" Nullable="false" />
+    <Property Name="publicWasteBinName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="publicWasteBinDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="community" Relationship="Self.FK_publicWasteBin_communities" FromRole="publicWasteBin" ToRole="communities" />
+  </EntityType>
+  <EntityType Name="region">
+    <Key>
+      <PropertyRef Name="regionId" />
+    </Key>
+    <Property Name="regionId" Type="Int32" Nullable="false" />
+    <Property Name="countryId" Type="Int32" Nullable="false" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="description" Type="Binary" MaxLength="50" FixedLength="false" Nullable="false" />
+    <NavigationProperty Name="country" Relationship="Self.FK_region_country" FromRole="region" ToRole="country" />
+    <NavigationProperty Name="districts" Relationship="Self.FK_districts_region" FromRole="region" ToRole="districts" />
+  </EntityType>
+  <EntityType Name="section">
+    <Key>
+      <PropertyRef Name="sectionId" />
+    </Key>
+    <Property Name="sectionId" Type="Int32" Nullable="false" />
+    <Property Name="wardId" Type="Int32" Nullable="false" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="description" Type="Binary" MaxLength="50" FixedLength="false" Nullable="false" />
+    <NavigationProperty Name="communities" Relationship="Self.FK_communities_section" FromRole="section" ToRole="communities" />
+    <NavigationProperty Name="ward" Relationship="Self.FK_section_ward" FromRole="section" ToRole="ward" />
+  </EntityType>
+  <EntityType Name="staff">
+    <Key>
+      <PropertyRef Name="staffId" />
+    </Key>
+    <Property Name="staffId" Type="Int32" Nullable="false" />
+    <Property Name="districtsId" Type="Int32" Nullable="false" />
+    <Property Name="firstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="lastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="userDisplayName" Type="Binary" MaxLength="50" FixedLength="false" />
+    <Property Name="email" Type="Binary" MaxLength="50" FixedLength="false" />
+    <Property Name="passwordsalt" Type="Binary" MaxLength="50" FixedLength="false" />
+    <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="dateOfAccountCreation" Type="DateTime" Precision="0" />
+    <NavigationProperty Name="district" Relationship="Self.FK_staff_districts" FromRole="staff" ToRole="districts" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="systemAdmin">
+    <Key>
+      <PropertyRef Name="systemAdminId" />
+    </Key>
+    <Property Name="systemAdminId" Type="Int32" Nullable="false" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="phoneNo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="email" Type="Binary" MaxLength="50" FixedLength="false" Nullable="false" />
+    <Property Name="password" Type="Binary" MaxLength="50" FixedLength="false" Nullable="false" />
+    <Property Name="salt" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="countries" Relationship="Self.FK_country_systemAdmin" FromRole="systemAdmin" ToRole="country" />
+  </EntityType>
+  <EntityType Name="ward">
+    <Key>
+      <PropertyRef Name="wardId" />
+    </Key>
+    <Property Name="wardId" Type="Int32" Nullable="false" />
+    <Property Name="constituenciesId" Type="Int32" Nullable="false" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="description" Type="Binary" MaxLength="50" FixedLength="false" Nullable="false" />
+    <NavigationProperty Name="constituency" Relationship="Self.FK_ward_constituencies" FromRole="ward" ToRole="constituencies" />
+    <NavigationProperty Name="sections" Relationship="Self.FK_section_ward" FromRole="ward" ToRole="section" />
+  </EntityType>
+  <EntityType Name="youthGroup">
+    <Key>
+      <PropertyRef Name="youthGroupId" />
+    </Key>
+    <Property Name="youthGroupId" Type="Int32" Nullable="false" />
+    <Property Name="districsId" Type="Int32" Nullable="false" />
+    <Property Name="youthGroupName" Type="Binary" MaxLength="50" FixedLength="false" />
+    <Property Name="youthGroupDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="isApproved" Type="Boolean" Nullable="false" />
+    <Property Name="address" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="district" Relationship="Self.FK_youthGroup_districts1" FromRole="youthGroup" ToRole="districts" />
+  </EntityType>
+  <Association Name="FK_collectionSite_communities">
+    <End Role="communities" Type="Self.community" Multiplicity="1" />
+    <End Role="collectionSite" Type="Self.collectionSite" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="communities">
+        <PropertyRef Name="communitiesId" />
+      </Principal>
+      <Dependent Role="collectionSite">
+        <PropertyRef Name="communitiesId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_communities_section">
+    <End Role="section" Type="Self.section" Multiplicity="1" />
+    <End Role="communities" Type="Self.community" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="section">
+        <PropertyRef Name="sectionId" />
+      </Principal>
+      <Dependent Role="communities">
+        <PropertyRef Name="sectionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_publicWasteBin_communities">
+    <End Role="communities" Type="Self.community" Multiplicity="1" />
+    <End Role="publicWasteBin" Type="Self.publicWasteBin" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="communities">
+        <PropertyRef Name="communitiesId" />
+      </Principal>
+      <Dependent Role="publicWasteBin">
+        <PropertyRef Name="communitiesId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_complaint_districts">
+    <End Role="districts" Type="Self.district" Multiplicity="1" />
+    <End Role="complaint" Type="Self.complaint" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="districts">
+        <PropertyRef Name="districtsId" />
+      </Principal>
+      <Dependent Role="complaint">
+        <PropertyRef Name="districtsId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_constituencies_districts">
+    <End Role="districts" Type="Self.district" Multiplicity="1" />
+    <End Role="constituencies" Type="Self.constituency" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="districts">
+        <PropertyRef Name="districtsId" />
+      </Principal>
+      <Dependent Role="constituencies">
+        <PropertyRef Name="districtsId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ward_constituencies">
+    <End Role="constituencies" Type="Self.constituency" Multiplicity="1" />
+    <End Role="ward" Type="Self.ward" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="constituencies">
+        <PropertyRef Name="constituenciesId" />
+      </Principal>
+      <Dependent Role="ward">
+        <PropertyRef Name="constituenciesId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_country_systemAdmin">
+    <End Role="systemAdmin" Type="Self.systemAdmin" Multiplicity="1" />
+    <End Role="country" Type="Self.country" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="systemAdmin">
+        <PropertyRef Name="systemAdminId" />
+      </Principal>
+      <Dependent Role="country">
+        <PropertyRef Name="systemAdminId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_region_country">
+    <End Role="country" Type="Self.country" Multiplicity="1" />
+    <End Role="region" Type="Self.region" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="country">
+        <PropertyRef Name="countryId" />
+      </Principal>
+      <Dependent Role="region">
+        <PropertyRef Name="countryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_districts_districtAdmin">
+    <End Role="districtAdmin" Type="Self.districtAdmin" Multiplicity="1" />
+    <End Role="districts" Type="Self.district" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="districtAdmin">
+        <PropertyRef Name="districtAdminId" />
+      </Principal>
+      <Dependent Role="districts">
+        <PropertyRef Name="districtAdminId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_districts_region">
+    <End Role="region" Type="Self.region" Multiplicity="1" />
+    <End Role="districts" Type="Self.district" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="region">
+        <PropertyRef Name="regionId" />
+      </Principal>
+      <Dependent Role="districts">
+        <PropertyRef Name="regionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_staff_districts">
+    <End Role="districts" Type="Self.district" Multiplicity="1" />
+    <End Role="staff" Type="Self.staff" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="districts">
+        <PropertyRef Name="districtsId" />
+      </Principal>
+      <Dependent Role="staff">
+        <PropertyRef Name="districtsId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_youthGroup_districts1">
+    <End Role="districts" Type="Self.district" Multiplicity="1" />
+    <End Role="youthGroup" Type="Self.youthGroup" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="districts">
+        <PropertyRef Name="districtsId" />
+      </Principal>
+      <Dependent Role="youthGroup">
+        <PropertyRef Name="districsId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_section_ward">
+    <End Role="ward" Type="Self.ward" Multiplicity="1" />
+    <End Role="section" Type="Self.section" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ward">
+        <PropertyRef Name="wardId" />
+      </Principal>
+      <Dependent Role="section">
+        <PropertyRef Name="wardId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="wwmDbEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="collectionSites" EntityType="Self.collectionSite" />
+    <EntitySet Name="communities" EntityType="Self.community" />
+    <EntitySet Name="complaints" EntityType="Self.complaint" />
+    <EntitySet Name="constituencies" EntityType="Self.constituency" />
+    <EntitySet Name="countries" EntityType="Self.country" />
+    <EntitySet Name="districtAdmins" EntityType="Self.districtAdmin" />
+    <EntitySet Name="districts" EntityType="Self.district" />
+    <EntitySet Name="publicWasteBins" EntityType="Self.publicWasteBin" />
+    <EntitySet Name="regions" EntityType="Self.region" />
+    <EntitySet Name="sections" EntityType="Self.section" />
+    <EntitySet Name="staffs" EntityType="Self.staff" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <EntitySet Name="systemAdmins" EntityType="Self.systemAdmin" />
+    <EntitySet Name="wards" EntityType="Self.ward" />
+    <EntitySet Name="youthGroups" EntityType="Self.youthGroup" />
+    <AssociationSet Name="FK_collectionSite_communities" Association="Self.FK_collectionSite_communities">
+      <End Role="communities" EntitySet="communities" />
+      <End Role="collectionSite" EntitySet="collectionSites" />
+    </AssociationSet>
+    <AssociationSet Name="FK_communities_section" Association="Self.FK_communities_section">
+      <End Role="section" EntitySet="sections" />
+      <End Role="communities" EntitySet="communities" />
+    </AssociationSet>
+    <AssociationSet Name="FK_publicWasteBin_communities" Association="Self.FK_publicWasteBin_communities">
+      <End Role="communities" EntitySet="communities" />
+      <End Role="publicWasteBin" EntitySet="publicWasteBins" />
+    </AssociationSet>
+    <AssociationSet Name="FK_complaint_districts" Association="Self.FK_complaint_districts">
+      <End Role="districts" EntitySet="districts" />
+      <End Role="complaint" EntitySet="complaints" />
+    </AssociationSet>
+    <AssociationSet Name="FK_constituencies_districts" Association="Self.FK_constituencies_districts">
+      <End Role="districts" EntitySet="districts" />
+      <End Role="constituencies" EntitySet="constituencies" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ward_constituencies" Association="Self.FK_ward_constituencies">
+      <End Role="constituencies" EntitySet="constituencies" />
+      <End Role="ward" EntitySet="wards" />
+    </AssociationSet>
+    <AssociationSet Name="FK_country_systemAdmin" Association="Self.FK_country_systemAdmin">
+      <End Role="systemAdmin" EntitySet="systemAdmins" />
+      <End Role="country" EntitySet="countries" />
+    </AssociationSet>
+    <AssociationSet Name="FK_region_country" Association="Self.FK_region_country">
+      <End Role="country" EntitySet="countries" />
+      <End Role="region" EntitySet="regions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_districts_districtAdmin" Association="Self.FK_districts_districtAdmin">
+      <End Role="districtAdmin" EntitySet="districtAdmins" />
+      <End Role="districts" EntitySet="districts" />
+    </AssociationSet>
+    <AssociationSet Name="FK_districts_region" Association="Self.FK_districts_region">
+      <End Role="region" EntitySet="regions" />
+      <End Role="districts" EntitySet="districts" />
+    </AssociationSet>
+    <AssociationSet Name="FK_staff_districts" Association="Self.FK_staff_districts">
+      <End Role="districts" EntitySet="districts" />
+      <End Role="staff" EntitySet="staffs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_youthGroup_districts1" Association="Self.FK_youthGroup_districts1">
+      <End Role="districts" EntitySet="districts" />
+      <End Role="youthGroup" EntitySet="youthGroups" />
+    </AssociationSet>
+    <AssociationSet Name="FK_section_ward" Association="Self.FK_section_ward">
+      <End Role="ward" EntitySet="wards" />
+      <End Role="section" EntitySet="sections" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

@@ -1,0 +1,332 @@
+﻿@model IEnumerable<WasteMangement.Models.districtAdmin>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Dashboard.cshtml";
+}
+
+<div class="limiter">
+    <div class="container-table100">
+        <div class="wrap-table100">
+            <div class="table100">
+                <div class="row">
+                    <div class="col-md-3 pull-left">
+                        <button class="btn btn-dark" data-toggle="modal" data-target="#addAccount" style="color:white;font-size:medium">Add District Admin Account</button>
+                    </div>
+                </div>
+
+
+                <table class="table table-hover">
+                    <thead style="background-color:ghostwhite">
+                        <tr>
+                            <th class="text-center">Admin Name</th>
+                            <th class="text-center">Admin Email</th>
+                            <th class="text-center">Admin Phone Number</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @if (Model != null)
+                        {
+                            foreach (var item in Model)
+                            {
+                            <tr class="edit" id="detail">
+                                <td class="text-center">@item.name</td>
+                                <td class="text-center">@item.Email</td>
+                                <td class="text-center">@item.PhoneNo</td>
+                                <td class="text-center">
+                                    <button class="btn btn-info" onclick="EditAdminRecord(@item.districtAdminId)">Edit</button> |
+                                    <span class="btn btn-primary" style="color: white;">
+                                        @Html.ActionLink("Details", "Details", new { id = item.districtAdminId })
+                                    </span> |
+                                    <button class="btn btn-danger" onclick="DeleteRecord(@item.districtAdminId)">Delete</button>
+                                </td>
+                            </tr>
+                                <div class="modal fade" id="delAccount" role="dialog">
+                                    <div class="modal-dialog">
+
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <div class="modal-header" style="background-color:#061435;">
+                                                <h4 class="modal-title" style="text-align: center;font-weight: 700;color: white;">Delete Account</h4>
+                                                <button type="button" class="close" data-dismiss="modal" style="color: white;opacity: 1;">&times;</button>
+                                                
+                                            </div>
+                                            <div class="modal-body">
+                                                <form method="POST" action="@Url.Action("Delete", "districtAdmins")">
+                                                    @Html.AntiForgeryToken()
+                                                    <div class="form-group">
+                                                        <label class="control-label">&nbsp;&nbsp;&nbsp;Are you Sure you Want to delete the account?</label>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <input type="hidden" id="districtAdminID" name="id"/>
+                                                        <input type="submit" value="Sure!" class="btn btn-primary" />
+                                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Not Sure</button>
+                                                    </div>
+
+                                                </form>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            }
+                        }
+                    </tbody>
+                </table>
+                @if (Model != null)
+                {
+
+
+                    <div class="modal fade" id="addAccount" role="dialog">
+                        <div class="modal-dialog">
+
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header" style="background-color:#061435;">
+                                    <h4 class="modal-title" style="text-align:center;font-weight: 700;color: white;">District Admin Account</h4>
+                                    <button type="button" class="close" data-dismiss="modal" style="color: white;opacity: 1;">&times;</button>
+                                    
+                                </div>
+                                <div class="modal-body">
+                                    <form action="@Url.Action("RegisterDistrictAdmin", "Account")" method="post">
+                                        @Html.AntiForgeryToken()
+                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <input type="text" class="form-control" placeholder="First name" name="FirstName">
+                                                </div>
+                                                <div class="col">
+                                                    <input type="text" class="form-control" placeholder="Last name" name="LastName">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <input type="email" name="Email" class="form-control" placeholder ="Email" id="useremail"/>
+                                                    <span id='email'></span>
+                                                </div>
+                                                <div class="col">
+                                                    <input name="PhoneNo" placeholder="PhoneNo(1234-456-7890)" class="form-control" 
+                                                           pattern="[0-9]{4}-[0-9]{3}-[0-9]{4}" required />
+                                                </div>
+                                            </div>  
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <input name="Address" class="form-control" type="text" placeholder="Address">
+                                                </div>
+                                                <div class="col">
+                                                    <input type="text" name="userName" class="form-control" placeholder="User Name" id="username" />
+                                                    <span id='name1'></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <input type="password" name="Password" class="form-control" placeholder="password" id="Password"/>
+                                                </div>
+                                                <div class="col">
+                                                    <input type="password" name="ConfirmPassword" class="form-control" placeholder="confirm Password" id="ConfirmPassword"/>
+                                                    <span id='message'></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <textarea rows="4" cols="61" name="description" class="form-control" placeholder="Description"></textarea>
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <input type="submit" value="Add Account" class="btn btn-primary" />
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="editAccount" role="dialog">
+                        <div class="modal-dialog">
+
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header" style="background-color:#061435;">
+                                    <h4 class="modal-title" style="text-align: center;font-weight: 700;color: white;">Edit Account</h4>
+                                    <button type="button" class="close" data-dismiss="modal" style="color: white;opacity: 1;">&times;</button>
+                                   
+                                </div>
+                                <div class="modal-body">
+                                    <form action="@Url.Action("Edit", "districtAdmins")" method="post">
+                                        @Html.AntiForgeryToken()
+                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <input type="text" class="form-control" placeholder="First name" name="FirstName" id="firstName">
+                                                </div>
+                                                <div class="col">
+                                                    <input type="text" class="form-control" placeholder="Last name" name="LastName"id="LastName">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <input type="email" name="Email" class="form-control" placeholder="Email" id="Email"/>
+                                                </div>
+                                                <div class="col">
+                                                    <input name="PhoneNo" placeholder="PhoneNo(1234-456-7890)" class="form-control" id="PhoneNo"
+                                                           pattern="[0-9]{4}-[0-9]{3}-[0-9]{4}" required />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <input name="Address" class="form-control" type="text" placeholder="Address" id="Address">
+                                                </div>
+
+                                                <div class="col">
+                                                    <input type="text" name="userName" class="form-control" placeholder="User Name" id="userName" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col">
+                                                    <input type="password" name="Password" class="form-control" placeholder="password" id="pswd"/>
+                                                </div>
+                                                <div class="col">
+                                                    <input type="password" name="ConfirmPassword" class="form-control" placeholder="confirm password" id="cnfrmpswd"/>
+                                                    <span id='messag'></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <textarea rows="4" cols="61" name="description" class="form-control" placeholder="Description" id="description"></textarea>
+                                        </div>
+                                        <input name="districtAdminId" id="destrictAdminID" type="hidden" />
+                                        <input name="Id" id="userId" type="hidden" />
+                                        <div class="modal-footer">
+                                            <input type="submit" value="Add Account" class="btn btn-primary" />
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script>
+    $('#Password, #ConfirmPassword').on('keyup', function () {
+        if ($('#Password').val() == $('#ConfirmPassword').val()) {
+            $('#message').html('Matching').css('color', 'green');
+        } else
+            $('#message').html('Not Matching').css('color', 'red');
+    });
+    $('#pswd, #cnfrmpswd').on('keyup', function () {
+        if ($('#pswd').val() == $('#cnfrmpswd').val()) {
+            $('#messag').html('Matching').css('color', 'green');
+        } else
+            $('#messag').html('Not Matching').css('color', 'red');
+    });
+    $('#useremail').on('keyup', function () {
+        var email = $(this).val();
+        var url = "/Account/UserAlreadyExistsAsync/";
+        if(email.length >= 7)
+        {
+            $.ajax({
+                type: "GET",
+                url: url,
+                data : {email : email},
+                success: function (data) {
+                    console.log(data);
+                    if(data == false)
+                    {
+                        console.log("han");
+                        $('#email').html('Email Already Exist').css('color', 'red');
+                    }
+                    else
+                    {
+                        console.log("na");
+                        $('#email').html('');
+                    }
+                   
+                }
+            })
+            
+        }
+        
+    });
+    $('#username').on('keyup', function () {
+        var name = $(this).val();
+        var url = "/Account/NameAlreadyExistsAsync/";
+        if(name.length >= 3)
+        {
+            $.ajax({
+                type: "GET",
+                url: url,
+                data : {name : name},
+                success: function (data) {
+                    console.log(data);
+                    if(data == false)
+                    {
+                        console.log("han");
+                        $('#name1').html('User Name Already Exist').css('color', 'red');
+                    }
+                    else
+                    {
+                        console.log("na");
+                        $('#name1').html('');
+                    }
+                   
+                }
+            })
+            
+        }
+        
+    });
+    function EditAdminRecord(adminId) {
+        var url = "/districtAdmins/Edit/" + adminId;
+        $("#editAccount").modal();
+        $.ajax({
+            type: "GET",
+            url: url,
+            success: function (data) {
+                var obj = JSON.parse(data);
+                $("#firstName").val(obj.FirstName);
+                $("#LastName").val(obj.LastName);
+                $("#Email").val(obj.Email);
+                $("#Address").val(obj.Address);
+                $("#PhoneNo").val(obj.PhoneNo);
+                $("#description").val(obj.description);
+                $("#destrictAdminID").val(obj.districtAdminId);
+                $("#userId").val(obj.userId);
+                $('#userName').val(obj.userName)
+            }
+        })
+    }
+
+    function DeleteRecord(adminId) {
+        $("#districtAdminID").val(adminId);
+        $("#delAccount").modal();
+    }
+</script>
+
