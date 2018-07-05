@@ -20,17 +20,17 @@ namespace WasteMangement.Models
             this.complaints = new HashSet<complaint>();
             this.constituencies = new HashSet<constituency>();
             this.staffs = new HashSet<staff>();
+            this.YouthGroups = new HashSet<YouthGroup>();
         }
     
         public int districtsId { get; set; }
         public int regionId { get; set; }
         public int districtAdminId { get; set; }
         public string name { get; set; }
-        public string regionName { get; set; }
-        public string AdminName { get; set; }
         public string description { get; set; }
         public int isDeleted { get; set; }
-    
+        public string regionName { get; set; }
+        public string AdminName { get; set;}
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<complaint> complaints { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -39,5 +39,7 @@ namespace WasteMangement.Models
         public virtual region region { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<staff> staffs { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<YouthGroup> YouthGroups { get; set; }
     }
 }

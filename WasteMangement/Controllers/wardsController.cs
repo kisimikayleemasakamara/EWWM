@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNet.Identity;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -13,107 +12,110 @@ using WasteMangement.Models;
 namespace WasteMangement.Controllers
 {
     [Authorize(Roles = "DistrictAdmin")]
-    public class constituenciesController : Controller
+    public class wardsController : Controller
     {
         private wwmDbEntities db = new wwmDbEntities();
 
-        // GET: constituencies
+        // GET: wards
         [Authorize(Roles = "DistrictAdmin")]
         public ActionResult Index()
         {
             string userID = User.Identity.GetUserId();
-            var query = (from a in db.constituencies
+            var query = (from x in db.wards
+                         join a in db.constituencies on x.constituenciesId  equals a.constituenciesId
                          join b in db.districts on a.districtsId equals b.districtsId
                          join c in db.districtAdmins on b.districtAdminId equals c.districtAdminId
-                         where b.isDeleted == 0 && a.isDeleted == 0 
+                         where x.isDeleted == 0 && b.isDeleted == 0 && a.isDeleted == 0
                          && c.isDeleted == 0 && c.UserId == userID
                          select new
                          {
-                            constituencyId = a.constituenciesId,
-                            constitunecyName = a.name,
-                            constituencydescription = a.description,
-                            districtName = b.name,
-                            districtId = b.districtsId
-                             
+                             constituencyId = a.constituenciesId,
+                             constitunecyName = a.name,
+                             wardsDescription = x.description,
+                             wardName = x.name,
+                             wardId = x.wardId
+
                          }).ToList();
-            List<constituency> constituencies = new List<constituency>();
+            List<ward> wards = new List<ward>();
             foreach (var item in query)
             {
-                constituencies.Add(new constituency()
+                wards.Add(new ward()
                 {
                     constituenciesId = item.constituencyId,
-                    name = item.constitunecyName,
-                    description = item.constituencydescription,
-                    districtName = item.districtName,
-                    districtsId = item.districtId
+                    constitunecyName = item.constitunecyName,
+                    description = item.wardsDescription,
+                    name = item.wardName,
+                    wardId = item.wardId
                 });
             }
-            return View(constituencies);
+            var q = (from a in db.constituencies
+                         join b in db.districts on a.districtsId equals b.districtsId
+                         join c in db.districtAdmins on b.districtAdminId equals c.districtAdminId
+                         where b.isDeleted == 0 && a.isDeleted == 0
+                         && c.isDeleted == 0 && c.UserId == userID
+                         select new
+                         {
+                             constituencyId = a.constituenciesId,
+                             constitunecyName = a.name
+                         }).ToList();
+            List<ConstituencyDropdown> constituencies = new List<ConstituencyDropdown>();
+            foreach (var item in q)
+            {
+                constituencies.Add(new ConstituencyDropdown()
+                {
+                    constituencyId = item.constituencyId,
+                    constitunecyName = item.constitunecyName
+                });
+            }
+            ViewBag.constituecy = constituencies;
+            return View(wards);
+            
         }
 
-        // POST: constituencies/Create
+        // POST: wards/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "DistrictAdmin")]
-        public ActionResult Create([Bind(Include = "constituenciesId,districtsId,name,description,isDeleted")] constituency constituency)
+        public ActionResult Create([Bind(Include = "wardId,constituenciesId,name,description,isDeleted")] ward ward)
         {
             if (ModelState.IsValid)
             {
-                constituency.isDeleted = 0;
-                db.constituencies.Add(constituency);
+                ward.isDeleted = 0;
+                db.wards.Add(ward);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
             return RedirectToAction("Index");
         }
 
-        // GET: constituencies/Edit/5
-        [Authorize(Roles = "DistrictAdmin")]
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            constituency constituency = db.constituencies.Find(id);
-            if (constituency == null)
-            {
-                return HttpNotFound();
-            }
-            string value = JsonConvert.SerializeObject(constituency, Formatting.Indented, new JsonSerializerSettings
-            {
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-            });
-            return Json(value, JsonRequestBehavior.AllowGet);
-        }
-
-        // POST: constituencies/Edit/5
+        // POST: wards/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "DistrictAdmin")]
-        public ActionResult Edit([Bind(Include = "constituenciesId,districtsId,name,description,isDeleted")] constituency constituency)
+        public ActionResult Edit([Bind(Include = "wardId,constituenciesId,name,description,isDeleted")] ward ward)
         {
             if (ModelState.IsValid)
             {
-                constituency.isDeleted = 0;
-                db.Entry(constituency).State = EntityState.Modified;
+                ward.isDeleted = 0;
+                db.Entry(ward).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
             return RedirectToAction("Index");
         }
-        // POST: constituencies/Delete/5
+
+        // POST: wards/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "DistrictAdmin")]
         public ActionResult DeleteConfirmed(int id)
         {
-            constituency constituency = db.constituencies.Find(id);
-            constituency.isDeleted = 1;
+            ward ward = db.wards.Find(id);
+            ward.isDeleted = 1;
             db.SaveChanges();
             return RedirectToAction("Index");
         }

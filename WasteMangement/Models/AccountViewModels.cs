@@ -138,6 +138,10 @@ namespace WasteMangement.Models
         public string LastName { get; set; }
 
         [Required]
+        [DisplayName("User Name")]
+        public string userName { get; set; }
+
+        [Required]
         [DisplayName("Phone Number")]
         public string PhoneNo { get; set; }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -10,37 +11,73 @@ using WasteMangement.Models;
 
 namespace WasteMangement.Controllers
 {
+    [Authorize(Roles = "DistrictAdmin")]
     public class publicWasteBinsController : Controller
     {
-        private wwmDbEntities1 db = new wwmDbEntities1();
+        private wwmDbEntities db = new wwmDbEntities();
 
         // GET: publicWasteBins
+        [Authorize(Roles = "DistrictAdmin")]
         public ActionResult Index()
         {
-            var publicWasteBins = db.publicWasteBins.Include(p => p.collectionSite);
-            return View(publicWasteBins.ToList());
-        }
-
-        // GET: publicWasteBins/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
+            string userID = User.Identity.GetUserId();
+            var query = (from w in db.publicWasteBins
+                         join i in db.collectionSites on w.collectionSiteId equals i.collectionSiteId
+                         join z in db.communities on i.communitiesId equals z.communitiesId
+                         join y in db.sections on z.sectionId equals y.sectionId
+                         join x in db.wards on y.wardId equals x.wardId
+                         join a in db.constituencies on x.constituenciesId equals a.constituenciesId
+                         join b in db.districts on a.districtsId equals b.districtsId
+                         join c in db.districtAdmins on b.districtAdminId equals c.districtAdminId
+                         where w.isDeleted == 0 && i.isDeleted == 0 && z.isDeleted == 0 &&
+                         y.isDeleted == 0 && x.isDeleted == 0 && b.isDeleted == 0 && a.isDeleted == 0
+                         && c.isDeleted == 0 && c.UserId == userID
+                         select new
+                         {
+                             siteName = i.collectionSiteName,
+                             siteId = i.collectionSiteId,
+                             binId = w.publicWasteBinId,
+                             binName = w.publicWasteBinName,
+                             binDescription = w.publicWasteBinDescription
+                         }).ToList();
+            List<publicWasteBin> publicWasteBins = new List<publicWasteBin>();
+            foreach (var item in query)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                publicWasteBins.Add(new publicWasteBin()
+                {
+                    collectionSiteId = item.siteId,
+                    siteName = item.siteName,
+                    publicWasteBinId = item.binId,
+                    publicWasteBinName = item.binName,
+                    publicWasteBinDescription = item.binDescription
+                });
             }
-            publicWasteBin publicWasteBin = db.publicWasteBins.Find(id);
-            if (publicWasteBin == null)
+            var query1 = (from i in db.collectionSites
+                          join z in db.communities on i.communitiesId equals z.communitiesId
+                          join y in db.sections on z.sectionId equals y.sectionId
+                          join x in db.wards on y.wardId equals x.wardId
+                          join a in db.constituencies on x.constituenciesId equals a.constituenciesId
+                          join b in db.districts on a.districtsId equals b.districtsId
+                          join c in db.districtAdmins on b.districtAdminId equals c.districtAdminId
+                          where i.isDeleted == 0 && z.isDeleted == 0 &&
+                          y.isDeleted == 0 && x.isDeleted == 0 && b.isDeleted == 0 && a.isDeleted == 0
+                          && c.isDeleted == 0 && c.UserId == userID
+                          select new
+                          {
+                              siteName = i.collectionSiteName,
+                              siteId = i.collectionSiteId,
+                          }).ToList();
+            List<collectionSite> sites = new List<collectionSite>();
+            foreach (var item in query1)
             {
-                return HttpNotFound();
+                sites.Add(new collectionSite()
+                {
+                    collectionSiteId = item.siteId,
+                    collectionSiteName = item.siteName
+                });
             }
-            return View(publicWasteBin);
-        }
-
-        // GET: publicWasteBins/Create
-        public ActionResult Create()
-        {
-            ViewBag.collectionSiteId = new SelectList(db.collectionSites, "collectionSiteId", "collectionSiteManager");
-            return View();
+            ViewBag.sites = sites;
+            return View(publicWasteBins);
         }
 
         // POST: publicWasteBins/Create
@@ -48,33 +85,17 @@ namespace WasteMangement.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "DistrictAdmin")]
         public ActionResult Create([Bind(Include = "publicWasteBinId,publicWasteBinName,publicWasteBinDescription,collectionSiteId,isDeleted")] publicWasteBin publicWasteBin)
         {
             if (ModelState.IsValid)
             {
+                publicWasteBin.isDeleted = 0;
                 db.publicWasteBins.Add(publicWasteBin);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-
-            ViewBag.collectionSiteId = new SelectList(db.collectionSites, "collectionSiteId", "collectionSiteManager", publicWasteBin.collectionSiteId);
-            return View(publicWasteBin);
-        }
-
-        // GET: publicWasteBins/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            publicWasteBin publicWasteBin = db.publicWasteBins.Find(id);
-            if (publicWasteBin == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.collectionSiteId = new SelectList(db.collectionSites, "collectionSiteId", "collectionSiteManager", publicWasteBin.collectionSiteId);
-            return View(publicWasteBin);
+            return RedirectToAction("Index");
         }
 
         // POST: publicWasteBins/Edit/5
@@ -82,40 +103,27 @@ namespace WasteMangement.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "DistrictAdmin")]
         public ActionResult Edit([Bind(Include = "publicWasteBinId,publicWasteBinName,publicWasteBinDescription,collectionSiteId,isDeleted")] publicWasteBin publicWasteBin)
         {
             if (ModelState.IsValid)
             {
+                publicWasteBin.isDeleted = 0;
                 db.Entry(publicWasteBin).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.collectionSiteId = new SelectList(db.collectionSites, "collectionSiteId", "collectionSiteManager", publicWasteBin.collectionSiteId);
-            return View(publicWasteBin);
-        }
-
-        // GET: publicWasteBins/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            publicWasteBin publicWasteBin = db.publicWasteBins.Find(id);
-            if (publicWasteBin == null)
-            {
-                return HttpNotFound();
-            }
-            return View(publicWasteBin);
+            return RedirectToAction("Index");
         }
 
         // POST: publicWasteBins/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "DistrictAdmin")]
         public ActionResult DeleteConfirmed(int id)
         {
             publicWasteBin publicWasteBin = db.publicWasteBins.Find(id);
-            db.publicWasteBins.Remove(publicWasteBin);
+            publicWasteBin.isDeleted = 1;
             db.SaveChanges();
             return RedirectToAction("Index");
         }

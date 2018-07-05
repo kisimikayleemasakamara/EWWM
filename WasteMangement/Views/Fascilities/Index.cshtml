@@ -43,13 +43,21 @@
 
                                 <td class="text-center">
                                     <button class="btn btn-info" onclick="EditFascilityRecord(@item.Fascility_Id)">Edit</button> |
-                                    <span class="btn btn-primary" style="color: white;">
-                                        @Html.ActionLink("Details", "Details", new { id = item.Fascility_Id })
-                                    </span> |
-                                    <button class="btn btn-danger" data-toggle="modal" data-target="#delFascility">Delete</button>
+                                    <button class="btn btn-primary" data-toggle="collapse" data-target="#detailFascility @item.Fascility_Id">Details</button> |
+                                    <button class="btn btn-danger" data-toggle="modal" data-target="#delFascility @item.Fascility_Id">Delete</button>
                                 </td>
                             </tr>
-                                <div class="modal fade" id="delFascility" role="dialog">
+                            <tr id="detailFascility @item.Fascility_Id" class="collapse" style="background-color: skyblue;color:black;">
+                                <td colspan="4">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h3>Details</h3>
+                                            @item.Fascility_Description
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                                <div class="modal fade" id="delFascility @item.Fascility_Id" role="dialog">
                                     <div class="modal-dialog">
 
                                         <!-- Modal content-->
@@ -99,15 +107,15 @@
                                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                                         <div class="form-group">
                                             <label class="control-label">&nbsp;&nbsp;&nbsp;Fascility Name</label>
-                                            <input name="Fascility_Name" class="form-control" type="text">
+                                            <input name="Fascility_Name" class="form-control" type="text" required>
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label">&nbsp;&nbsp;&nbsp;Waste Collection Price Per Month</label>
-                                            <input name="WasteCollectionPricePerMonth" class="form-control" type="text">
+                                            <input name="WasteCollectionPricePerMonth" class="form-control" type="text" required>
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label">&nbsp;&nbsp;&nbsp;Fascility Description</label>
-                                            <textarea rows="4" cols="61" name="Fascility_Description" class="form-control"></textarea>
+                                            <textarea rows="4" cols="61" name="Fascility_Description" class="form-control" required></textarea>
                                         </div>
                                         <div class="modal-footer">
                                             <input type="submit" value="Add Fascility" class="btn btn-primary" />
@@ -136,15 +144,15 @@
                                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                                         <div class="form-group">
                                             <label class="control-label">&nbsp;&nbsp;&nbsp;Fascility Name</label>
-                                            <input name="Fascility_Name" class="form-control" type="text" id="Fascility_Name">
+                                            <input name="Fascility_Name" class="form-control" type="text" id="Fascility_Name" required>
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label">&nbsp;&nbsp;&nbsp;Waste Collection Price Per Month</label>
-                                            <input name="WasteCollectionPricePerMonth" class="form-control" type="text" id="WasteCollectionPricePerMonth">
+                                            <input name="WasteCollectionPricePerMonth" class="form-control" type="text" id="WasteCollectionPricePerMonth" required>
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label">&nbsp;&nbsp;&nbsp;Fascility Description</label>
-                                            <textarea rows="4" cols="61" name="Fascility_Description" class="form-control" id="Fascility_Description"></textarea>
+                                            <textarea rows="4" cols="61" name="Fascility_Description" class="form-control" id="Fascility_Description" required></textarea>
                                         </div>
                                        
                                         <div class="modal-footer">

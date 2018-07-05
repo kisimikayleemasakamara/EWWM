@@ -13,7 +13,7 @@ namespace WasteMangement.Controllers
 {
     public class FascilitiesController : Controller
     {
-        private wwmDbEntities1 db = new wwmDbEntities1();
+        private wwmDbEntities db = new wwmDbEntities();
 
         // GET: Fascilities
         public ActionResult Index()
@@ -21,21 +21,6 @@ namespace WasteMangement.Controllers
             return View((from d in db.Fascilities
                          where d.isDeleted == 0
                          select d).ToList());
-        }
-
-        // GET: Fascilities/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Fascility fascility = db.Fascilities.Find(id);
-            if (fascility == null)
-            {
-                return HttpNotFound();
-            }
-            return View(fascility);
         }
 
         // POST: Fascilities/Create
@@ -53,7 +38,7 @@ namespace WasteMangement.Controllers
                 return RedirectToAction("Index");
             }
 
-            return View(fascility);
+            return RedirectToAction("Index");
         }
 
         // GET: Fascilities/Edit/5
@@ -89,7 +74,7 @@ namespace WasteMangement.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(fascility);
+            return RedirectToAction("Index");
         }
 
 

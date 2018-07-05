@@ -22,9 +22,9 @@ namespace WasteMangement.Models
     
         public int regionId { get; set; }
         public int countryId { get; set; }
+        public string region_name { get; set; }
         public string description { get; set; }
         public int isDeleted { get; set; }
-        public string region_name { get; set; }
         public string name { get; set; }
         public virtual country country { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

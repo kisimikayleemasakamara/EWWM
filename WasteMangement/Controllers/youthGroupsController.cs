@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -10,112 +11,89 @@ using WasteMangement.Models;
 
 namespace WasteMangement.Controllers
 {
-    public class youthGroupsController : Controller
+    [Authorize(Roles = "DistrictAdmin")]
+    public class YouthGroupsController : Controller
     {
-        private wwmDbEntities1 db = new wwmDbEntities1();
+        private wwmDbEntities db = new wwmDbEntities();
 
-        // GET: youthGroups
+        // GET: YouthGroups
+        [Authorize(Roles = "DistrictAdmin")]
         public ActionResult Index()
         {
-            var youthGroups = db.youthGroups.Include(y => y.AspNetUser);
-            return View(youthGroups.ToList());
-        }
+            string userID = User.Identity.GetUserId();
+            var query = (from a in db.YouthGroups
+                         join b in db.districts on a.districtsId equals b.districtsId
+                         join c in db.districtAdmins on b.districtAdminId equals c.districtAdminId
+                         where b.isDeleted == 0 && a.isDeleted == 0
+                         && c.isDeleted == 0 && c.UserId == userID
+                         select new
+                         {
+                             groupName = a.youthGroupName,
+                             groupId = a.youthGroupTypeId,
+                             description = a.youthGroupDescription,
+                             districtName = b.name,
+                             districtId = b.districtsId
 
-        // GET: youthGroups/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
+                         }).ToList();
+            List<YouthGroup> groups = new List<YouthGroup>();
+            foreach (var item in query)
             {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                groups.Add(new YouthGroup()
+                {
+                    youthGroupName = item.groupName,
+                    youthGroupTypeId = item.groupId,
+                    youthGroupDescription = item.description,
+                    districtName = item.districtName,
+                    districtsId = item.districtId
+                });
             }
-            youthGroup youthGroup = db.youthGroups.Find(id);
-            if (youthGroup == null)
-            {
-                return HttpNotFound();
-            }
-            return View(youthGroup);
+            return View(groups);
         }
 
-        // GET: youthGroups/Create
-        public ActionResult Create()
-        {
-            ViewBag.UserId = new SelectList(db.AspNetUsers, "Id", "FirstName");
-            return View();
-        }
-
-        // POST: youthGroups/Create
+        // POST: YouthGroups/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "youthGroupId,districsId,youthGroupName,youthGroupDescription,isApproved,address,UserId,isDeleted")] youthGroup youthGroup)
+        [Authorize(Roles = "DistrictAdmin")]
+        public ActionResult Create([Bind(Include = "youthGroupTypeId,youthGroupName,youthGroupDescription,districtsId")] YouthGroup youthGroup)
         {
             if (ModelState.IsValid)
             {
-                db.youthGroups.Add(youthGroup);
+                youthGroup.isDeleted = 0;
+                db.YouthGroups.Add(youthGroup);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            ViewBag.UserId = new SelectList(db.AspNetUsers, "Id", "FirstName", youthGroup.UserId);
-            return View(youthGroup);
+            return RedirectToAction("Index");
         }
 
-        // GET: youthGroups/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            youthGroup youthGroup = db.youthGroups.Find(id);
-            if (youthGroup == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.UserId = new SelectList(db.AspNetUsers, "Id", "FirstName", youthGroup.UserId);
-            return View(youthGroup);
-        }
-
-        // POST: youthGroups/Edit/5
+        // POST: YouthGroups/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "youthGroupId,districsId,youthGroupName,youthGroupDescription,isApproved,address,UserId,isDeleted")] youthGroup youthGroup)
+        [Authorize(Roles = "DistrictAdmin")]
+        public ActionResult Edit([Bind(Include = "youthGroupTypeId,youthGroupName,youthGroupDescription,districtsId")] YouthGroup youthGroup)
         {
             if (ModelState.IsValid)
             {
+                youthGroup.isDeleted = 0;
                 db.Entry(youthGroup).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            ViewBag.UserId = new SelectList(db.AspNetUsers, "Id", "FirstName", youthGroup.UserId);
-            return View(youthGroup);
+            return RedirectToAction("Index");
         }
-
-        // GET: youthGroups/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            youthGroup youthGroup = db.youthGroups.Find(id);
-            if (youthGroup == null)
-            {
-                return HttpNotFound();
-            }
-            return View(youthGroup);
-        }
-
-        // POST: youthGroups/Delete/5
+        // POST: YouthGroups/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "DistrictAdmin")]
         public ActionResult DeleteConfirmed(int id)
         {
-            youthGroup youthGroup = db.youthGroups.Find(id);
-            db.youthGroups.Remove(youthGroup);
+            YouthGroup youthGroup = db.YouthGroups.Find(id);
+            youthGroup.isDeleted = 1;
             db.SaveChanges();
             return RedirectToAction("Index");
         }

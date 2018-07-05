@@ -11,11 +11,13 @@ using WasteMangement.Models;
 
 namespace WasteMangement.Controllers
 {
+    [Authorize(Roles = "SystemAdmin")]
     public class districtsController : Controller
     {
-        private wwmDbEntities1 db = new wwmDbEntities1();
+        private wwmDbEntities db = new wwmDbEntities();
 
         // GET: districts
+        [Authorize(Roles = "SystemAdmin")]
         public ActionResult Index()
         {
             var query = (from a in db.districts
@@ -43,24 +45,12 @@ namespace WasteMangement.Controllers
                     districtsId = item.id
                 });
             }
+            ViewBag.alert = TempData["alert"];
+            ViewBag.name = TempData["name"];
             return View(districts);
         }
 
-        // GET: districts/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            district district = db.districts.Find(id);
-            if (district == null)
-            {
-                return HttpNotFound();
-            }
-            return View(district);
-        }
-
+        [Authorize(Roles = "SystemAdmin")]
         public ActionResult FillRegion(int state)
         {
             var query = (from g in db.regions
@@ -85,6 +75,7 @@ namespace WasteMangement.Controllers
             return Json(list, JsonRequestBehavior.AllowGet);
         }
 
+        [Authorize(Roles = "SystemAdmin")]
         public async System.Threading.Tasks.Task<ActionResult> countries()
         {
             var countries = (from d in db.countries
@@ -100,6 +91,8 @@ namespace WasteMangement.Controllers
             }
             return Json(list, JsonRequestBehavior.AllowGet);
         }
+
+        [Authorize(Roles = "SystemAdmin")]
         public async System.Threading.Tasks.Task<ActionResult> admins()
         {
             var admins = (from d in db.districtAdmins
@@ -122,24 +115,44 @@ namespace WasteMangement.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "SystemAdmin")]
         public ActionResult Create([Bind(Include = "districtsId,regionId,districtAdminId,name,description,isDeleted")] district district)
         {
-            if (ModelState.IsValid)
+            var exist = (from d in db.districts
+                         where d.districtAdminId == district.districtAdminId
+                         && d.isDeleted == 0
+                         select d).ToList();
+            var dname = (from d in db.districtAdmins
+                         where d.districtAdminId == district.districtAdminId
+                         && d.isDeleted == 0
+                         select new
+                         {
+                             name = d.name
+                        }).SingleOrDefault();
+            if (exist.Count == 0)
             {
-                district.isDeleted = 0;
-                db.districts.Add(district);
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    district.isDeleted = 0;
+                    db.districts.Add(district);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
-
-            ViewBag.districtAdminId = new SelectList(db.districtAdmins, "districtAdminId", "name", district.districtAdminId);
-            ViewBag.regionId = new SelectList(db.regions, "regionId", "name", district.regionId);
-            return View(district);
+            else
+            {
+                TempData["alert"] = false;
+                TempData["name"] = dname.name;
+            }
+          
+            return RedirectToAction("Index");
         }
 
         // GET: districts/Edit/5
+        [Authorize(Roles = "SystemAdmin")]
         public ActionResult Edit(int? id)
         {
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -161,23 +174,43 @@ namespace WasteMangement.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "SystemAdmin")]
         public ActionResult Edit([Bind(Include = "districtsId,regionId,districtAdminId,name,description,isDeleted")] district district)
         {
-            if (ModelState.IsValid)
+            var exist = (from d in db.districts
+                         where d.districtAdminId == district.districtAdminId
+                         && d.isDeleted == 0 && d.districtsId != district.districtsId
+                         select d).ToList();
+            var dname = (from d in db.districtAdmins
+                         where d.districtAdminId == district.districtAdminId
+                         && d.isDeleted == 0
+                         select new
+                         {
+                             name = d.name
+                         }).SingleOrDefault();
+            if(exist.Count == 0)
             {
-                district.isDeleted = 0;
-                db.Entry(district).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                if (ModelState.IsValid)
+                {
+                    district.isDeleted = 0;
+                    db.Entry(district).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
             }
-            ViewBag.districtAdminId = new SelectList(db.districtAdmins, "districtAdminId", "name", district.districtAdminId);
-            ViewBag.regionId = new SelectList(db.regions, "regionId", "name", district.regionId);
-            return View(district);
+            else
+            {
+                TempData["alert"] = false;
+                TempData["name"] = dname.name;
+            }
+
+            return RedirectToAction("Index");
         }
 
         // POST: districts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "SystemAdmin")]
         public ActionResult DeleteConfirmed(int id)
         {
             district district = db.districts.Find(id);

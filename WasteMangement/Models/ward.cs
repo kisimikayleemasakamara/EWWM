@@ -25,7 +25,7 @@ namespace WasteMangement.Models
         public string name { get; set; }
         public string description { get; set; }
         public int isDeleted { get; set; }
-    
+        public string constitunecyName { get; set; }
         public virtual constituency constituency { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<section> sections { get; set; }

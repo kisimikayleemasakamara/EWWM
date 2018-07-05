@@ -1,0 +1,208 @@
+﻿@using WasteMangement.Models
+@using Microsoft.AspNet.Identity
+@using Microsoft.AspNet.Identity.EntityFramework;
+@{
+
+    var manager = new UserManager<ApplicationUser>(new Microsoft.AspNet.Identity.EntityFramework.UserStore<ApplicationUser>(new ApplicationDbContext()));
+    var currentUser = manager.FindById(User.Identity.GetUserId());
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="robots" content="all,follow">
+    <title>@ViewBag.Title | eWomen Waste Management</title>
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="~/Content/dashboard/vendor/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" href="~/Content/dashboard/vendor/font-awesome/css/font-awesome.min.css">
+    <!-- Fontastic Custom icon font-->
+    <link rel="stylesheet" href="~/Content/dashboard/css/fontastic.css">
+    <!-- Google fonts - Roboto -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
+    <!-- jQuery Circle-->
+    <link rel="stylesheet" href="~/Content/dashboard/css/grasp_mobile_progress_circle-1.0.0.min.css">
+    <!-- Custom Scrollbar-->
+    <link rel="stylesheet" href="~/Content/dashboard/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.css">
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="~/Content/dashboard/css/style.default.css" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="~/Content/dashboard/css/style.default.premium.css">
+    <!-- Favicon-->
+    <link rel="shortcut icon" href="~/Content/dashboard/img/favicon.ico">
+    <script src="~/Scripts/ajax/jquery.min.js"></script>
+    <script src="~/Scripts/ajax/jquery-ui.min.js"></script>
+</head>
+<body cz-shortcut-listen="true">
+    <!-- Side Navbar -->
+    <nav class="side-navbar mCustomScrollbar _mCS_1">
+        <div class="side-navbar-wrapper">
+            <!-- Sidebar Header    -->
+            <div class="sidenav-header d-flex align-items-center justify-content-center">
+                <!-- User Info-->
+                <div class="sidenav-header-inner text-center">
+                    @*<img src="~/Content/dashboard/img/avatar-1.jpg" alt="person" class="rounded-circle">*@
+                    <h2 class="h5">@currentUser.UserName</h2><span>District Admin</span>
+                </div>
+                <!-- Small Brand information, appears on minimized sidebar-->
+                <div class="sidenav-header-logo"><a href="#" class="brand-small text-center"> <strong>H</strong><strong class="text-primary">R</strong></a></div>
+            </div>
+            <!-- Sidebar Navigation Menus-->
+            <div class="main-menu">
+                <!-- <h5 class="sidenav-heading">Main</h5> -->
+                <ul id="side-main-menu" class="side-menu list-unstyled">
+                    <li><a href="/Home/"> <i class="icon-home"></i>Home</a></li>
+                    <li><a href="@Url.Action("index","constituencies")"> <i class="icon-grid"></i>Constituencies</a></li>
+                    <li><a href="@Url.Action("index","wards")"> <i class="icon-form"></i>Wards </a></li>
+                    <li><a href="@Url.Action("index","sections")"> <i class="fa fa-bar-chart"></i>Sections</a></li>
+                    <li><a href="@Url.Action("index","communities")"> <i class="fa fa-bar-chart"></i>Communities</a></li>
+                    <li><a href="@Url.Action("index","collectionSites")"> <i class="fa fa-bar-chart"></i>Collection Sites </a></li>
+                    <li><a href="@Url.Action("index","publicWasteBins")"> <i class="fa fa-bar-chart"></i>Public Waste Bins</a></li>
+                    <li><a href="@Url.Action("index","YouthGroups")"> <i class="fa fa-bar-chart"></i>Youth Groups</a></li>
+                    <li><a href="#"> <i class="fa fa-bar-chart"></i>Youth Group Admins</a></li>
+                    <li><a href="#"> <i class="fa fa-bar-chart"></i>Staffs</a></li>
+            </div>
+    </nav>
+    <div class="page">
+        <!-- Header -->
+        <header class="header">
+            <nav class="navbar">
+                <div class="container-fluid">
+                    <div class="navbar-holder d-flex align-items-center justify-content-between">
+                        <div class="navbar-header">
+                            <a id="toggle-btn" href="#" class="menu-btn"><i class="icon-bars"> </i></a><a href="#" class="navbar-brand">
+                                <div class="brand-text d-none d-md-inline-block"><span>Welcome to: </span><strong class="text-primary"> e Women Waste Management</strong></div>
+                            </a>
+                        </div>
+                        <ul class="nav-menu list-unstyled d-flex flex-md-row align-items-md-center">
+                            <!-- Notifications dropdown-->
+                            @*<li class="nav-item dropdown">
+                                    <a id="notifications" rel="nofollow" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link"><i class="fa fa-bell"></i><span class="badge badge-warning">12</span></a>
+                                    <ul aria-labelledby="notifications" class="dropdown-menu">
+                                        <li>
+                                            <a rel="nofollow" href="#" class="dropdown-item">
+                                                <div class="notification d-flex justify-content-between">
+                                                    <div class="notification-content"><i class="fa fa-envelope"></i>You have 6 new messages </div>
+                                                    <div class="notification-time"><small>4 minutes ago</small></div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a rel="nofollow" href="#" class="dropdown-item">
+                                                <div class="notification d-flex justify-content-between">
+                                                    <div class="notification-content"><i class="fa fa-twitter"></i>You have 2 followers</div>
+                                                    <div class="notification-time"><small>4 minutes ago</small></div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a rel="nofollow" href="#" class="dropdown-item">
+                                                <div class="notification d-flex justify-content-between">
+                                                    <div class="notification-content"><i class="fa fa-upload"></i>Server Rebooted</div>
+                                                    <div class="notification-time"><small>4 minutes ago</small></div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a rel="nofollow" href="#" class="dropdown-item">
+                                                <div class="notification d-flex justify-content-between">
+                                                    <div class="notification-content"><i class="fa fa-twitter"></i>You have 2 followers</div>
+                                                    <div class="notification-time"><small>10 minutes ago</small></div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li><a rel="nofollow" href="#" class="dropdown-item all-notifications text-center"> <strong> <i class="fa fa-bell"></i>view all notifications                                            </strong></a></li>
+                                    </ul>
+                                </li>*@
+                            <!-- Messages dropdown-->
+                            @*<li class="nav-item dropdown">
+                                    <a id="messages" rel="nofollow" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link"><i class="fa fa-envelope"></i><span class="badge badge-info">10</span></a>
+                                    <ul aria-labelledby="notifications" class="dropdown-menu">
+                                        <li>
+                                            <a rel="nofollow" href="#" class="dropdown-item d-flex">
+                                                <div class="msg-profile"> <img src="img/avatar-1.jpg" alt="..." class="img-fluid rounded-circle"></div>
+                                                <div class="msg-body">
+                                                    <h3 class="h5">Jason Doe</h3><span>sent you a direct message</span><small>3 days ago at 7:58 pm - 10.06.2014</small>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a rel="nofollow" href="#" class="dropdown-item d-flex">
+                                                <div class="msg-profile"> <img src="img/avatar-2.jpg" alt="..." class="img-fluid rounded-circle"></div>
+                                                <div class="msg-body">
+                                                    <h3 class="h5">Frank Williams</h3><span>sent you a direct message</span><small>3 days ago at 7:58 pm - 10.06.2014</small>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a rel="nofollow" href="#" class="dropdown-item d-flex">
+                                                <div class="msg-profile"> <img src="img/avatar-3.jpg" alt="..." class="img-fluid rounded-circle"></div>
+                                                <div class="msg-body">
+                                                    <h3 class="h5">Ashley Wood</h3><span>sent you a direct message</span><small>3 days ago at 7:58 pm - 10.06.2014</small>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li><a rel="nofollow" href="#" class="dropdown-item all-notifications text-center"> <strong> <i class="fa fa-envelope"></i>Read all messages    </strong></a></li>
+                                    </ul>
+                                </li>
+                                <!-- Languages dropdown    -->
+                                <li class="nav-item dropdown">
+                                    <a id="languages" rel="nofollow" data-target="#" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link language dropdown-toggle"><img src="img/flags/16/GB.png" alt="English"><span class="d-none d-sm-inline-block">English</span></a>
+                                    <ul aria-labelledby="languages" class="dropdown-menu">
+                                        <li><a rel="nofollow" href="#" class="dropdown-item"> <img src="img/flags/16/DE.png" alt="English" class="mr-2"><span>German</span></a></li>
+                                        <li><a rel="nofollow" href="#" class="dropdown-item"> <img src="img/flags/16/FR.png" alt="English" class="mr-2"><span>French                                                         </span></a></li>
+                                    </ul>
+                                </li>*@
+                            <!-- Log out-->
+                            <li class="nav-item">
+                            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <input class="btn btn-primary" type="submit" value="Sign Out">
+                            }
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <!-- Main Content Area-->
+        <section style="margin-top:5%;padding:20px;">
+            @RenderBody()
+        </section>
+        <footer class="main-footer">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <p>eWomenWasteManagement &copy; 2018-2019</p>
+                    </div>
+                    <div class="col-sm-6 text-right">
+                        <p>Powered by <a href="#" class="external">eWomen</a></p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- JavaScript files-->
+    <script src="~/Scripts/ajax/jquery3.3.1.min.js"></script>
+    <script src="~/Scripts/ajax/jquery1.12.4 .min.js"></script>
+    <script src="~/Scripts/ajax/jquery2.15.1 .min.js"></script>
+    <script src="~/Content/dashboard/vendor/jquery/jquery.min.js"></script>
+    <script src="~/Content/dashboard/vendor/popper.js/umd/popper.min.js"> </script>
+    <script src="~/Content/dashboard/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/Content/dashboard/js/grasp_mobile_progress_circle-1.0.0.min.js"></script>
+    <script src="~/Content/dashboard/vendor/jquery.cookie/jquery.cookie.js"> </script>
+    <script src="~/Content/dashboard/vendor/chart.js/Chart.min.js"></script>
+    <script src="~/Content/dashboard/vendor/jquery-validation/jquery.validate.min.js"></script>
+    <script src="~/Content/dashboard/vendor/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="~/Content/dashboard/js/charts-home.js"></script>
+    <!-- Main File-->
+    <script src="~/Content/dashboard/js/front.js"></script>
+
+</body>
+</html>
+

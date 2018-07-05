@@ -182,94 +182,102 @@
     <Compile Include="Controllers\publicWasteBinsController.cs" />
     <Compile Include="Controllers\regionsController.cs" />
     <Compile Include="Controllers\sectionsController.cs" />
-    <Compile Include="Controllers\youthGroupsController.cs" />
+    <Compile Include="Controllers\wardsController.cs" />
+    <Compile Include="Controllers\YouthGroupsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AspNetRole.cs">
-      <DependentUpon>WasteModel.tt</DependentUpon>
+      <DependentUpon>WasteManagement.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AspNetUser.cs">
-      <DependentUpon>WasteModel.tt</DependentUpon>
+      <DependentUpon>WasteManagement.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AspNetUserClaim.cs">
-      <DependentUpon>WasteModel.tt</DependentUpon>
+      <DependentUpon>WasteManagement.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\AspNetUserLogin.cs">
-      <DependentUpon>WasteModel.tt</DependentUpon>
+      <DependentUpon>WasteManagement.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Client.cs">
+      <DependentUpon>WasteManagement.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\collectionSite.cs">
-      <DependentUpon>WasteModel.tt</DependentUpon>
+      <DependentUpon>WasteManagement.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\community.cs">
-      <DependentUpon>WasteModel.tt</DependentUpon>
+      <DependentUpon>WasteManagement.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\complaint.cs">
-      <DependentUpon>WasteModel.tt</DependentUpon>
+      <DependentUpon>WasteManagement.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\constituency.cs">
-      <DependentUpon>WasteModel.tt</DependentUpon>
+      <DependentUpon>WasteManagement.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ConstituencyDropdown.cs" />
     <Compile Include="Models\country.cs">
-      <DependentUpon>WasteModel.tt</DependentUpon>
+      <DependentUpon>WasteManagement.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\C__MigrationHistory.cs">
-      <DependentUpon>WasteModel.tt</DependentUpon>
+      <DependentUpon>WasteManagement.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Discussion.cs">
-      <DependentUpon>WasteModel.tt</DependentUpon>
+      <DependentUpon>WasteManagement.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\district.cs">
-      <DependentUpon>WasteModel.tt</DependentUpon>
+      <DependentUpon>WasteManagement.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\districtAdmin.cs">
-      <DependentUpon>WasteModel.tt</DependentUpon>
+      <DependentUpon>WasteManagement.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Fascility.cs">
-      <DependentUpon>WasteModel.tt</DependentUpon>
+      <DependentUpon>WasteManagement.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\publicWasteBin.cs">
-      <DependentUpon>WasteModel.tt</DependentUpon>
+      <DependentUpon>WasteManagement.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\region.cs">
-      <DependentUpon>WasteModel.tt</DependentUpon>
+      <DependentUpon>WasteManagement.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\section.cs">
-      <DependentUpon>WasteModel.tt</DependentUpon>
+      <DependentUpon>WasteManagement.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\staff.cs">
-      <DependentUpon>WasteModel.tt</DependentUpon>
+      <DependentUpon>WasteManagement.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Staff_Task.cs">
-      <DependentUpon>WasteModel.tt</DependentUpon>
+      <DependentUpon>WasteManagement.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\StringCypher.cs" />
     <Compile Include="Models\sysdiagram.cs">
-      <DependentUpon>WasteModel.tt</DependentUpon>
+      <DependentUpon>WasteManagement.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ward.cs">
-      <DependentUpon>WasteModel.tt</DependentUpon>
+      <DependentUpon>WasteManagement.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\WasteModel.Context.cs">
+    <Compile Include="Models\WasteManagement.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>WasteModel.Context.tt</DependentUpon>
+      <DependentUpon>WasteManagement.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\WasteModel.cs">
+    <Compile Include="Models\WasteManagement.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>WasteModel.tt</DependentUpon>
+      <DependentUpon>WasteManagement.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\WasteModel.Designer.cs">
+    <Compile Include="Models\WasteManagement.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>WasteModel.edmx</DependentUpon>
+      <DependentUpon>WasteManagement.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Models\youthGroup.cs">
-      <DependentUpon>WasteModel.tt</DependentUpon>
+    <Compile Include="Models\YouthGroup.cs">
+      <DependentUpon>WasteManagement.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\YouthGroupAdmin.cs">
+      <DependentUpon>WasteManagement.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -702,15 +710,15 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
-    <Content Include="Models\WasteModel.Context.tt">
+    <Content Include="Models\WasteManagement.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>WasteModel.edmx</DependentUpon>
-      <LastGenOutput>WasteModel.Context.cs</LastGenOutput>
+      <DependentUpon>WasteManagement.edmx</DependentUpon>
+      <LastGenOutput>WasteManagement.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="Models\WasteModel.tt">
+    <Content Include="Models\WasteManagement.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>WasteModel.edmx</DependentUpon>
-      <LastGenOutput>WasteModel.cs</LastGenOutput>
+      <DependentUpon>WasteManagement.edmx</DependentUpon>
+      <LastGenOutput>WasteManagement.cs</LastGenOutput>
     </Content>
     <Content Include="Scripts\ajax\jquery-ui.min.js" />
     <Content Include="Scripts\ajax\jquery.min.js" />
@@ -732,12 +740,12 @@
     <Content Include="Content\dashboard\fonts\dashboard.eot" />
     <Content Include="Content\dashboard\fonts\dashboard.ttf" />
     <Content Include="Content\dashboard\fonts\dashboard.woff" />
-    <EntityDeploy Include="Models\WasteModel.edmx">
+    <EntityDeploy Include="Models\WasteManagement.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>WasteModel.Designer.cs</LastGenOutput>
+      <LastGenOutput>WasteManagement.Designer.cs</LastGenOutput>
     </EntityDeploy>
-    <Content Include="Models\WasteModel.edmx.diagram">
-      <DependentUpon>WasteModel.edmx</DependentUpon>
+    <Content Include="Models\WasteManagement.edmx.diagram">
+      <DependentUpon>WasteManagement.edmx</DependentUpon>
     </Content>
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -796,46 +804,20 @@
     <Content Include="Views\Account\RegisterMe.cshtml" />
     <Content Include="Views\Shared\_Dashboard.cshtml" />
     <Content Include="Views\Home\Dashboard.cshtml" />
-    <Content Include="Views\collectionSites\Create.cshtml" />
-    <Content Include="Views\collectionSites\Delete.cshtml" />
-    <Content Include="Views\collectionSites\Details.cshtml" />
-    <Content Include="Views\collectionSites\Edit.cshtml" />
     <Content Include="Views\collectionSites\Index.cshtml" />
-    <Content Include="Views\communities\Create.cshtml" />
-    <Content Include="Views\communities\Delete.cshtml" />
-    <Content Include="Views\communities\Details.cshtml" />
-    <Content Include="Views\communities\Edit.cshtml" />
     <Content Include="Views\communities\Index.cshtml" />
-    <Content Include="Views\constituencies\Create.cshtml" />
-    <Content Include="Views\constituencies\Delete.cshtml" />
-    <Content Include="Views\constituencies\Details.cshtml" />
-    <Content Include="Views\constituencies\Edit.cshtml" />
     <Content Include="Views\constituencies\Index.cshtml" />
-    <Content Include="Views\countries\Details.cshtml" />
     <Content Include="Views\countries\Index.cshtml" />
-    <Content Include="Views\districts\Details.cshtml" />
     <Content Include="Views\districts\Index.cshtml" />
-    <Content Include="Views\Fascilities\Details.cshtml" />
     <Content Include="Views\Fascilities\Index.cshtml" />
-    <Content Include="Views\publicWasteBins\Create.cshtml" />
-    <Content Include="Views\publicWasteBins\Delete.cshtml" />
-    <Content Include="Views\publicWasteBins\Details.cshtml" />
-    <Content Include="Views\publicWasteBins\Edit.cshtml" />
     <Content Include="Views\publicWasteBins\Index.cshtml" />
-    <Content Include="Views\regions\Details.cshtml" />
     <Content Include="Views\regions\Index.cshtml" />
-    <Content Include="Views\sections\Create.cshtml" />
-    <Content Include="Views\sections\Delete.cshtml" />
-    <Content Include="Views\sections\Details.cshtml" />
-    <Content Include="Views\sections\Edit.cshtml" />
     <Content Include="Views\sections\Index.cshtml" />
-    <Content Include="Views\youthGroups\Create.cshtml" />
-    <Content Include="Views\youthGroups\Delete.cshtml" />
-    <Content Include="Views\youthGroups\Details.cshtml" />
-    <Content Include="Views\youthGroups\Edit.cshtml" />
-    <Content Include="Views\youthGroups\Index.cshtml" />
-    <Content Include="Views\districtAdmins\Details.cshtml" />
     <Content Include="Views\districtAdmins\Index.cshtml" />
+    <Content Include="Views\Shared\DistrictAdminDashboard.cshtml" />
+    <Content Include="Views\Home\DistrictAdmindash.cshtml" />
+    <Content Include="Views\wards\Index.cshtml" />
+    <Content Include="Views\YouthGroups\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

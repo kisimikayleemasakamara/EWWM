@@ -11,11 +11,13 @@ using WasteMangement.Models;
 
 namespace WasteMangement.Controllers
 {
+    [Authorize(Roles = "SystemAdmin")]
     public class countriesController : Controller
     {
-        private wwmDbEntities1 db = new wwmDbEntities1();
+        private wwmDbEntities db = new wwmDbEntities();
 
         // GET: countries
+        [Authorize(Roles = "SystemAdmin")]
         public ActionResult Index()
         {
             return View((from d in db.countries
@@ -23,26 +25,12 @@ namespace WasteMangement.Controllers
                          select d).ToList());
         }
 
-        // GET: countries/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            country country = db.countries.Find(id);
-            if (country == null)
-            {
-                return HttpNotFound();
-            }
-            return View(country);
-        }
-
         // POST: countries/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "SystemAdmin")]
         public ActionResult Create([Bind(Include = "countryId,name,description,isDeleted")] country country)
         {
             if (ModelState.IsValid)
@@ -53,10 +41,11 @@ namespace WasteMangement.Controllers
                 return RedirectToAction("Index");
             }
 
-            return View(country);
+            return RedirectToAction("Index");
         }
 
         // GET: countries/Edit/5
+        [Authorize(Roles = "SystemAdmin")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -80,6 +69,7 @@ namespace WasteMangement.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "SystemAdmin")]
         public ActionResult EditCountry([Bind(Include = "countryId,name,description,isDeleted")] country country)
         {
             country.isDeleted = 0;
@@ -89,12 +79,13 @@ namespace WasteMangement.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(country);
+            return RedirectToAction("Index");
         }
 
         // POST: countries/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "SystemAdmin")]
         public ActionResult DeleteConfirmed(int id)
         {
             country country = db.countries.Find(id);

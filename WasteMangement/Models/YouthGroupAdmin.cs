@@ -12,14 +12,16 @@ namespace WasteMangement.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class publicWasteBin
+    public partial class YouthGroupAdmin
     {
-        public int publicWasteBinId { get; set; }
-        public string publicWasteBinName { get; set; }
-        public string publicWasteBinDescription { get; set; }
-        public int collectionSiteId { get; set; }
+        public int YouthGroupAdminId { get; set; }
+        public string YouthGroupAdminName { get; set; }
+        public string YouthGroupAdminDescription { get; set; }
         public int isDeleted { get; set; }
-        public string siteName { get; set; }
-        public virtual collectionSite collectionSite { get; set; }
+        public string UserId { get; set; }
+        public int youthGroupTypeId { get; set; }
+    
+        public virtual AspNetUser AspNetUser { get; set; }
+        public virtual YouthGroup YouthGroup { get; set; }
     }
 }

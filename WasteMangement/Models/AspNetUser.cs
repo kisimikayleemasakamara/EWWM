@@ -21,7 +21,8 @@ namespace WasteMangement.Models
             this.AspNetUserLogins = new HashSet<AspNetUserLogin>();
             this.Discussions = new HashSet<Discussion>();
             this.districtAdmins = new HashSet<districtAdmin>();
-            this.youthGroups = new HashSet<youthGroup>();
+            this.Clients = new HashSet<Client>();
+            this.YouthGroupAdmins = new HashSet<YouthGroupAdmin>();
             this.AspNetRoles = new HashSet<AspNetRole>();
         }
     
@@ -54,7 +55,9 @@ namespace WasteMangement.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<districtAdmin> districtAdmins { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<youthGroup> youthGroups { get; set; }
+        public virtual ICollection<Client> Clients { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<YouthGroupAdmin> YouthGroupAdmins { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AspNetRole> AspNetRoles { get; set; }
     }

@@ -12,17 +12,22 @@ namespace WasteMangement.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class youthGroup
+    public partial class YouthGroup
     {
-        public int youthGroupId { get; set; }
-        public int districsId { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public YouthGroup()
+        {
+            this.YouthGroupAdmins = new HashSet<YouthGroupAdmin>();
+        }
+    
+        public int youthGroupTypeId { get; set; }
         public string youthGroupName { get; set; }
         public string youthGroupDescription { get; set; }
-        public bool isApproved { get; set; }
-        public string address { get; set; }
-        public string UserId { get; set; }
+        public int districtsId { get; set; }
         public int isDeleted { get; set; }
-    
-        public virtual AspNetUser AspNetUser { get; set; }
+        public string districtName { get; set; }
+        public virtual district district { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<YouthGroupAdmin> YouthGroupAdmins { get; set; }
     }
 }

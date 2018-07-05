@@ -1,0 +1,663 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="wwmDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="C__MigrationHistory">
+    <Key>
+      <PropertyRef Name="MigrationId" />
+      <PropertyRef Name="ContextKey" />
+    </Key>
+    <Property Name="MigrationId" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ContextKey" Type="String" MaxLength="300" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Model" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+    <Property Name="ProductVersion" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
+  </EntityType>
+  <EntityType Name="AspNetRole">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Name" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="AspNetUsers" Relationship="Self.AspNetUserRoles" FromRole="AspNetRoles" ToRole="AspNetUsers" />
+  </EntityType>
+  <EntityType Name="AspNetUserClaim">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ClaimType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="ClaimValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="AspNetUser" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUserClaims" ToRole="AspNetUsers" />
+  </EntityType>
+  <EntityType Name="AspNetUserLogin">
+    <Key>
+      <PropertyRef Name="LoginProvider" />
+      <PropertyRef Name="ProviderKey" />
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="LoginProvider" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="ProviderKey" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="AspNetUser" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUserLogins" ToRole="AspNetUsers" />
+  </EntityType>
+  <EntityType Name="AspNetUser">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="FirstName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="LastName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="PhoneNo" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="FacilityType" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="YouthGroup" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+    <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
+    <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
+    <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
+    <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
+    <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
+    <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
+    <Property Name="UserName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="isDeleted" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="AspNetUserClaims" Relationship="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserClaims" />
+    <NavigationProperty Name="AspNetUserLogins" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserLogins" />
+    <NavigationProperty Name="Discussions" Relationship="Self.FK_Discussion_AspNetUsers" FromRole="AspNetUsers" ToRole="Discussion" />
+    <NavigationProperty Name="districtAdmins" Relationship="Self.FK_districtAdmin_AspNetUsers" FromRole="AspNetUsers" ToRole="districtAdmin" />
+    <NavigationProperty Name="Clients" Relationship="Self.FK_youthGroup_districts1" FromRole="AspNetUsers" ToRole="Client" />
+    <NavigationProperty Name="YouthGroupAdmins" Relationship="Self.FK_YouthGroupAdmin_AspNetUsers" FromRole="AspNetUsers" ToRole="YouthGroupAdmin" />
+    <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
+  </EntityType>
+  <EntityType Name="Client">
+    <Key>
+      <PropertyRef Name="youthGroupId" />
+    </Key>
+    <Property Name="youthGroupId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="youthGroupName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="youthGroupDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="isApproved" Type="Boolean" Nullable="false" />
+    <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="isDeleted" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="AspNetUser" Relationship="Self.FK_youthGroup_districts1" FromRole="Client" ToRole="AspNetUsers" />
+  </EntityType>
+  <EntityType Name="collectionSite">
+    <Key>
+      <PropertyRef Name="collectionSiteId" />
+    </Key>
+    <Property Name="collectionSiteId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="communitiesId" Type="Int32" Nullable="false" />
+    <Property Name="collectionSiteManager" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="collectionSiteName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="collectionSiteNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="collectionSiteDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="isDeleted" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="community" Relationship="Self.FK_collectionSite_communities" FromRole="collectionSite" ToRole="communities" />
+    <NavigationProperty Name="publicWasteBins" Relationship="Self.FK_publicWasteBin_collectionSite" FromRole="collectionSite" ToRole="publicWasteBin" />
+  </EntityType>
+  <EntityType Name="community">
+    <Key>
+      <PropertyRef Name="communitiesId" />
+    </Key>
+    <Property Name="communitiesId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="sectionId" Type="Int32" Nullable="false" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="isDeleted" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="collectionSites" Relationship="Self.FK_collectionSite_communities" FromRole="communities" ToRole="collectionSite" />
+    <NavigationProperty Name="section" Relationship="Self.FK_communities_section" FromRole="communities" ToRole="section" />
+  </EntityType>
+  <EntityType Name="complaint">
+    <Key>
+      <PropertyRef Name="complaintId" />
+    </Key>
+    <Property Name="complaintId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="districtsId" Type="Int32" Nullable="false" />
+    <Property Name="complaintBy" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="dateOfComplaint" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="isSolved" Type="Boolean" Nullable="false" />
+    <Property Name="complaintDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="isDeleted" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="district" Relationship="Self.FK_complaint_districts" FromRole="complaint" ToRole="districts" />
+  </EntityType>
+  <EntityType Name="constituency">
+    <Key>
+      <PropertyRef Name="constituenciesId" />
+    </Key>
+    <Property Name="constituenciesId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="districtsId" Type="Int32" Nullable="false" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="isDeleted" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="district" Relationship="Self.FK_constituencies_districts" FromRole="constituencies" ToRole="districts" />
+    <NavigationProperty Name="wards" Relationship="Self.FK_ward_constituencies" FromRole="constituencies" ToRole="ward" />
+  </EntityType>
+  <EntityType Name="country">
+    <Key>
+      <PropertyRef Name="countryId" />
+    </Key>
+    <Property Name="countryId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="isDeleted" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="regions" Relationship="Self.FK_region_country" FromRole="country" ToRole="region" />
+  </EntityType>
+  <EntityType Name="Discussion">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="discussion_content" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="AspNetUser" Relationship="Self.FK_Discussion_AspNetUsers" FromRole="Discussion" ToRole="AspNetUsers" />
+  </EntityType>
+  <EntityType Name="districtAdmin">
+    <Key>
+      <PropertyRef Name="districtAdminId" />
+    </Key>
+    <Property Name="districtAdminId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="isDeleted" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="AspNetUser" Relationship="Self.FK_districtAdmin_AspNetUsers" FromRole="districtAdmin" ToRole="AspNetUsers" />
+    <NavigationProperty Name="districts" Relationship="Self.FK_districts_districtAdmin" FromRole="districtAdmin" ToRole="districts" />
+  </EntityType>
+  <EntityType Name="district">
+    <Key>
+      <PropertyRef Name="districtsId" />
+    </Key>
+    <Property Name="districtsId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="regionId" Type="Int32" Nullable="false" />
+    <Property Name="districtAdminId" Type="Int32" Nullable="false" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="isDeleted" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="complaints" Relationship="Self.FK_complaint_districts" FromRole="districts" ToRole="complaint" />
+    <NavigationProperty Name="constituencies" Relationship="Self.FK_constituencies_districts" FromRole="districts" ToRole="constituencies" />
+    <NavigationProperty Name="districtAdmin" Relationship="Self.FK_districts_districtAdmin" FromRole="districts" ToRole="districtAdmin" />
+    <NavigationProperty Name="region" Relationship="Self.FK_districts_region" FromRole="districts" ToRole="region" />
+    <NavigationProperty Name="staffs" Relationship="Self.FK_staff_districts" FromRole="districts" ToRole="staff" />
+    <NavigationProperty Name="YouthGroups" Relationship="Self.FK_YouthGroup_districts" FromRole="districts" ToRole="YouthGroup" />
+  </EntityType>
+  <EntityType Name="Fascility">
+    <Key>
+      <PropertyRef Name="Fascility_Id" />
+    </Key>
+    <Property Name="Fascility_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Fascility_Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Fascility_Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="WasteCollectionPricePerMonth" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="isDeleted" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="publicWasteBin">
+    <Key>
+      <PropertyRef Name="publicWasteBinId" />
+    </Key>
+    <Property Name="publicWasteBinId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="publicWasteBinName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="publicWasteBinDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="collectionSiteId" Type="Int32" Nullable="false" />
+    <Property Name="isDeleted" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="collectionSite" Relationship="Self.FK_publicWasteBin_collectionSite" FromRole="publicWasteBin" ToRole="collectionSite" />
+  </EntityType>
+  <EntityType Name="region">
+    <Key>
+      <PropertyRef Name="regionId" />
+    </Key>
+    <Property Name="regionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="countryId" Type="Int32" Nullable="false" />
+    <Property Name="region_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="isDeleted" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="country" Relationship="Self.FK_region_country" FromRole="region" ToRole="country" />
+    <NavigationProperty Name="districts" Relationship="Self.FK_districts_region" FromRole="region" ToRole="districts" />
+  </EntityType>
+  <EntityType Name="section">
+    <Key>
+      <PropertyRef Name="sectionId" />
+    </Key>
+    <Property Name="sectionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="wardId" Type="Int32" Nullable="false" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="isDeleted" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="communities" Relationship="Self.FK_communities_section" FromRole="section" ToRole="communities" />
+    <NavigationProperty Name="ward" Relationship="Self.FK_section_ward" FromRole="section" ToRole="ward" />
+  </EntityType>
+  <EntityType Name="staff">
+    <Key>
+      <PropertyRef Name="staffId" />
+    </Key>
+    <Property Name="staffId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="districtsId" Type="Int32" Nullable="false" />
+    <Property Name="firstName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="lastName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="userDisplayName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="email" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="passwordsalt" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="dateOfAccountCreation" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="isDeleted" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="district" Relationship="Self.FK_staff_districts" FromRole="staff" ToRole="districts" />
+    <NavigationProperty Name="Staff_Task" Relationship="Self.FK_Staff_Task_staff" FromRole="staff" ToRole="Staff_Task" />
+  </EntityType>
+  <EntityType Name="Staff_Task">
+    <Key>
+      <PropertyRef Name="task_id" />
+    </Key>
+    <Property Name="task_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="staff_id" Type="Int32" Nullable="false" />
+    <Property Name="task_name" Type="Int32" Nullable="false" />
+    <Property Name="task_start_date" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="task_end_date" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="staff" Relationship="Self.FK_Staff_Task_staff" FromRole="Staff_Task" ToRole="staff" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="ward">
+    <Key>
+      <PropertyRef Name="wardId" />
+    </Key>
+    <Property Name="wardId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="constituenciesId" Type="Int32" Nullable="false" />
+    <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="isDeleted" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="constituency" Relationship="Self.FK_ward_constituencies" FromRole="ward" ToRole="constituencies" />
+    <NavigationProperty Name="sections" Relationship="Self.FK_section_ward" FromRole="ward" ToRole="section" />
+  </EntityType>
+  <EntityType Name="YouthGroup">
+    <Key>
+      <PropertyRef Name="youthGroupTypeId" />
+    </Key>
+    <Property Name="youthGroupTypeId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="youthGroupName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="youthGroupDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="districtsId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="district" Relationship="Self.FK_YouthGroup_districts" FromRole="YouthGroup" ToRole="districts" />
+    <NavigationProperty Name="YouthGroupAdmins" Relationship="Self.FK_YouthGroupAdmin_YouthGroup" FromRole="YouthGroup" ToRole="YouthGroupAdmin" />
+    <Property Name="isDeleted" Type="Int32" Nullable="false" />
+  </EntityType>
+  <EntityType Name="YouthGroupAdmin">
+    <Key>
+      <PropertyRef Name="YouthGroupAdminId" />
+    </Key>
+    <Property Name="YouthGroupAdminId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="YouthGroupAdminName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="YouthGroupAdminDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="isDeleted" Type="Int32" Nullable="false" />
+    <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="youthGroupTypeId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="AspNetUser" Relationship="Self.FK_YouthGroupAdmin_AspNetUsers" FromRole="YouthGroupAdmin" ToRole="AspNetUsers" />
+    <NavigationProperty Name="YouthGroup" Relationship="Self.FK_YouthGroupAdmin_YouthGroup" FromRole="YouthGroupAdmin" ToRole="YouthGroup" />
+  </EntityType>
+  <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+    <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="AspNetUserClaims" Type="Self.AspNetUserClaim" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="AspNetUserClaims">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+    <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="AspNetUserLogins" Type="Self.AspNetUserLogin" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="AspNetUserLogins">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Discussion_AspNetUsers">
+    <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1" />
+    <End Role="Discussion" Type="Self.Discussion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Discussion">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_districtAdmin_AspNetUsers">
+    <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1" />
+    <End Role="districtAdmin" Type="Self.districtAdmin" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="districtAdmin">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_youthGroup_districts1">
+    <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1" />
+    <End Role="Client" Type="Self.Client" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Client">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_YouthGroupAdmin_AspNetUsers">
+    <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1" />
+    <End Role="YouthGroupAdmin" Type="Self.YouthGroupAdmin" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="YouthGroupAdmin">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_collectionSite_communities">
+    <End Role="communities" Type="Self.community" Multiplicity="1" />
+    <End Role="collectionSite" Type="Self.collectionSite" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="communities">
+        <PropertyRef Name="communitiesId" />
+      </Principal>
+      <Dependent Role="collectionSite">
+        <PropertyRef Name="communitiesId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_publicWasteBin_collectionSite">
+    <End Role="collectionSite" Type="Self.collectionSite" Multiplicity="1" />
+    <End Role="publicWasteBin" Type="Self.publicWasteBin" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="collectionSite">
+        <PropertyRef Name="collectionSiteId" />
+      </Principal>
+      <Dependent Role="publicWasteBin">
+        <PropertyRef Name="collectionSiteId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_communities_section">
+    <End Role="section" Type="Self.section" Multiplicity="1" />
+    <End Role="communities" Type="Self.community" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="section">
+        <PropertyRef Name="sectionId" />
+      </Principal>
+      <Dependent Role="communities">
+        <PropertyRef Name="sectionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_complaint_districts">
+    <End Role="districts" Type="Self.district" Multiplicity="1" />
+    <End Role="complaint" Type="Self.complaint" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="districts">
+        <PropertyRef Name="districtsId" />
+      </Principal>
+      <Dependent Role="complaint">
+        <PropertyRef Name="districtsId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_constituencies_districts">
+    <End Role="districts" Type="Self.district" Multiplicity="1" />
+    <End Role="constituencies" Type="Self.constituency" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="districts">
+        <PropertyRef Name="districtsId" />
+      </Principal>
+      <Dependent Role="constituencies">
+        <PropertyRef Name="districtsId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ward_constituencies">
+    <End Role="constituencies" Type="Self.constituency" Multiplicity="1" />
+    <End Role="ward" Type="Self.ward" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="constituencies">
+        <PropertyRef Name="constituenciesId" />
+      </Principal>
+      <Dependent Role="ward">
+        <PropertyRef Name="constituenciesId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_region_country">
+    <End Role="country" Type="Self.country" Multiplicity="1" />
+    <End Role="region" Type="Self.region" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="country">
+        <PropertyRef Name="countryId" />
+      </Principal>
+      <Dependent Role="region">
+        <PropertyRef Name="countryId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_districts_districtAdmin">
+    <End Role="districtAdmin" Type="Self.districtAdmin" Multiplicity="1" />
+    <End Role="districts" Type="Self.district" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="districtAdmin">
+        <PropertyRef Name="districtAdminId" />
+      </Principal>
+      <Dependent Role="districts">
+        <PropertyRef Name="districtAdminId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_districts_region">
+    <End Role="region" Type="Self.region" Multiplicity="1" />
+    <End Role="districts" Type="Self.district" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="region">
+        <PropertyRef Name="regionId" />
+      </Principal>
+      <Dependent Role="districts">
+        <PropertyRef Name="regionId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_staff_districts">
+    <End Role="districts" Type="Self.district" Multiplicity="1" />
+    <End Role="staff" Type="Self.staff" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="districts">
+        <PropertyRef Name="districtsId" />
+      </Principal>
+      <Dependent Role="staff">
+        <PropertyRef Name="districtsId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_YouthGroup_districts">
+    <End Role="districts" Type="Self.district" Multiplicity="1" />
+    <End Role="YouthGroup" Type="Self.YouthGroup" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="districts">
+        <PropertyRef Name="districtsId" />
+      </Principal>
+      <Dependent Role="YouthGroup">
+        <PropertyRef Name="districtsId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_section_ward">
+    <End Role="ward" Type="Self.ward" Multiplicity="1" />
+    <End Role="section" Type="Self.section" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ward">
+        <PropertyRef Name="wardId" />
+      </Principal>
+      <Dependent Role="section">
+        <PropertyRef Name="wardId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Staff_Task_staff">
+    <End Role="staff" Type="Self.staff" Multiplicity="1" />
+    <End Role="Staff_Task" Type="Self.Staff_Task" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="staff">
+        <PropertyRef Name="staffId" />
+      </Principal>
+      <Dependent Role="Staff_Task">
+        <PropertyRef Name="staff_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_YouthGroupAdmin_YouthGroup">
+    <End Role="YouthGroup" Type="Self.YouthGroup" Multiplicity="1" />
+    <End Role="YouthGroupAdmin" Type="Self.YouthGroupAdmin" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="YouthGroup">
+        <PropertyRef Name="youthGroupTypeId" />
+      </Principal>
+      <Dependent Role="YouthGroupAdmin">
+        <PropertyRef Name="youthGroupTypeId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="AspNetUserRoles">
+    <End Role="AspNetRoles" Type="Self.AspNetRole" Multiplicity="*" />
+    <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="*" />
+  </Association>
+  <EntityContainer Name="wwmDbEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="C__MigrationHistory" EntityType="Self.C__MigrationHistory" />
+    <EntitySet Name="AspNetRoles" EntityType="Self.AspNetRole" />
+    <EntitySet Name="AspNetUserClaims" EntityType="Self.AspNetUserClaim" />
+    <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogin" />
+    <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUser" />
+    <EntitySet Name="Clients" EntityType="Self.Client" />
+    <EntitySet Name="collectionSites" EntityType="Self.collectionSite" />
+    <EntitySet Name="communities" EntityType="Self.community" />
+    <EntitySet Name="complaints" EntityType="Self.complaint" />
+    <EntitySet Name="constituencies" EntityType="Self.constituency" />
+    <EntitySet Name="countries" EntityType="Self.country" />
+    <EntitySet Name="Discussions" EntityType="Self.Discussion" />
+    <EntitySet Name="districtAdmins" EntityType="Self.districtAdmin" />
+    <EntitySet Name="districts" EntityType="Self.district" />
+    <EntitySet Name="Fascilities" EntityType="Self.Fascility" />
+    <EntitySet Name="publicWasteBins" EntityType="Self.publicWasteBin" />
+    <EntitySet Name="regions" EntityType="Self.region" />
+    <EntitySet Name="sections" EntityType="Self.section" />
+    <EntitySet Name="staffs" EntityType="Self.staff" />
+    <EntitySet Name="Staff_Task" EntityType="Self.Staff_Task" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <EntitySet Name="wards" EntityType="Self.ward" />
+    <EntitySet Name="YouthGroups" EntityType="Self.YouthGroup" />
+    <EntitySet Name="YouthGroupAdmins" EntityType="Self.YouthGroupAdmin" />
+    <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="AspNetUserClaims" EntitySet="AspNetUserClaims" />
+    </AssociationSet>
+    <AssociationSet Name="FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="AspNetUserLogins" EntitySet="AspNetUserLogins" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Discussion_AspNetUsers" Association="Self.FK_Discussion_AspNetUsers">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="Discussion" EntitySet="Discussions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_districtAdmin_AspNetUsers" Association="Self.FK_districtAdmin_AspNetUsers">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="districtAdmin" EntitySet="districtAdmins" />
+    </AssociationSet>
+    <AssociationSet Name="FK_youthGroup_districts1" Association="Self.FK_youthGroup_districts1">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="Client" EntitySet="Clients" />
+    </AssociationSet>
+    <AssociationSet Name="FK_YouthGroupAdmin_AspNetUsers" Association="Self.FK_YouthGroupAdmin_AspNetUsers">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="YouthGroupAdmin" EntitySet="YouthGroupAdmins" />
+    </AssociationSet>
+    <AssociationSet Name="FK_collectionSite_communities" Association="Self.FK_collectionSite_communities">
+      <End Role="communities" EntitySet="communities" />
+      <End Role="collectionSite" EntitySet="collectionSites" />
+    </AssociationSet>
+    <AssociationSet Name="FK_publicWasteBin_collectionSite" Association="Self.FK_publicWasteBin_collectionSite">
+      <End Role="collectionSite" EntitySet="collectionSites" />
+      <End Role="publicWasteBin" EntitySet="publicWasteBins" />
+    </AssociationSet>
+    <AssociationSet Name="FK_communities_section" Association="Self.FK_communities_section">
+      <End Role="section" EntitySet="sections" />
+      <End Role="communities" EntitySet="communities" />
+    </AssociationSet>
+    <AssociationSet Name="FK_complaint_districts" Association="Self.FK_complaint_districts">
+      <End Role="districts" EntitySet="districts" />
+      <End Role="complaint" EntitySet="complaints" />
+    </AssociationSet>
+    <AssociationSet Name="FK_constituencies_districts" Association="Self.FK_constituencies_districts">
+      <End Role="districts" EntitySet="districts" />
+      <End Role="constituencies" EntitySet="constituencies" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ward_constituencies" Association="Self.FK_ward_constituencies">
+      <End Role="constituencies" EntitySet="constituencies" />
+      <End Role="ward" EntitySet="wards" />
+    </AssociationSet>
+    <AssociationSet Name="FK_region_country" Association="Self.FK_region_country">
+      <End Role="country" EntitySet="countries" />
+      <End Role="region" EntitySet="regions" />
+    </AssociationSet>
+    <AssociationSet Name="FK_districts_districtAdmin" Association="Self.FK_districts_districtAdmin">
+      <End Role="districtAdmin" EntitySet="districtAdmins" />
+      <End Role="districts" EntitySet="districts" />
+    </AssociationSet>
+    <AssociationSet Name="FK_districts_region" Association="Self.FK_districts_region">
+      <End Role="region" EntitySet="regions" />
+      <End Role="districts" EntitySet="districts" />
+    </AssociationSet>
+    <AssociationSet Name="FK_staff_districts" Association="Self.FK_staff_districts">
+      <End Role="districts" EntitySet="districts" />
+      <End Role="staff" EntitySet="staffs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_YouthGroup_districts" Association="Self.FK_YouthGroup_districts">
+      <End Role="districts" EntitySet="districts" />
+      <End Role="YouthGroup" EntitySet="YouthGroups" />
+    </AssociationSet>
+    <AssociationSet Name="FK_section_ward" Association="Self.FK_section_ward">
+      <End Role="ward" EntitySet="wards" />
+      <End Role="section" EntitySet="sections" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Staff_Task_staff" Association="Self.FK_Staff_Task_staff">
+      <End Role="staff" EntitySet="staffs" />
+      <End Role="Staff_Task" EntitySet="Staff_Task" />
+    </AssociationSet>
+    <AssociationSet Name="FK_YouthGroupAdmin_YouthGroup" Association="Self.FK_YouthGroupAdmin_YouthGroup">
+      <End Role="YouthGroup" EntitySet="YouthGroups" />
+      <End Role="YouthGroupAdmin" EntitySet="YouthGroupAdmins" />
+    </AssociationSet>
+    <AssociationSet Name="AspNetUserRoles" Association="Self.AspNetUserRoles">
+      <End Role="AspNetRoles" EntitySet="AspNetRoles" />
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

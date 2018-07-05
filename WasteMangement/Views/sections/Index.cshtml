@@ -1,52 +1,257 @@
 ﻿@model IEnumerable<WasteMangement.Models.section>
-
+@using WasteMangement.Models
+@using Microsoft.AspNet.Identity
+@using Microsoft.AspNet.Identity.EntityFramework;
 @{
     ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_Dashboard.cshtml";
+    Layout = "~/Views/Shared/DistrictAdminDashboard.cshtml";
+    wwmDbEntities db = new wwmDbEntities();
+    var dId = 0;
+    string userID = User.Identity.GetUserId();
+    var distId = (from a in db.districts
+                  join b in db.districtAdmins on a.districtAdminId equals b.districtAdminId
+                  where b.isDeleted == 0 && a.isDeleted == 0
+                  && b.UserId == userID
+                  select new
+                  {
+                      a.districtsId
+                  }).SingleOrDefault();
+    if (distId != null)
+    {
+        dId = distId.districtsId;
+    }
+}
+@if (dId != 0)
+{
+<div class="limiter">
+    <div class="container-table100">
+        <div class="wrap-table100">
+            <div class="table100">
+                <div class="row">
+                    <div class="col-md-3 pull-left">
+                        <button class="btn btn-dark" data-toggle="modal" data-target="#addSection" style="color:white;font-size:medium">Add Section</button>
+                    </div>
+                </div>
+
+
+                <table class="table table-hover">
+                    <thead style="background-color:ghostwhite">
+                        <tr>
+                            <th class="text-center">Section Name</th>
+                            <th class="text-center">Ward Name</th>
+                            <th class="text-center">Section Description</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr class="edit" id="detail">
+                                <td class="text-center">@item.name</td>
+                                <td class="text-center">@item.wardName</td>
+                                @if (item.description.Length >= 10)
+                                {
+                                    <td class="text-center">@item.description.Substring(0, 10)....</td>
+                                }
+                                else
+                                {
+                                    <td class="text-center">@item.description</td>
+                                }
+
+                                <td class="text-center">
+                                    <button class="btn btn-info" data-toggle="modal" data-target="#editSection @item.sectionId">Edit</button> |
+                                    <button class="btn btn-primary" data-toggle="collapse" data-target="#detailSection @item.sectionId">Details</button> |
+                                    <button class="btn btn-danger" data-toggle="modal" data-target="#delSection @item.sectionId">Delete</button>
+                                </td>
+                            </tr>
+                            <tr id="detailSection @item.sectionId" class="collapse" style="background-color: skyblue;color:black;">
+                                <td colspan="4">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h3>Details</h3>
+                                            @item.description
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <div class="modal fade" id="delSection @item.sectionId" role="dialog">
+                                <div class="modal-dialog">
+
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-header" style="background-color:#061435;">
+                                            <center><h4 class="modal-title" style="text-align: center;font-weight: 700;color: white;">Delete Section</h4></center>
+                                            <button type="button" class="close" data-dismiss="modal" style="color: white;opacity: 1;">&times;</button>
+
+                                        </div>
+                                        <div class="modal-body">
+                                            <form method="POST" action="@Url.Action("Delete", "sections",new { id = item.sectionId })">
+                                                @Html.AntiForgeryToken()
+                                                <div class="form-group">
+                                                    <label class="control-label">&nbsp;&nbsp;&nbsp;Are you Sure you Want to delete the Section?</label>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <input type="submit" value="Sure!" class="btn btn-primary" />
+                                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Not Sure</button>
+                                                </div>
+
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            
+
+                                <div class="modal fade" id="editSection @item.sectionId" role="dialog">
+                                    <div class="modal-dialog">
+
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <div class="modal-header" style="background-color:#061435;">
+                                                <h4 class="modal-title" style="text-align: center;font-weight: 700;color: white;">Edit Section</h4>
+                                                <button type="button" class="close" data-dismiss="modal" style="color: white;opacity: 1;">&times;</button>
+
+                                            </div>
+                                            <div class="modal-body">
+                                                <form method="POST" action="@Url.Action("Edit", "sections")">
+                                                    @Html.AntiForgeryToken()
+                                                    @if (ViewBag.constituecy != null)
+                                                    {
+                                                        <div class="form-group">
+                                                            <label class="control-label">&nbsp;&nbsp;&nbsp;Select Constituency</label>
+                                                            <select name="constituenciesId" class="form-control" id="constituenciesId" required>
+                                                                @foreach (var item1 in ViewBag.constituecy)
+                                                                {
+                                                                    <option value="@item1.constituencyId">@item1.constitunecyName</option>
+                                                                }
+                                                            </select>
+                                                        </div>
+                                                    }
+                                                    <div class="form-group">
+                                                            <label class="control-label">&nbsp;&nbsp;&nbsp;Select Ward</label>
+                                                            @Html.DropDownList("wardId",
+                                                            new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"),
+                                                            new { @class = "form-control", @id = "wardId", Name = "wardId" , required = "required" })
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label">&nbsp;&nbsp;&nbsp;Section Name</label>
+                                                        <input name="name" class="form-control" value="@item.name" required/>
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label">&nbsp;&nbsp;&nbsp;Section Description</label>
+                                                        <textarea rows="4" cols="61" name="description" class="form-control" required>@item.description</textarea>
+                                                    </div>
+                                                    <input name="sectionId" value="@item.sectionId" type="hidden" />
+                                                    <div class="modal-footer">
+                                                        <input type="submit" value="Update Section" class="btn btn-primary" />
+                                                    </div>
+
+                                                </form>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                        }
+                    </tbody>
+                    <div class="modal fade" id="addSection" role="dialog">
+                        <div class="modal-dialog">
+
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header" style="background-color:#061435;">
+                                    <h4 class="modal-title" style="text-align:center;font-weight: 700;color: white;">Add Section</h4>
+                                    <button type="button" class="close" data-dismiss="modal" style="color: white;opacity: 1;">&times;</button>
+
+                                </div>
+                                <div class="modal-body">
+                                    <form action="@Url.Action("Create", "sections")" method="post">
+                                        @Html.AntiForgeryToken()
+                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                        @if (ViewBag.constituecy != null)
+                                        {
+                                            <div class="form-group">
+                                                <label class="control-label">&nbsp;&nbsp;&nbsp;Select Constituency</label>
+                                                <select name="constituenciesId" class="form-control" id="constituenciesID" required>
+                                                    @foreach (var item1 in ViewBag.constituecy)
+                                                    {
+                                                        <option value="@item1.constituencyId">@item1.constitunecyName</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                        }
+                                        <div class="form-group">
+                                            <label class="control-label">&nbsp;&nbsp;&nbsp;Select Ward</label>
+                                            @Html.DropDownList("wardID",
+                                                            new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"),
+                                                            new { @class = "form-control", @id = "wardID", Name = "wardId", required = "required" })
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label">&nbsp;&nbsp;&nbsp;Section Name</label>
+                                            <input name="name" class="form-control" type="text" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label">&nbsp;&nbsp;&nbsp;Section Description</label>
+                                            <textarea rows="4" cols="61" name="description" class="form-control" required></textarea>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <input type="submit" value="Add Section" class="btn btn-primary" />
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+}
+else
+{
+    <div class="alert alert-warning">
+        <strong>Sorry!</strong> You have not assigned district yet.
+    </div>
 }
 
-<h2>Index</h2>
-
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.description)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.isDeleted)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ward.name)
-        </th>
-        <th></th>
-    </tr>
-
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.isDeleted)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ward.name)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.sectionId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.sectionId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.sectionId })
-        </td>
-    </tr>
-}
-
-</table>
+<script>
+    $('#constituenciesId').change(function () {
+        var wardId = $('#constituenciesId').val();
+            $.ajax({
+                url: '/sections/LoadWardList',
+                type: "GET",
+                dataType: "JSON",
+                data: { state: wardId },
+                success: function (wards) {
+                    $('#wardId').html("");
+                    $.each(wards, function (i, ward) {
+                        $('#wardId').append(
+                            $('<option></option>').val(ward.Value).html(ward.Text));
+                    });
+                }
+            });
+    });
+    $('#constituenciesID').change(function () {
+        var wardId = $('#constituenciesID').val();
+        $.ajax({
+            url: '/sections/LoadWardList',
+            type: "GET",
+            dataType: "JSON",
+            data: { state: wardId },
+            success: function (wards) {
+                $('#wardID').html("");
+                $.each(wards, function (i, ward) {
+                    $('#wardID').append(
+                        $('<option></option>').val(ward.Value).html(ward.Text));
+                });
+            }
+        });
+    });
+</script>

@@ -16,7 +16,7 @@ namespace WasteMangement.Controllers
 {
     public class districtAdminsController : Controller
     {
-        private wwmDbEntities1 db = new wwmDbEntities1();
+        private wwmDbEntities db = new wwmDbEntities();
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
         
@@ -60,21 +60,6 @@ namespace WasteMangement.Controllers
                 });
             }
             return View(districtAdmins);
-        }
-
-        // GET: districtAdmins/Details/5
-        public ActionResult Details(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            districtAdmin districtAdmin = db.districtAdmins.Find(id);
-            if (districtAdmin == null)
-            {
-                return HttpNotFound();
-            }
-            return View(districtAdmin);
         }
 
         // GET: districtAdmins/Edit/5
@@ -158,7 +143,7 @@ namespace WasteMangement.Controllers
                
                 return RedirectToAction("Index");
             }
-            return View(districtAdmin);
+            return RedirectToAction("Index");
         }
 
         // POST: districtAdmins/Delete/5

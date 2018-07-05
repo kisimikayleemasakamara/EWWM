@@ -1,9 +1,11 @@
 ﻿@using WasteMangement.Models
 @{
-    wwmDbEntities1 db = new wwmDbEntities1();
+    wwmDbEntities db = new wwmDbEntities();
     var districts = (from d in db.districts
                      where d.isDeleted == 0
-                     select d).ToList();
+                     select d.name).ToList();
+    var exist = districts.Contains("Bomabali");
+    var a = 0;
 }
 <!DOCTYPE html>
 <html>
@@ -12,7 +14,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title | eWomen Waste Management</title>
     @Styles.Render("~/Content/css")
-    
+
     <link rel="stylesheet" href="~/Content/sidebarmenu/style.css">
     @Scripts.Render("~/bundles/modernizr")
 
@@ -40,26 +42,49 @@
                         <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
                         <li>@Html.ActionLink("Trash is Money", "TrashIsMoney", "Home")</li>
                         @*<li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
-                        <li class="dropdown">
-                            
-                            <ul class="dropdown-menu" role="menu">
+                        @if (exist.Equals(true))
+                        {
+                            <li class="dropdown" id="district">
                                 @foreach (var item in districts)
                                 {
-                                    if (item.name == "Bomabali")
+                                    if (item == "Bomabali")
                                     {
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Bomabali <span class="caret"></span></a>
+                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">@item<span class="caret"></span></a>
                                     }
-                                    else
+                                }
+                                @foreach (var item in districts)
+                                {
+                                    if (item != "Bomabali")
                                     {
-                                        <li><a href="#">@item.name</a></li>
+                                        <ul class="dropdown-menu" role="menu">
+                                            <li><a href="#">@item</a></li>
+                                        </ul>
                                     }
+                                }
+                        </li>
+                        }
+                        else
+                        {
+                            <li class="dropdown" id="district">
+                                @foreach(var item in districts)
+                                {
+                                if(a == 0)
+                                {
+                                a = 1;
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">@item<span class="caret" onshow="change()"></span></a>
 
                                 }
-                                
-                                @*<li class="divider"></li>*@
-                            </ul>
-                        </li>
-                    </ul>
+                                else
+                                {
+                                <ul class="dropdown-menu" role="menu">
+                                    <li><a href="#">@item</a></li>
+                                </ul>
+                                }
+                                }
+                                </li>
+                            }
+
+</ul>
                     @Html.Partial("_LoginPartial")
                 </div>
             </div>
@@ -129,10 +154,18 @@
                 <p>&copy; @DateTime.Now.Year - Women Waste Management</p>
             </footer>
     </div>
-
+    <script>
+        function change() 
+        {
+            a = 1;
+        }
+    </script>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     <script src="~/Content/sidebarmenu/script.js">
+
     @RenderSection("scripts", required: false)
-</body>
-</html>
+
+        </body>
+        </html>
+

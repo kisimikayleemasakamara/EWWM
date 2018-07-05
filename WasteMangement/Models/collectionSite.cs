@@ -27,7 +27,7 @@ namespace WasteMangement.Models
         public string collectionSiteNumber { get; set; }
         public string collectionSiteDescription { get; set; }
         public int isDeleted { get; set; }
-    
+        public string communityName { get; set; }
         public virtual community community { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<publicWasteBin> publicWasteBins { get; set; }

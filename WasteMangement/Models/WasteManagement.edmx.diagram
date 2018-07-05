@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="e4787cf0e88d4630a8d05789437f7c21" Name="Diagram1">
+        <EntityTypeShape EntityType="wwmDbModel.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="wwmDbModel.AspNetRole" Width="1.5" PointX="0.75" PointY="13.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="wwmDbModel.AspNetUserClaim" Width="1.5" PointX="5.25" PointY="7.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="wwmDbModel.AspNetUserLogin" Width="1.5" PointX="5.25" PointY="10.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="wwmDbModel.AspNetUser" Width="1.5" PointX="3" PointY="11.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="wwmDbModel.Client" Width="1.5" PointX="5.25" PointY="12.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="wwmDbModel.collectionSite" Width="1.5" PointX="18.75" PointY="16.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="wwmDbModel.community" Width="1.5" PointX="16.5" PointY="16.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="wwmDbModel.complaint" Width="1.5" PointX="9.75" PointY="13.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="wwmDbModel.constituency" Width="1.5" PointX="9.75" PointY="16.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="wwmDbModel.country" Width="1.5" PointX="3" PointY="22.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="wwmDbModel.Discussion" Width="1.5" PointX="5.25" PointY="16" IsExpanded="true" />
+        <EntityTypeShape EntityType="wwmDbModel.districtAdmin" Width="1.5" PointX="5.25" PointY="18.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="wwmDbModel.district" Width="1.5" PointX="7.5" PointY="18.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="wwmDbModel.Fascility" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="wwmDbModel.publicWasteBin" Width="1.5" PointX="21" PointY="17" IsExpanded="true" />
+        <EntityTypeShape EntityType="wwmDbModel.region" Width="1.5" PointX="5.25" PointY="22.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="wwmDbModel.section" Width="1.5" PointX="14.25" PointY="16.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="wwmDbModel.staff" Width="1.5" PointX="9.75" PointY="20.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="wwmDbModel.Staff_Task" Width="1.5" PointX="12" PointY="20.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="wwmDbModel.sysdiagram" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="wwmDbModel.ward" Width="1.5" PointX="12" PointY="16.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="wwmDbModel.YouthGroup" Width="1.5" PointX="9.75" PointY="24.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="wwmDbModel.YouthGroupAdmin" Width="1.5" PointX="15" PointY="20.625" IsExpanded="true" />
+        <AssociationConnector Association="wwmDbModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="wwmDbModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" ManuallyRouted="false" />
+        <AssociationConnector Association="wwmDbModel.FK_Discussion_AspNetUsers" ManuallyRouted="false" />
+        <AssociationConnector Association="wwmDbModel.FK_districtAdmin_AspNetUsers" ManuallyRouted="false" />
+        <AssociationConnector Association="wwmDbModel.FK_youthGroup_districts1" ManuallyRouted="false" />
+        <AssociationConnector Association="wwmDbModel.FK_YouthGroupAdmin_AspNetUsers" ManuallyRouted="false" />
+        <AssociationConnector Association="wwmDbModel.FK_collectionSite_communities" ManuallyRouted="false" />
+        <AssociationConnector Association="wwmDbModel.FK_publicWasteBin_collectionSite" ManuallyRouted="false" />
+        <AssociationConnector Association="wwmDbModel.FK_communities_section" ManuallyRouted="false" />
+        <AssociationConnector Association="wwmDbModel.FK_complaint_districts" ManuallyRouted="false" />
+        <AssociationConnector Association="wwmDbModel.FK_constituencies_districts" ManuallyRouted="false" />
+        <AssociationConnector Association="wwmDbModel.FK_ward_constituencies" ManuallyRouted="false" />
+        <AssociationConnector Association="wwmDbModel.FK_region_country" ManuallyRouted="false" />
+        <AssociationConnector Association="wwmDbModel.FK_districts_districtAdmin" ManuallyRouted="false" />
+        <AssociationConnector Association="wwmDbModel.FK_districts_region" ManuallyRouted="false" />
+        <AssociationConnector Association="wwmDbModel.FK_staff_districts" ManuallyRouted="false" />
+        <AssociationConnector Association="wwmDbModel.FK_YouthGroup_districts" ManuallyRouted="false" />
+        <AssociationConnector Association="wwmDbModel.FK_section_ward" ManuallyRouted="false" />
+        <AssociationConnector Association="wwmDbModel.FK_Staff_Task_staff" ManuallyRouted="false" />
+        <AssociationConnector Association="wwmDbModel.FK_YouthGroupAdmin_YouthGroup" ManuallyRouted="false" />
+        <AssociationConnector Association="wwmDbModel.AspNetUserRoles" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

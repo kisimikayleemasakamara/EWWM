@@ -13,7 +13,13 @@ namespace WasteMangement.Controllers
             ViewBag.heading = "Web Based Solid Waste Management System for Sierra Leone";
             return View();
         }
+        [Authorize(Roles = "SystemAdmin")]
         public ActionResult Dashboard()
+        {
+            return View();
+        }
+        [Authorize(Roles = "DistrictAdmin")]
+        public ActionResult DistrictAdmindash()
         {
             return View();
         }

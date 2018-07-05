@@ -1,70 +1,186 @@
-﻿@model IEnumerable<WasteMangement.Models.youthGroup>
-
+﻿@model IEnumerable<WasteMangement.Models.YouthGroup>
+@using WasteMangement.Models
+@using Microsoft.AspNet.Identity
+@using Microsoft.AspNet.Identity.EntityFramework;
 @{
     ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_Dashboard.cshtml";
+    Layout = "~/Views/Shared/DistrictAdminDashboard.cshtml";
+    wwmDbEntities db = new wwmDbEntities();
+    var dId = 0;
+    string userID = User.Identity.GetUserId();
+    var distId = (from a in db.districts
+                  join b in db.districtAdmins on a.districtAdminId equals b.districtAdminId
+                  where b.isDeleted == 0 && a.isDeleted == 0
+                  && b.UserId == userID
+                  select new
+                  {
+                      a.districtsId
+                  }).SingleOrDefault();
+    if (distId != null)
+    {
+        dId = distId.districtsId;
+    }
 }
+@if (dId != 0)
+{
+<div class="limiter">
+    <div class="container-table100">
+        <div class="wrap-table100">
+            <div class="table100">
+                <div class="row">
+                    <div class="col-md-3 pull-left">
+                        <button class="btn btn-dark" data-toggle="modal" data-target="#addGroup" style="color:white;font-size:medium">Add Youth Group</button>
+                    </div>
+                </div>
 
-<h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.districsId)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.youthGroupName)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.youthGroupDescription)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.isApproved)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.address)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.isDeleted)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AspNetUser.FirstName)
-        </th>
-        <th></th>
-    </tr>
+                <table class="table table-hover">
+                    <thead style="background-color:ghostwhite">
+                        <tr>
+                            <th class="text-center">Youth Group Name</th>
+                            <th class="text-center">Youth Group Description</th>
+                            <th class="text-center">Youth Group District</th>
+                            <th class="text-center">Actions</th>
+                        </tr>
+                    </thead>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.districsId)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.youthGroupName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.youthGroupDescription)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.isApproved)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.address)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.isDeleted)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.AspNetUser.FirstName)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.youthGroupId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.youthGroupId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.youthGroupId })
-        </td>
-    </tr>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr class="edit" id="detail">
+                                <td class="text-center">@item.youthGroupName</td>
+                                @if (item.youthGroupDescription.Length >= 10)
+                                {
+                                    <td class="text-center">@item.youthGroupDescription.Substring(0, 10)....</td>
+                                }
+                                else
+                                {
+                                    <td class="text-center">@item.youthGroupDescription</td>
+                                }
+                                <td class="text-center">@item.districtName</td>
+                                <td class="text-center">
+                                    <button class="btn btn-info" data-toggle="modal" data-target="#editGroup @item.youthGroupTypeId">Edit</button> |
+                                    <button class="btn btn-primary" data-toggle="collapse" data-target="#detailGroup @item.youthGroupTypeId">Details</button> |
+                                    <button class="btn btn-danger" data-toggle="modal" data-target="#delGroup @item.youthGroupTypeId">Delete</button>
+                                </td>
+                            </tr>
+                            <tr id="detailGroup @item.youthGroupTypeId" class="collapse" style="background-color: skyblue;color:black;">
+                                <td colspan="4">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h3>Details</h3>
+                                            @item.youthGroupDescription
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <div class="modal fade" id="delGroup @item.youthGroupTypeId" role="dialog">
+                                <div class="modal-dialog">
+
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                        <div class="modal-header" style="background-color:#061435;">
+                                            <center><h4 class="modal-title" style="text-align: center;font-weight: 700;color: white;">Delete Youth Group</h4></center>
+                                            <button type="button" class="close" data-dismiss="modal" style="color: white;opacity: 1;">&times;</button>
+
+                                        </div>
+                                        <div class="modal-body">
+                                            <form method="POST" action="@Url.Action("Delete", "YouthGroups", new { id = item.youthGroupTypeId })">
+                                                @Html.AntiForgeryToken()
+                                                <div class="form-group">
+                                                    <label class="control-label">&nbsp;&nbsp;&nbsp;Are you Sure you Want to delete the Youth Group?</label>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <input type="submit" value="Sure!" class="btn btn-primary" />
+                                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Not Sure</button>
+                                                </div>
+
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                               
+
+                                <div class="modal fade" id="editGroup @item.youthGroupTypeId" role="dialog">
+                                    <div class="modal-dialog">
+
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <div class="modal-header" style="background-color:#061435;">
+                                                <h4 class="modal-title" style="text-align: center;font-weight: 700;color: white;">Edit Youth Group</h4>
+                                                <button type="button" class="close" data-dismiss="modal" style="color: white;opacity: 1;">&times;</button>
+
+                                            </div>
+                                            <div class="modal-body">
+                                                <form method="POST" action="@Url.Action("Edit", "YouthGroups")">
+                                                    @Html.AntiForgeryToken()
+                                                    <div class="form-group">
+                                                        <label class="control-label">&nbsp;&nbsp;&nbsp;Youth Group Name</label>
+                                                        <input name="youthGroupName" class="form-control" value="@item.youthGroupName" required />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label">&nbsp;&nbsp;&nbsp;Constituency Description</label>
+                                                        <textarea rows="4" cols="61" name="youthGroupDescription" class="form-control" required>@item.youthGroupDescription</textarea>
+                                                    </div>
+                                                    <input name="youthGroupTypeId" value="@item.youthGroupTypeId" type="hidden" />
+                                                    <input name="districtsId" value="@item.districtsId" type="hidden" />
+                                                    <div class="modal-footer">
+                                                        <input type="submit" value="Update Youth Group" class="btn btn-primary" />
+                                                    </div>
+
+                                                </form>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                        }
+                    </tbody>
+                    <div class="modal fade" id="addGroup" role="dialog">
+                    <div class="modal-dialog">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header" style="background-color:#061435;">
+                                <h4 class="modal-title" style="text-align:center;font-weight: 700;color: white;">Add Youth Group</h4>
+                                <button type="button" class="close" data-dismiss="modal" style="color: white;opacity: 1;">&times;</button>
+
+                            </div>
+                            <div class="modal-body">
+                                <form action="@Url.Action("Create", "YouthGroups")" method="post">
+                                    @Html.AntiForgeryToken()
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                    <div class="form-group">
+                                        <label class="control-label">&nbsp;&nbsp;&nbsp;Youth Group Name</label>
+                                        <input name="youthGroupName" class="form-control" type="text" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label">&nbsp;&nbsp;&nbsp;YouthGroup Description</label>
+                                        <textarea rows="4" cols="61" name="youthGroupDescription" class="form-control" required></textarea>
+                                    </div>
+                                    <input type="hidden" name="districtsId" value="@dId" />
+                                    <div class="modal-footer">
+                                        <input type="submit" value="Add YouthGroup" class="btn btn-primary" />
+                                    </div>
+
+                                </form>
+                            </div>
+                    </div>
+
+    </div>
+</div>
+            </div>
+        </div>
+    </div>
+</div>
 }
-
-</table>
+else
+{
+    <div class="alert alert-warning">
+        <strong>Sorry!</strong> You have not assigned district yet.
+    </div>
+}

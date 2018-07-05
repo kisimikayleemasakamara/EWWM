@@ -19,7 +19,7 @@ namespace WasteMangement.Controllers
         ApplicationDbContext context;
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-        private wwmDbEntities1 db = new wwmDbEntities1();
+        private wwmDbEntities db = new wwmDbEntities();
 
 
         public AccountController()
@@ -48,7 +48,7 @@ namespace WasteMangement.Controllers
         public async Task<JsonResult> UserAlreadyExistsAsync(string email)
         {
             var result = (from d in db.AspNetUsers
-                          where d.isDeleted == 0 && d.Email == email
+                          where d.Email == email
                           select d);
             var r = result.Count();
             return Json(r == 0, JsonRequestBehavior.AllowGet);
@@ -56,8 +56,11 @@ namespace WasteMangement.Controllers
         [AllowAnonymous]
         public async Task<JsonResult> NameAlreadyExistsAsync(string name)
         {
-            var result = UserManager.FindByNameAsync(name);
-            return Json(result.Status == null, JsonRequestBehavior.AllowGet);
+            var result = (from d in db.AspNetUsers
+                          where d.UserName == name
+                          select d);
+            var r = result.Count();
+            return Json(r == 0, JsonRequestBehavior.AllowGet);
         }
         public ApplicationUserManager UserManager
         {
@@ -91,30 +94,41 @@ namespace WasteMangement.Controllers
             {
                 return View(model);
             }
-
+            var exist = (from us in db.AspNetUsers
+                         where
+                         us.Email == model.Email && us.isDeleted == 1
+                         select us).ToList();
             // This doesn't count login failures towards account lockout
             // To enable password failures to trigger account lockout, change to shouldLockout: true
             //var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
-            try
+            if (exist.Count == 0)
             {
-                var user = context.Users.Where(u => u.Email.Equals(model.Email)).Single(); // where db is ApplicationDbContext instance
-                var result = await SignInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, shouldLockout: false);
-            
-                switch (result)
+                try
                 {
-                    case SignInStatus.Success:
-                        return RedirectToLocal(returnUrl);
-                    case SignInStatus.LockedOut:
-                        return View("Lockout");
-                    case SignInStatus.RequiresVerification:
-                        return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-                    case SignInStatus.Failure:
-                    default:
-                        ModelState.AddModelError("", "Invalid login attempt.");
-                        return View(model);
+                    var user = context.Users.Where(u => u.Email.Equals(model.Email)).Single(); // where db is ApplicationDbContext instance
+                    var result = await SignInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, shouldLockout: false);
+
+                    switch (result)
+                    {
+                        case SignInStatus.Success:
+                            return RedirectToLocal(returnUrl);
+                        case SignInStatus.LockedOut:
+                            return View("Lockout");
+                        case SignInStatus.RequiresVerification:
+                            return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+                        case SignInStatus.Failure:
+                        default:
+                            ModelState.AddModelError("", "Invalid login attempt.");
+                            return View(model);
+                    }
+                }
+                catch (InvalidOperationException)
+                {
+                    ModelState.AddModelError("", "Invalid login attempt.");
+                    return View(model);
                 }
             }
-            catch (InvalidOperationException)
+            else
             {
                 ModelState.AddModelError("", "Invalid login attempt.");
                 return View(model);
@@ -172,6 +186,9 @@ namespace WasteMangement.Controllers
             ViewBag.fascilities = (from d in db.Fascilities
                                  where d.isDeleted == 0
                                  select d).ToList();
+            ViewBag.groups = (from d in db.YouthGroups
+                                   where d.isDeleted == 0
+                                   select d).ToList();
             return View();
         }
 
@@ -217,6 +234,7 @@ namespace WasteMangement.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "SystemAdmin")]
         public async Task<ActionResult> RegisterDistrictAdmin(RegisterModel model, string description)
         {
             try
@@ -225,7 +243,7 @@ namespace WasteMangement.Controllers
                 {
                     var user = new ApplicationUser
                     {
-                        UserName = model.FirstName +" "+ model.LastName,
+                        UserName = model.userName,
                         Email = model.Email,
                         FirstName = model.FirstName,
                         LastName = model.LastName,
@@ -251,8 +269,16 @@ namespace WasteMangement.Controllers
                         admin.name = user.UserName;
                         db.districtAdmins.Add(admin);
                         db.SaveChanges();
-                        return RedirectToAction("Index", "districtAdmins");
-                    }
+                        var user1 = context.Users.Where(u => u.Email.Equals("kisimikayleemasa@hotmail.com")).Single(); // where db is ApplicationDbContext instance
+                        var result1 = await SignInManager.PasswordSignInAsync(user.UserName, "P@ssw0rd", false,shouldLockout: false);
+                        model.UserRoles = "SystemAdmin";
+                        switch (result1)
+                        {
+                            case SignInStatus.Success:
+                                return RedirectToAction("Index", "districtAdmins");
+                        }
+
+                        }
                     AddErrors(result);
                 }
             }

@@ -1,4 +1,6 @@
 ﻿@using Microsoft.AspNet.Identity
+@using Microsoft.AspNet.Identity.EntityFramework;
+@using WasteMangement.Models;
 @if (Request.IsAuthenticated)
 {
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
@@ -6,10 +8,39 @@
     @Html.AntiForgeryToken()
 
     <ul class="nav navbar-nav navbar-right">
+        @{
+            ApplicationDbContext context =  new ApplicationDbContext();
+            string role = null;
+            var manager = new UserManager<ApplicationUser>(new Microsoft.AspNet.Identity.EntityFramework.UserStore<ApplicationUser>(new ApplicationDbContext()));
+            var currentUser = manager.FindById(User.Identity.GetUserId());
+            var users = from u in context.Users
+                        from ur in u.Roles
+                        join r in context.Roles on ur.RoleId equals r.Id
+                        select new
+                        {
+                            u.Id,
+                            Name = u.UserName,
+                            Role = r.Name,
+                        };
+            foreach (var v in users)
+            {
+                if (v.Id == currentUser.Id)
+                {
+                    role = v.Role;
+                }
+            }
+        }
         <li>
             @Html.ActionLink("Hello " + User.Identity.GetUserName() + " !", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
         </li>
-        <li><a href="@Url.Action("Dashboard","Home")">Dashboard</a></li>
+        @if (role.Equals("SystemAdmin"))
+        {
+        <li><a href="@Url.Action("Dashboard", "Home")">Dashboard</a></li>
+        }
+        else if(role.Equals("DistrictAdmin"))
+        {
+            <li><a href="@Url.Action("DistrictAdmindash", "Home")">Dashboard</a></li>
+        }
         <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
     </ul>
     }

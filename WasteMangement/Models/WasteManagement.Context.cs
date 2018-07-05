@@ -13,10 +13,10 @@ namespace WasteMangement.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class wwmDbEntities1 : DbContext
+    public partial class wwmDbEntities : DbContext
     {
-        public wwmDbEntities1()
-            : base("name=wwmDbEntities1")
+        public wwmDbEntities()
+            : base("name=wwmDbEntities")
         {
         }
     
@@ -30,6 +30,7 @@ namespace WasteMangement.Models
         public virtual DbSet<AspNetUserClaim> AspNetUserClaims { get; set; }
         public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
         public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
+        public virtual DbSet<Client> Clients { get; set; }
         public virtual DbSet<collectionSite> collectionSites { get; set; }
         public virtual DbSet<community> communities { get; set; }
         public virtual DbSet<complaint> complaints { get; set; }
@@ -46,6 +47,7 @@ namespace WasteMangement.Models
         public virtual DbSet<Staff_Task> Staff_Task { get; set; }
         public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<ward> wards { get; set; }
-        public virtual DbSet<youthGroup> youthGroups { get; set; }
+        public virtual DbSet<YouthGroup> YouthGroups { get; set; }
+        public virtual DbSet<YouthGroupAdmin> YouthGroupAdmins { get; set; }
     }
 }

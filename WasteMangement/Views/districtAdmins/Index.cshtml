@@ -37,10 +37,18 @@
                                 <td class="text-center">@item.PhoneNo</td>
                                 <td class="text-center">
                                     <button class="btn btn-info" onclick="EditAdminRecord(@item.districtAdminId)">Edit</button> |
-                                    <span class="btn btn-primary" style="color: white;">
-                                        @Html.ActionLink("Details", "Details", new { id = item.districtAdminId })
-                                    </span> |
+                                    <button class="btn btn-primary" data-toggle="collapse" data-target="#detailAdmin @item.districtAdminId">Details</button> |
                                     <button class="btn btn-danger" onclick="DeleteRecord(@item.districtAdminId)">Delete</button>
+                                </td>
+                            </tr>
+                            <tr id="detailAdmin @item.districtAdminId" class="collapse" style="background-color: skyblue;color:black;">
+                                <td colspan="4">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <h3>Details</h3>
+                                            @item.description
+                                        </div>
+                                    </div>
                                 </td>
                             </tr>
                                 <div class="modal fade" id="delAccount" role="dialog">
@@ -97,17 +105,17 @@
                                         <div class="form-group">
                                             <div class="row">
                                                 <div class="col">
-                                                    <input type="text" class="form-control" placeholder="First name" name="FirstName">
+                                                    <input type="text" class="form-control" placeholder="First name" name="FirstName" required>
                                                 </div>
                                                 <div class="col">
-                                                    <input type="text" class="form-control" placeholder="Last name" name="LastName">
+                                                    <input type="text" class="form-control" placeholder="Last name" name="LastName" required>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <div class="row">
                                                 <div class="col">
-                                                    <input type="email" name="Email" class="form-control" placeholder ="Email" id="useremail"/>
+                                                    <input type="email" name="Email" class="form-control" placeholder ="Email" id="useremail" required/>
                                                     <span id='email'></span>
                                                 </div>
                                                 <div class="col">
@@ -119,10 +127,10 @@
                                         <div class="form-group">
                                             <div class="row">
                                                 <div class="col">
-                                                    <input name="Address" class="form-control" type="text" placeholder="Address">
+                                                    <input name="Address" class="form-control" type="text" placeholder="Address" required>
                                                 </div>
                                                 <div class="col">
-                                                    <input type="text" name="userName" class="form-control" placeholder="User Name" id="username" />
+                                                    <input type="text" name="userName" class="form-control" placeholder="User Name" id="username" required/>
                                                     <span id='name1'></span>
                                                 </div>
                                             </div>
@@ -130,16 +138,17 @@
                                         <div class="form-group">
                                             <div class="row">
                                                 <div class="col">
-                                                    <input type="password" name="Password" class="form-control" placeholder="password" id="Password"/>
+                                                    <input type="password" name="Password" class="form-control" placeholder="password" id="Password" 
+                                                           pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).*$" required/>
                                                 </div>
                                                 <div class="col">
-                                                    <input type="password" name="ConfirmPassword" class="form-control" placeholder="confirm Password" id="ConfirmPassword"/>
+                                                    <input type="password" name="ConfirmPassword" class="form-control" placeholder="confirm Password" id="ConfirmPassword" required/>
                                                     <span id='message'></span>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <textarea rows="4" cols="61" name="description" class="form-control" placeholder="Description"></textarea>
+                                            <textarea rows="4" cols="61" name="description" class="form-control" placeholder="Description" required></textarea>
                                         </div>
 
                                         <div class="modal-footer">
@@ -170,17 +179,17 @@
                                         <div class="form-group">
                                             <div class="row">
                                                 <div class="col">
-                                                    <input type="text" class="form-control" placeholder="First name" name="FirstName" id="firstName">
+                                                    <input type="text" class="form-control" placeholder="First name" name="FirstName" id="firstName" required>
                                                 </div>
                                                 <div class="col">
-                                                    <input type="text" class="form-control" placeholder="Last name" name="LastName"id="LastName">
+                                                    <input type="text" class="form-control" placeholder="Last name" name="LastName"id="LastName" required>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <div class="row">
                                                 <div class="col">
-                                                    <input type="email" name="Email" class="form-control" placeholder="Email" id="Email"/>
+                                                    <input type="email" name="Email" class="form-control" placeholder="Email" id="Email" required/>
                                                 </div>
                                                 <div class="col">
                                                     <input name="PhoneNo" placeholder="PhoneNo(1234-456-7890)" class="form-control" id="PhoneNo"
@@ -191,27 +200,28 @@
                                         <div class="form-group">
                                             <div class="row">
                                                 <div class="col">
-                                                    <input name="Address" class="form-control" type="text" placeholder="Address" id="Address">
+                                                    <input name="Address" class="form-control" type="text" placeholder="Address" id="Address" required>
                                                 </div>
 
                                                 <div class="col">
-                                                    <input type="text" name="userName" class="form-control" placeholder="User Name" id="userName" />
+                                                    <input type="text" name="userName" class="form-control" placeholder="User Name" id="userName" required/>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="form-group">
                                             <div class="row">
                                                 <div class="col">
-                                                    <input type="password" name="Password" class="form-control" placeholder="password" id="pswd"/>
+                                                    <input type="password" name="Password" class="form-control" placeholder="password" id="pswd" 
+                                                           pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).*$" required/>
                                                 </div>
                                                 <div class="col">
-                                                    <input type="password" name="ConfirmPassword" class="form-control" placeholder="confirm password" id="cnfrmpswd"/>
+                                                    <input type="password" name="ConfirmPassword" class="form-control" placeholder="confirm password" id="cnfrmpswd" required/>
                                                     <span id='messag'></span>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <textarea rows="4" cols="61" name="description" class="form-control" placeholder="Description" id="description"></textarea>
+                                            <textarea rows="4" cols="61" name="description" class="form-control" placeholder="Description" id="description" required></textarea>
                                         </div>
                                         <input name="districtAdminId" id="destrictAdminID" type="hidden" />
                                         <input name="Id" id="userId" type="hidden" />

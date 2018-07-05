@@ -1,4 +1,4 @@
-﻿@model IEnumerable<WasteMangement.Models.publicWasteBin>
+﻿@model IEnumerable<WasteMangement.Models.ward>
 @using WasteMangement.Models
 @using Microsoft.AspNet.Identity
 @using Microsoft.AspNet.Identity.EntityFramework;
@@ -29,7 +29,7 @@
             <div class="table100">
                 <div class="row">
                     <div class="col-md-3 pull-left">
-                        <button class="btn btn-dark" data-toggle="modal" data-target="#addBin" style="color:white;font-size:medium">Add Waste Bin</button>
+                        <button class="btn btn-dark" data-toggle="modal" data-target="#addWard" style="color:white;font-size:medium">Add Ward</button>
                     </div>
                 </div>
 
@@ -37,9 +37,9 @@
                 <table class="table table-hover">
                     <thead style="background-color:ghostwhite">
                         <tr>
-                            <th class="text-center">Waste Bin Name</th>
-                            <th class="text-center">Waste Bin Description</th>
-                            <th class="text-center">Site Name</th>
+                            <th class="text-center">Ward Name</th>
+                            <th class="text-center">Constituency Name</th>
+                            <th class="text-center">Ward Description</th>
                             <th class="text-center">Actions</th>
                         </tr>
                     </thead>
@@ -48,47 +48,48 @@
                         @foreach (var item in Model)
                         {
                             <tr class="edit" id="detail">
-                                <td class="text-center">@item.publicWasteBinName</td>
-                                @if (item.publicWasteBinDescription.Length >= 10)
+                                <td class="text-center">@item.name</td>
+                                <td class="text-center">@item.constitunecyName</td>
+                                @if (item.description.Length >= 10)
                                 {
-                                    <td class="text-center">@item.publicWasteBinDescription.Substring(0, 10)....</td>
+                                    <td class="text-center">@item.description.Substring(0, 10)....</td>
                                 }
                                 else
                                 {
-                                    <td class="text-center">@item.publicWasteBinDescription</td>
+                                    <td class="text-center">@item.description</td>
                                 }
-                                <td class="text-center">@item.siteName</td>
+                                
                                 <td class="text-center">
-                                    <button class="btn btn-info" data-toggle="modal" data-target="#editBin @item.publicWasteBinId">Edit</button> |
-                                    <button class="btn btn-primary" data-toggle="collapse" data-target="#detailBin @item.publicWasteBinId">Details</button> |
-                                    <button class="btn btn-danger" data-toggle="modal" data-target="#delBin @item.publicWasteBinId">Delete</button>
+                                    <button class="btn btn-info" data-toggle="modal" data-target="#editWard @item.wardId">Edit</button> |
+                                    <button class="btn btn-primary" data-toggle="collapse" data-target="#detailWard @item.wardId">Details</button> |
+                                    <button class="btn btn-danger" data-toggle="modal" data-target="#delWard @item.wardId">Delete</button>
                                 </td>
                             </tr>
-                            <tr id="detailBin @item.publicWasteBinId" class="collapse" style="background-color: skyblue;color:black;">
+                            <tr id="detailWard @item.wardId" class="collapse" style="background-color: skyblue;color:black;">
                                 <td colspan="4">
                                     <div class="row">
                                         <div class="col-md-12">
                                             <h3>Details</h3>
-                                            @item.publicWasteBinDescription
+                                            @item.description
                                         </div>
                                     </div>
                                 </td>
                             </tr>
-                            <div class="modal fade" id="delBin @item.publicWasteBinId" role="dialog">
+                            <div class="modal fade" id="delWard @item.wardId" role="dialog">
                                 <div class="modal-dialog">
 
                                     <!-- Modal content-->
                                     <div class="modal-content">
                                         <div class="modal-header" style="background-color:#061435;">
-                                            <center><h4 class="modal-title" style="text-align: center;font-weight: 700;color: white;">Delete Waste Bin</h4></center>
+                                            <center><h4 class="modal-title" style="text-align: center;font-weight: 700;color: white;">Delete Ward</h4></center>
                                             <button type="button" class="close" data-dismiss="modal" style="color: white;opacity: 1;">&times;</button>
 
                                         </div>
                                         <div class="modal-body">
-                                            <form method="POST" action="@Url.Action("Delete", "publicWasteBins", new { id = item.publicWasteBinId })">
+                                            <form method="POST" action="@Url.Action("Delete", "wards", new { id = item.wardId })">
                                                 @Html.AntiForgeryToken()
                                                 <div class="form-group">
-                                                    <label class="control-label">&nbsp;&nbsp;&nbsp;Are you Sure you Want to delete the Bin?</label>
+                                                    <label class="control-label">&nbsp;&nbsp;&nbsp;Are you Sure you Want to delete the Ward?</label>
                                                 </div>
                                                 <div class="modal-footer">
                                                     <input type="submit" value="Sure!" class="btn btn-primary" />
@@ -102,45 +103,45 @@
                                 </div>
                             </div>
 
-                            
 
-                                <div class="modal fade" id="editBin @item.publicWasteBinId" role="dialog">
+
+                                <div class="modal fade" id="editWard @item.wardId" role="dialog">
                                     <div class="modal-dialog">
 
                                         <!-- Modal content-->
                                         <div class="modal-content">
                                             <div class="modal-header" style="background-color:#061435;">
-                                                <h4 class="modal-title" style="text-align: center;font-weight: 700;color: white;">Edit Waste Bin</h4>
+                                                <h4 class="modal-title" style="text-align: center;font-weight: 700;color: white;">Edit Ward</h4>
                                                 <button type="button" class="close" data-dismiss="modal" style="color: white;opacity: 1;">&times;</button>
 
                                             </div>
                                             <div class="modal-body">
-                                                <form method="POST" action="@Url.Action("Edit", "publicWasteBins")">
+                                                <form method="POST" action="@Url.Action("Edit", "wards")">
                                                     @Html.AntiForgeryToken()
-                                                  
-                                                    @if (ViewBag.sites != null)
+                                                    @if (ViewBag.constituecy != null)
                                                     {
                                                         <div class="form-group">
-                                                            <label class="control-label">&nbsp;&nbsp;&nbsp;Select Site</label>
-                                                            <select name="collectionSiteId" class="form-control" required>
-                                                                @foreach (var item1 in ViewBag.sites)
+                                                            <label class="control-label">&nbsp;&nbsp;&nbsp;Select Constituency</label>
+                                                            <select name="constituenciesId" class="form-control" required>
+                                                                @foreach (var item1 in ViewBag.constituecy)
                                                                 {
-                                                                    <option value="@item1.collectionSiteId">@item1.collectionSiteName</option>
+                                                                    <option value="@item1.constituencyId">@item1.constitunecyName</option>
                                                                 }
                                                             </select>
                                                         </div>
                                                     }
+
                                                     <div class="form-group">
-                                                        <label class="control-label">&nbsp;&nbsp;&nbsp;Waste Bin Name</label>
-                                                        <input name="publicWasteBinName" class="form-control" type="text" value="@item.publicWasteBinName" required>
+                                                        <label class="control-label">&nbsp;&nbsp;&nbsp;Ward Name</label>
+                                                        <input name="name" class="form-control" value="@item.name" required/>
                                                     </div>
                                                     <div class="form-group">
-                                                        <label class="control-label">&nbsp;&nbsp;&nbsp;Waste Bin Description</label>
-                                                        <textarea rows="4" cols="61" name="publicWasteBinDescription" class="form-control" required>@item.publicWasteBinDescription</textarea>
+                                                        <label class="control-label">&nbsp;&nbsp;&nbsp;Ward Description</label>
+                                                        <textarea rows="4" cols="61" name="description" class="form-control" required>@item.description</textarea>
                                                     </div>
-                                                    <input name="publicWasteBinId" value="@item.publicWasteBinId" type="hidden" />
+                                                    <input name="wardId" value="@item.wardId" type="hidden" />
                                                     <div class="modal-footer">
-                                                        <input type="submit" value="Update Bin" class="btn btn-primary" />
+                                                        <input type="submit" value="Update Ward" class="btn btn-primary" />
                                                     </div>
 
                                                 </form>
@@ -152,42 +153,43 @@
 
                         }
                     </tbody>
-                    <div class="modal fade" id="addBin" role="dialog">
+                    <div class="modal fade" id="addWard" role="dialog">
                         <div class="modal-dialog">
 
                             <!-- Modal content-->
                             <div class="modal-content">
                                 <div class="modal-header" style="background-color:#061435;">
-                                    <h4 class="modal-title" style="text-align:center;font-weight: 700;color: white;">Add Waste Bin</h4>
+                                    <h4 class="modal-title" style="text-align:center;font-weight: 700;color: white;">Add Ward</h4>
                                     <button type="button" class="close" data-dismiss="modal" style="color: white;opacity: 1;">&times;</button>
 
                                 </div>
                                 <div class="modal-body">
-                                    <form action="@Url.Action("Create", "publicWasteBins")" method="post">
+                                    <form action="@Url.Action("Create", "wards")" method="post">
                                         @Html.AntiForgeryToken()
                                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                                        @if (ViewBag.sites != null)
+                                        @if (ViewBag.constituecy != null)
                                         {
                                             <div class="form-group">
-                                                <label class="control-label">&nbsp;&nbsp;&nbsp;Select Site</label>
-                                                <select name="collectionSiteId" class="form-control" required>
-                                                    @foreach (var item1 in ViewBag.sites)
+                                                <label class="control-label">&nbsp;&nbsp;&nbsp;Select Constituency</label>
+                                                <select name="constituenciesId" class="form-control" required>
+                                                    @foreach (var item1 in ViewBag.constituecy)
                                                     {
-                                                        <option value="@item1.collectionSiteId">@item1.collectionSiteName</option>
+                                                        <option value="@item1.constituencyId">@item1.constitunecyName</option>
                                                     }
                                                 </select>
                                             </div>
                                         }
+
                                         <div class="form-group">
-                                            <label class="control-label">&nbsp;&nbsp;&nbsp;Waste Bin Name</label>
-                                            <input name="publicWasteBinName" class="form-control" type="text" required>
+                                            <label class="control-label">&nbsp;&nbsp;&nbsp;Ward Name</label>
+                                            <input name="name" class="form-control" type="text" required>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label">&nbsp;&nbsp;&nbsp;Waste Bin Description</label>
-                                            <textarea rows="4" cols="61" name="publicWasteBinDescription" class="form-control" required></textarea>
+                                            <label class="control-label">&nbsp;&nbsp;&nbsp;Ward Description</label>
+                                            <textarea rows="4" cols="61" name="description" class="form-control" required></textarea>
                                         </div>
                                         <div class="modal-footer">
-                                            <input type="submit" value="Add Waste Bin" class="btn btn-primary" />
+                                            <input type="submit" value="Add Ward" class="btn btn-primary" />
                                         </div>
 
                                     </form>
@@ -208,4 +210,3 @@ else
         <strong>Sorry!</strong> You have not assigned district yet.
     </div>
 }
-
