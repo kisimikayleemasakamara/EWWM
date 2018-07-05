@@ -155,10 +155,8 @@
             </footer>
     </div>
     <script>
-        function change() 
-        {
-            a = 1;
-        }
+        var d = document.getElementById("distrcit").value;
+        '<%Session["district"] = "' + d + '"; %>';
     </script>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")

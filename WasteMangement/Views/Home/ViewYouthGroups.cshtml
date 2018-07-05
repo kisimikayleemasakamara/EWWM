@@ -1,46 +1,61 @@
-﻿@using WasteMangement.Models;
-@using Microsoft.AspNet.Identity
-@using Microsoft.AspNet.Identity.EntityFramework;
-@{
+﻿@{
     ViewBag.Title = "View Youth Groups";
-    var district = ViewBag.district;
-    wwmDbEntities db = new wwmDbEntities();
-    var query = (from a in db.YouthGroups
-                 join b in db.districts on district equals b.name
-                 join c in db.districtAdmins on b.districtAdminId equals c.districtAdminId
-                 where b.isDeleted == 0 && a.isDeleted == 0
-                 && c.isDeleted == 0
-                 select new
-                 {
-                     groupName = a.youthGroupName
-
-                 }).ToList();
 }
-<center><h2>WASTE MANAGEMENT YOUTH GROUPS IN @district DISTRICT</h2></center>
+<center><h2>WASTE MANAGEMENT YOUTH GROUPS IN BOMBALI DISTRICT</h2></center>
 <div class="jumbotron" style="padding-left:10%;">
     <div class="body-content" style="border:1px solid black;">
         <div class="row">
 
-            @if (query != null)
+            <div class="col-md-4" style="margin-bottom:20px;">
+                <div>
+                    <img src="~/Content/images/eYouthGroup.jpg" class="img img-thumbnail img-responsive" />
+                </div>
+                <div style="border:1px solid black;">
+                    <p><a href="#">eWomen Waste Management</a></p>
+                </div>
+            </div>
+            <div class="col-md-4" style="margin-bottom:20px;">
+                <div>
+                    <img src="~/Content/images/eYouthGroup.jpg" class="img img-thumbnail img-responsive" />
+                </div>
+                <div style="border:1px solid black;">
+                    <p><a href="#">Unique Ladies</a></p>
+                </div>
+            </div>
 
-            {
-                foreach (var y in query)
-                {
-                    <div class="col-md-4" style="margin-bottom:20px;">
-                        <div>
-                            <img src="~/Content/images/eYouthGroup.jpg" class="img img-thumbnail img-responsive" />
-                        </div>
-                        <div style="border:1px solid black;">
-                            <p><a href="#">@y.groupName</a></p>
-                        </div>
-                    </div>
-                }
-            }
-            
-
-          
+            <div class="col-md-4" style="margin-bottom:20px;">
+                <div>
+                    <img src="~/Content/images/eYouthGroup.jpg" class="img img-thumbnail img-responsive" />
+                </div>
+                <div style="border:1px solid black;">
+                    <p><a href="#">Betteh Women</a></p>
+                </div>
+            </div>
+            <div class="col-md-4" style="margin-bottom:20px;">
+                <div>
+                    <img src="~/Content/images/eYouthGroup.jpg" class="img img-thumbnail img-responsive" />
+                </div>
+                <div style="border:1px solid black;">
+                    <p><a href="#">eWomen Waste Management</a></p>
+                </div>
+            </div>
+            <div class="col-md-4" style="margin-bottom:20px;">
+                <div>
+                    <img src="~/Content/images/eYouthGroup.jpg" class="img img-thumbnail img-responsive" />
+                </div>
+                <div style="border:1px solid black;">
+                    <p><a href="#">eWomen Waste Management</a></p>
+                </div>
+            </div>
+            <div class="col-md-4" style="margin-bottom:20px;">
+                <div>
+                    <img src="~/Content/images/eYouthGroup.jpg" class="img img-thumbnail img-responsive" />
+                </div>
+                <div style="border:1px solid black;">
+                    <p><a href="#">eWomen Waste Management</a></p>
+                </div>
+            </div>
         </div>
     </div>
 </div>
-
 
