@@ -1,6 +1,11 @@
-﻿@model WasteMangement.Models.RegisterViewModel
+﻿@using WasteMangement.Models
+@model WasteMangement.Models.RegisterViewModel
 @{
     ViewBag.Title = "Register";
+    wwmDbEntities db = new wwmDbEntities();
+    var q = (from d in db.YouthGroups
+            where d.isDeleted == 0
+            select d).ToList();
 }
 
 
@@ -73,9 +78,9 @@
                 <label class="control-label col-md-5" for="YouthGroup">Youth Group</label>
                 <select type="text" name="YouthGroup" class="form-control col-md-7">
                     <option value=""> Select Group</option>
-                    @if (ViewBag.groups != null)
+                    @if (q != null)
                     {
-                        foreach (var item in ViewBag.gorups)
+                        foreach (var item in q)
                         {
                             <option value="@item.youthGroupTypeId">@item.youthGroupName</option>
                         }

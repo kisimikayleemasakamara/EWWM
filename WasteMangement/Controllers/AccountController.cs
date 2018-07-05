@@ -10,6 +10,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using WasteMangement.Models;
 using System.Data.Entity.Validation;
+using System.Collections.Generic;
 
 namespace WasteMangement.Controllers
 {
@@ -186,9 +187,9 @@ namespace WasteMangement.Controllers
             ViewBag.fascilities = (from d in db.Fascilities
                                  where d.isDeleted == 0
                                  select d).ToList();
-            ViewBag.groups = (from d in db.YouthGroups
-                                   where d.isDeleted == 0
-                                   select d).ToList();
+            var query = (from d in db.YouthGroups
+                              where d.isDeleted == 0
+                              select d).ToList();
             return View();
         }
 
