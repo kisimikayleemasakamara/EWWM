@@ -11,9 +11,9 @@ namespace WasteMangement.Controllers
         public ActionResult Index()
         {
             ViewBag.heading = "Web Based Solid Waste Management System for Sierra Leone";
+            ViewBag.district = TempData["district"];
             return View();
         }
-        [Authorize(Roles = "SystemAdmin")]
         public ActionResult Dashboard()
         {
             return View();
@@ -30,7 +30,12 @@ namespace WasteMangement.Controllers
 
             return View();
         }
-
+        [HttpPost]
+        public ActionResult Check(string state)
+        {
+            TempData["district"] = state;
+            return RedirectToAction("Index");
+        }
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";
@@ -44,6 +49,7 @@ namespace WasteMangement.Controllers
         }
         public ActionResult ViewYouthGroups()
         {
+            
             return View();
         }
 

@@ -235,7 +235,6 @@ namespace WasteMangement.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "SystemAdmin")]
         public async Task<ActionResult> RegisterDistrictAdmin(RegisterModel model, string description)
         {
             try

@@ -234,7 +234,6 @@
     <Compile Include="Models\Fascility.cs">
       <DependentUpon>WasteManagement.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\FascilityType.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\publicWasteBin.cs">

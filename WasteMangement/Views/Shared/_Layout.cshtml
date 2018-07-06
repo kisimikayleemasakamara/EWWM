@@ -6,6 +6,8 @@
                      select d.name).ToList();
     var exist = districts.Contains("Bomabali");
     var a = 0;
+    var di = ViewBag.district;
+    Session["district"] = di;
 }
 <!DOCTYPE html>
 <html>
@@ -44,44 +46,42 @@
                         @*<li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
                         @if (exist.Equals(true))
                         {
-                            <li class="dropdown" id="district">
+                            <select id="district">
+                                <option>--Select A District--</option>
                                 @foreach (var item in districts)
                                 {
                                     if (item == "Bomabali")
                                     {
-                                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">@item<span class="caret"></span></a>
+                                        <option>@item</option>
                                     }
                                 }
                                 @foreach (var item in districts)
                                 {
                                     if (item != "Bomabali")
                                     {
-                                        <ul class="dropdown-menu" role="menu">
-                                            <li><a href="#">@item</a></li>
-                                        </ul>
+                                         <option value="@item">@item</option>
                                     }
                                 }
-                        </li>
+                        </select>
                         }
                         else
                         {
-                            <li class="dropdown" id="district">
+                            <select id="district">
+                                <option>--Select A District--</option>
                                 @foreach(var item in districts)
                                 {
                                 if(a == 0)
                                 {
                                 a = 1;
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">@item<span class="caret" onshow="change()"></span></a>
+                                <option value="@item">@item</option>
 
                                 }
                                 else
                                 {
-                                <ul class="dropdown-menu" role="menu">
-                                    <li><a href="#">@item</a></li>
-                                </ul>
+                                <option value="@item">@item</option>
                                 }
                                 }
-                                </li>
+                                </select>
                             }
 
 </ul>
@@ -113,7 +113,7 @@
                     <ul class="nav navbar-nav">
                         @*<li class="active"><a href="#">View Youth Groups<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>*@
                         <li class="active"><a href="@Url.Action("index", "Home")" >Home<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>
-                        <li><a href="@Url.Action("ViewYouthGroups", "Home")">View Youth Groups<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>
+                        <li onclick="check()" id="group"><a href="@Url.Action("ViewYouthGroups", "Home")" id="group">View Youth Groups<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>
                         <li><a href="@Url.Action("Register", "Account")">Register as Client<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a></li>
                         <li><a href="#">Make a Complaint<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-envelope"></span></a></li>
                         @*<li class="dropdown">
@@ -154,16 +154,29 @@
                 <p>&copy; @DateTime.Now.Year - Women Waste Management</p>
             </footer>
     </div>
-    <script>
-        var d = document.getElementById("distrcit").value;
-        '<%Session["district"] = "' + d + '"; %>';
-    </script>
+   
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-    <script src="~/Content/sidebarmenu/script.js">
-
+    <script src="~/Content/sidebarmenu/script.js"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>  
     @RenderSection("scripts", required: false)
-
+    <script>
+        $('select').on('change', function () {
+            var d = this.value;
+            $.ajax({
+                url: '/Home/check',
+                type: "POST",
+                dataType: "JSON",
+                data: { state: d },
+                success: function () {
+                }
+            });
+        });
+        function check() {
+            var get = this.id;
+            console.log("get" + get);
+        }
+    </script>
         </body>
         </html>
 

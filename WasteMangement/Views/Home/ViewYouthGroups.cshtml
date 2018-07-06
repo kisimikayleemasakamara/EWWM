@@ -1,11 +1,13 @@
 ﻿@{
+
+    var district = Session["district"];
     ViewBag.Title = "View Youth Groups";
 }
 <center><h2>WASTE MANAGEMENT YOUTH GROUPS IN BOMBALI DISTRICT</h2></center>
 <div class="jumbotron" style="padding-left:10%;">
     <div class="body-content" style="border:1px solid black;">
         <div class="row">
-
+            <input type="text" value="@district" />
             <div class="col-md-4" style="margin-bottom:20px;">
                 <div>
                     <img src="~/Content/images/eYouthGroup.jpg" class="img img-thumbnail img-responsive" />
@@ -58,4 +60,7 @@
         </div>
     </div>
 </div>
+<script>
+    console.log("dff"+district);
+</script>
 

@@ -11,13 +11,11 @@ using WasteMangement.Models;
 
 namespace WasteMangement.Controllers
 {
-    [Authorize(Roles = "SystemAdmin")]
     public class districtsController : Controller
     {
         private wwmDbEntities db = new wwmDbEntities();
 
         // GET: districts
-        [Authorize(Roles = "SystemAdmin")]
         public ActionResult Index()
         {
             var query = (from a in db.districts
@@ -50,7 +48,6 @@ namespace WasteMangement.Controllers
             return View(districts);
         }
 
-        [Authorize(Roles = "SystemAdmin")]
         public ActionResult FillRegion(int state)
         {
             var query = (from g in db.regions
@@ -75,7 +72,6 @@ namespace WasteMangement.Controllers
             return Json(list, JsonRequestBehavior.AllowGet);
         }
 
-        [Authorize(Roles = "SystemAdmin")]
         public async System.Threading.Tasks.Task<ActionResult> countries()
         {
             var countries = (from d in db.countries
@@ -91,8 +87,6 @@ namespace WasteMangement.Controllers
             }
             return Json(list, JsonRequestBehavior.AllowGet);
         }
-
-        [Authorize(Roles = "SystemAdmin")]
         public async System.Threading.Tasks.Task<ActionResult> admins()
         {
             var admins = (from d in db.districtAdmins
@@ -115,7 +109,6 @@ namespace WasteMangement.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "SystemAdmin")]
         public ActionResult Create([Bind(Include = "districtsId,regionId,districtAdminId,name,description,isDeleted")] district district)
         {
             var exist = (from d in db.districts
@@ -148,8 +141,6 @@ namespace WasteMangement.Controllers
             return RedirectToAction("Index");
         }
 
-        // GET: districts/Edit/5
-        [Authorize(Roles = "SystemAdmin")]
         public ActionResult Edit(int? id)
         {
 
@@ -174,7 +165,6 @@ namespace WasteMangement.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "SystemAdmin")]
         public ActionResult Edit([Bind(Include = "districtsId,regionId,districtAdminId,name,description,isDeleted")] district district)
         {
             var exist = (from d in db.districts
@@ -210,7 +200,6 @@ namespace WasteMangement.Controllers
         // POST: districts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "SystemAdmin")]
         public ActionResult DeleteConfirmed(int id)
         {
             district district = db.districts.Find(id);

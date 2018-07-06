@@ -11,13 +11,10 @@ using WasteMangement.Models;
 
 namespace WasteMangement.Controllers
 {
-    [Authorize(Roles = "SystemAdmin")]
     public class regionsController : Controller
     {
         private wwmDbEntities db = new wwmDbEntities();
 
-        // GET: regions
-        [Authorize(Roles = "SystemAdmin")]
         public ActionResult Index()
         {
             var query = (from a in db.regions
@@ -46,7 +43,6 @@ namespace WasteMangement.Controllers
             }
             return View(regions);
         }
-        [Authorize(Roles = "SystemAdmin")]
         public async System.Threading.Tasks.Task<ActionResult> Countries()
         {
             var countries = (from d in db.countries where d.isDeleted == 0
@@ -67,7 +63,6 @@ namespace WasteMangement.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "SystemAdmin")]
         public ActionResult Create([Bind(Include = "regionId,countryId,region_name,description,isDeleted")] region region)
         {
             if (ModelState.IsValid)
@@ -81,7 +76,6 @@ namespace WasteMangement.Controllers
         }
 
         // GET: regions/Edit/5
-        [Authorize(Roles = "SystemAdmin")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -105,7 +99,6 @@ namespace WasteMangement.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "SystemAdmin")]
         public ActionResult Edit([Bind(Include = "regionId,countryId,region_name,description,isDeleted")] region region)
         {
             if (ModelState.IsValid)
@@ -121,7 +114,6 @@ namespace WasteMangement.Controllers
         // POST: regions/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "SystemAdmin")]
         public ActionResult DeleteConfirmed(int id)
         {
             region region = db.regions.Find(id);
