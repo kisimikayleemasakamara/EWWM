@@ -6,8 +6,6 @@
                      select d.name).ToList();
     var exist = districts.Contains("Bomabali");
     var a = 0;
-    var di = ViewBag.district;
-    Session["district"] = di;
 }
 <!DOCTYPE html>
 <html>
@@ -39,20 +37,20 @@
                     @*@Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
                 </div>
                 <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
+                    <ul class="nav navbar-nav" >
                         @*<li>@Html.ActionLink("Home", "Index", "Home")</li>*@
                         <li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
                         <li>@Html.ActionLink("Trash is Money", "TrashIsMoney", "Home")</li>
                         @*<li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
                         @if (exist.Equals(true))
                         {
-                            <select id="district">
+                            <select id="district" style="margin-top:17px;width:auto;">
                                 <option>--Select A District--</option>
                                 @foreach (var item in districts)
                                 {
                                     if (item == "Bomabali")
                                     {
-                                        <option>@item</option>
+                                        <option value="@item">@item</option>
                                     }
                                 }
                                 @foreach (var item in districts)
@@ -110,10 +108,10 @@
                     @*<a class="navbar-brand" href="#">Brand</a>*@
                 </div>
                 <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
-                    <ul class="nav navbar-nav">
+                    <ul class="nav navbar-nav" id="menu">
                         @*<li class="active"><a href="#">View Youth Groups<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>*@
-                        <li class="active"><a href="@Url.Action("index", "Home")" >Home<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>
-                        <li onclick="check()" id="group"><a href="@Url.Action("ViewYouthGroups", "Home")" id="group">View Youth Groups<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>
+                        <li class="active" id="home"><a href="@Url.Action("index", "Home")" >Home<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>
+                        <li id="group"><a href="@Url.Action("ViewYouthGroups", "Home")" id="group">View Youth Groups<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>
                         <li><a href="@Url.Action("Register", "Account")">Register as Client<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a></li>
                         <li><a href="#">Make a Complaint<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-envelope"></span></a></li>
                         @*<li class="dropdown">
@@ -128,8 +126,8 @@
                                     <li><a href="#">One more separated link</a></li>
                                 </ul>
                             </li>*@
-                        <li><a href="@Url.Action("CollectionSites", "Home")">Collection Sites<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>
-                        <li><a href="@Url.Action("PublicWasteBins","Home")">Public Waste Bins<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a></li>
+                        <li id="sites"><a href="@Url.Action("CollectionSites", "Home")">Collection Sites<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>
+                        <li id="bins"><a href="@Url.Action("PublicWasteBins","Home")">Public Waste Bins<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a></li>
                         @*<li><a href="#">Messages<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-envelope"></span></a></li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Settings <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-cog"></span></a>
@@ -161,21 +159,33 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>  
     @RenderSection("scripts", required: false)
     <script>
+        var selectedItem = sessionStorage.getItem("SelectedItem");
         $('select').on('change', function () {
             var d = this.value;
-            $.ajax({
-                url: '/Home/check',
-                type: "POST",
-                dataType: "JSON",
-                data: { state: d },
-                success: function () {
-                }
+            sessionStorage.setItem("SelectedItem", d);
+            $.post("/Home/check",
+                    { state: d},
+                    function (response) {     
+                    }
+                 );
+            window.location.reload(true);
+           
+        });
+        $(document).ready(function () {
+            $("#menu li").click(function () {
+                var d = $(this).attr('id');
+
+                $.ajax({
+                    url: '/Home/page',
+                    type: "POST",
+                    dataType: "JSON",
+                    data: { state: d},
+                    success: function () {
+                    }
+                });
+                
             });
         });
-        function check() {
-            var get = this.id;
-            console.log("get" + get);
-        }
     </script>
         </body>
         </html>

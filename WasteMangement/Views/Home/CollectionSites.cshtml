@@ -1,9 +1,37 @@
-﻿
+﻿@using WasteMangement.Models
+@model WasteMangement.Models.RegisterViewModel
 @{
+    wwmDbEntities db = new wwmDbEntities();
+    var district = Session["district"];
+    var groups = (from g in db.wards
+                  where g.isDeleted == 0
+                  select g).ToList();
+    if (district == null)
+    {
+        groups = (from g in db.wards
+                  where g.isDeleted == 0
+                  select g).ToList();
+    }
+    else
+    {
+        groups = (from g in db.wards
+                  join c in db.constituencies on g.constituenciesId equals c.constituenciesId
+                  join d in db.districts on c.districtsId equals d.districtsId
+                  where g.isDeleted == 0 && c.isDeleted == 0 
+                  && d.name == district
+                  select g).ToList();
+    }
     ViewBag.Title = "Collection Sites";
+};
+@if (district == null)
+{
+    <center><h3>Wards in All Districts</h3></center>
+}
+else
+{
+    <center><h3>Wards in @district District</h3></center>
 }
 
-<center><h3>Wards in Bombali District</h3></center>
 
 <div style="padding-left:10%;">
     <p style="font-size:large;">
@@ -12,29 +40,13 @@
     </p>
     <div style="border:1px solid black;">
         <div class="row" style="margin-top:20px;">
-            <div class="col-md-4" style="text-align:center;">
-                <a href="@Url.Action("CollectionSiteWard", "Home",new { wardNumber = 1 })"><div class="badge" style="text-align:center;">Ward 1</div></a>
-            </div>
-
-            <div class="col-md-4" style="text-align:center;">
-                <a href="@Url.Action("CollectionSiteWard", "Home",new { wardNumber = 2 })"><div class="badge" style="text-align:center;">Ward 2</div></a>
-            </div>
-
-            <div class="col-md-4" style="text-align:center;">
-                <a href="@Url.Action("CollectionSiteWard", "Home",new { wardNumber = 3 })"><div class="badge" style="text-align:center;">Ward 3</div></a>
-            </div>
-
-            <div class="col-md-4" style="text-align:center;">
-                <a href="@Url.Action("CollectionSiteWard", "Home",new { wardNumber = 4 })"><div class="badge" style="text-align:center;">Ward 4</div></a>
-            </div>
-
-            <div class="col-md-4" style="text-align:center;">
-                <a href="@Url.Action("CollectionSiteWard", "Home",new { wardNumber = 5 })"><div class="badge" style="text-align:center;">Ward 5</div></a>
-            </div>
-
-            <div class="col-md-4" style="text-align:center;">
-                <a href="@Url.Action("CollectionSiteWard", "Home",new { wardNumber = 6 })"><div class="badge" style="text-align:center;">Ward 6</div></a>
-            </div>
+            @foreach (var item in groups)
+            {
+                <div class="col-md-4" style="text-align:center;">
+                    <a href="@Url.Action("CollectionSiteWard", "Home",new { wardNumber = 1 })"><div class="badge" style="text-align:center;">@item.name</div></a>
+                </div>
+            }
+          @* <a href="@Url.Action("CollectionSiteWard", "Home",new { wardNumber = 1 })"><div class="badge" style="text-align:center;">Ward 1</div></a>*@
 
         </div>
     </div>
