@@ -59,6 +59,14 @@ namespace WasteMangement.Controllers
             Session["district"] = v;
             return RedirectToAction("Index");
         }
+        [AllowAnonymous]
+        public ActionResult Login(string returnUrl)
+        {
+            Session["district1"] = Session["district"];
+            var d = Session["district"];
+            ViewBag.ReturnUrl = returnUrl;
+            return View();
+        }
         public ActionResult Contact()
         {
             ViewBag.Message = "Your contact page.";

@@ -6,6 +6,7 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/DistrictAdminDashboard.cshtml";
     wwmDbEntities db = new wwmDbEntities();
+    string dname = "";
     var dId = 0;
     string userID = User.Identity.GetUserId();
     var distId = (from a in db.districts
@@ -14,11 +15,13 @@
                   && b.UserId == userID
                   select new
                   {
-                      a.districtsId
+                      a.districtsId,
+                      a.name
                   }).SingleOrDefault();
     if (distId != null)
     {
         dId = distId.districtsId;
+        dname = distId.name;
     }
 }
 
@@ -83,7 +86,7 @@
                                     <!-- Modal content-->
                                     <div class="modal-content">
                                         <div class="modal-header" style="background-color:#061435;">
-                                            <center><h4 class="modal-title" style="text-align: center;font-weight: 700;color: white;">Delete Community</h4></center>
+                                            <center><h4 class="modal-title" style="text-align: center;font-weight: 700;color: white;">Delete Community (@dname)</h4></center>
                                             <button type="button" class="close" data-dismiss="modal" style="color: white;opacity: 1;">&times;</button>
 
                                         </div>
@@ -105,70 +108,13 @@
                                 </div>
                             </div>
 
-                            <div class="modal fade" id="addCommunity" role="dialog">
-                                <div class="modal-dialog">
-
-                                    <!-- Modal content-->
-                                    <div class="modal-content">
-                                        <div class="modal-header" style="background-color:#061435;">
-                                            <h4 class="modal-title" style="text-align:center;font-weight: 700;color: white;">Add Community</h4>
-                                            <button type="button" class="close" data-dismiss="modal" style="color: white;opacity: 1;">&times;</button>
-
-                                        </div>
-                                        <div class="modal-body">
-                                            <form action="@Url.Action("Create", "communities")" method="post">
-                                                @Html.AntiForgeryToken()
-                                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                                                @if (ViewBag.constituecy != null)
-                                                {
-                                                    <div class="form-group">
-                                                        <label class="control-label">&nbsp;&nbsp;&nbsp;Select Constituency</label>
-                                                        <select name="constituenciesId" class="form-control" id="constituenciesID" required>
-                                                            @foreach (var item1 in ViewBag.constituecy)
-                                                            {
-                                                                <option value="@item1.constituencyId">@item1.constitunecyName</option>
-                                                            }
-                                                        </select>
-                                                    </div>
-                                                }
-                                                <div class="form-group">
-                                                    <label class="control-label">&nbsp;&nbsp;&nbsp;Select Ward</label>
-                                                    @Html.DropDownList("wardID",
-                     new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"),
-                     new { @class = "form-control", @id = "wardID", Name = "wardId", required = "required" })
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="control-label">&nbsp;&nbsp;&nbsp;Select Section</label>
-                                                    @Html.DropDownList("sectionID",
-                     new SelectList(Enumerable.Empty<SelectListItem>(), "Value", "Text"),
-                     new { @class = "form-control", @id = "sectionID", Name = "sectionId", required = "required" })
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="control-label">&nbsp;&nbsp;&nbsp;Community Name</label>
-                                                    <input name="name" class="form-control" type="text" required>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="control-label">&nbsp;&nbsp;&nbsp;Community Description</label>
-                                                    <textarea rows="4" cols="61" name="description" class="form-control" required></textarea>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <input type="submit" value="Add Community" class="btn btn-primary" />
-                                                </div>
-
-                                            </form>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-
                             <div class="modal fade" id="editCommunity @item.communitiesId" role="dialog">
                                 <div class="modal-dialog">
 
                                     <!-- Modal content-->
                                     <div class="modal-content">
                                         <div class="modal-header" style="background-color:#061435;">
-                                            <h4 class="modal-title" style="text-align: center;font-weight: 700;color: white;">Edit Community</h4>
+                                            <h4 class="modal-title" style="text-align: center;font-weight: 700;color: white;">Edit Community (@dname)</h4>
                                             <button type="button" class="close" data-dismiss="modal" style="color: white;opacity: 1;">&times;</button>
 
                                         </div>
@@ -227,7 +173,7 @@
                             <!-- Modal content-->
                             <div class="modal-content">
                                 <div class="modal-header" style="background-color:#061435;">
-                                    <h4 class="modal-title" style="text-align:center;font-weight: 700;color: white;">Add Community</h4>
+                                    <h4 class="modal-title" style="text-align:center;font-weight: 700;color: white;">Add Community (@dname)</h4>
                                     <button type="button" class="close" data-dismiss="modal" style="color: white;opacity: 1;">&times;</button>
 
                                 </div>

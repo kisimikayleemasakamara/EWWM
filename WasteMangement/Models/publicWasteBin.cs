@@ -19,6 +19,8 @@ namespace WasteMangement.Models
         public string publicWasteBinDescription { get; set; }
         public int collectionSiteId { get; set; }
         public int isDeleted { get; set; }
+        public string publicWasteBinNumber { get; set; }
+        public string publicWasteBinSiteManager { get; set; }
         public string siteName { get; set; }
         public virtual collectionSite collectionSite { get; set; }
     }

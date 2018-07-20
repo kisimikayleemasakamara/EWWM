@@ -1,9 +1,32 @@
-﻿@model IEnumerable<WasteMangement.Models.Fascility>
-
+﻿@using WasteMangement.Models
+@model IEnumerable<WasteMangement.Models.Fascility>
+@using Microsoft.AspNet.Identity
+@using Microsoft.AspNet.Identity.EntityFramework;
 @{
     ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_Dashboard.cshtml";
+    Layout = "~/Views/Shared/DistrictAdminDashboard.cshtml";
+    wwmDbEntities db = new wwmDbEntities();
+    var dId = 0;
+    string dname = "";
+    string userID = User.Identity.GetUserId();
+    var distId = (from a in db.districts
+                  join b in db.districtAdmins on a.districtAdminId equals b.districtAdminId
+                  where b.isDeleted == 0 && a.isDeleted == 0
+                  && b.UserId == userID
+                  select new
+                  {
+                      a.districtsId,
+                      a.name
+                  }).SingleOrDefault();
+    if (distId != null)
+    {
+        dId = distId.districtsId;
+        dname = distId.name;
+    }
 }
+
+@if (dId != 0)
+{
 
 <div class="limiter">
     <div class="container-table100">
@@ -11,7 +34,7 @@
             <div class="table100">
                 <div class="row">
                     <div class="col-md-3 pull-left">
-                        <button class="btn btn-dark" data-toggle="modal" data-target="#addFascility" style="color:white;font-size:medium">Add Fascility</button>
+                        <button class="btn btn-dark" data-toggle="modal" data-target="#addFacility" style="color:white;font-size:medium">Add Facility</button>
                     </div>
                 </div>
 
@@ -19,9 +42,10 @@
                 <table class="table table-hover">
                     <thead style="background-color:ghostwhite">
                         <tr>
-                            <th class="text-center">Fascility Name</th>
+                            <th class="text-center">Facility Name</th>
                             <th class="text-center">Waste Collection Price Per Month</th>
-                            <th class="text-center">Fascility Description</th>
+                            <th class="text-center">Facility Description</th>
+                            <th class="text-center">Facility District</th>
                             <th class="text-center">Actions</th>
                         </tr>
                     </thead>
@@ -40,7 +64,7 @@
                                 {
                                     <td class="text-center">@item.Fascility_Description</td>
                                 }
-
+                                <td class="text-center">@item.districtName</td>
                                 <td class="text-center">
                                     <button class="btn btn-info" onclick="EditFascilityRecord(@item.Fascility_Id)">Edit</button> |
                                     <button class="btn btn-primary" data-toggle="collapse" data-target="#detailFascility @item.Fascility_Id">Details</button> |
@@ -63,15 +87,15 @@
                                         <!-- Modal content-->
                                         <div class="modal-content">
                                             <div class="modal-header" style="background-color:#061435;">
-                                                <h4 class="modal-title" style="text-align: center;font-weight: 700;color: white;">Delete Fascility</h4>
+                                                <h4 class="modal-title" style="text-align: center;font-weight: 700;color: white;">Delete Facility @item.districtName</h4>
                                                 <button type="button" class="close" data-dismiss="modal" style="color: white;opacity: 1;">&times;</button>
                                                 
                                             </div>
                                             <div class="modal-body">
-                                                <form method="POST" action="@Url.Action("Delete", "Fascilities",new { id = item.Fascility_Id })">
+                                                <form method="POST" action="@Url.Action("Delete", "Fascilities", new { id = item.Fascility_Id })">
                                                     @Html.AntiForgeryToken()
                                                     <div class="form-group">
-                                                        <label class="control-label">&nbsp;&nbsp;&nbsp;Are you Sure you Want to delete the fascility?</label>
+                                                        <label class="control-label">&nbsp;&nbsp;&nbsp;Are you Sure you Want to delete the facility?</label>
                                                     </div>
                                                     <div class="modal-footer">
                                                         <input type="submit" value="Sure!" class="btn btn-primary" />
@@ -91,13 +115,13 @@
                 {
 
 
-                    <div class="modal fade" id="addFascility" role="dialog">
+                    <div class="modal fade" id="addFacility" role="dialog">
                         <div class="modal-dialog">
 
                             <!-- Modal content-->
                             <div class="modal-content">
                                 <div class="modal-header" style="background-color:#061435;">
-                                    <h4 class="modal-title" style="text-align:center;font-weight: 700;color: white;">Add Fascility</h4>
+                                    <h4 class="modal-title" style="text-align:center;font-weight: 700;color: white;">Add Facility (@dname)</h4>
                                     <button type="button" class="close" data-dismiss="modal" style="color: white;opacity: 1;">&times;</button>
                                     
                                 </div>
@@ -106,7 +130,7 @@
                                         @Html.AntiForgeryToken()
                                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                                         <div class="form-group">
-                                            <label class="control-label">&nbsp;&nbsp;&nbsp;Fascility Name</label>
+                                            <label class="control-label">&nbsp;&nbsp;&nbsp;Facility Name</label>
                                             <input name="Fascility_Name" class="form-control" type="text" required>
                                         </div>
                                         <div class="form-group">
@@ -114,10 +138,11 @@
                                             <input name="WasteCollectionPricePerMonth" class="form-control" type="text" required>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label">&nbsp;&nbsp;&nbsp;Fascility Description</label>
+                                            <label class="control-label">&nbsp;&nbsp;&nbsp;Facility Description</label>
                                             <textarea rows="4" cols="61" name="Fascility_Description" class="form-control" required></textarea>
                                         </div>
                                         <div class="modal-footer">
+                                            <input type="hidden" name="districtsId" value="@dId" />
                                             <input type="submit" value="Add Fascility" class="btn btn-primary" />
                                         </div>
 
@@ -134,7 +159,7 @@
                             <!-- Modal content-->
                             <div class="modal-content">
                                 <div class="modal-header" style="background-color:#061435;">
-                                    <h4 class="modal-title" style="text-align:center;font-weight: 700;color: white;">Edit Fascility</h4>
+                                    <h4 class="modal-title" style="text-align:center;font-weight: 700;color: white;">Edit Facility (@dname)</h4>
                                     <button type="button" class="close" data-dismiss="modal" style="color: white;opacity: 1;">&times;</button>
                                    
                                 </div>
@@ -143,7 +168,7 @@
                                         @Html.AntiForgeryToken()
                                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                                         <div class="form-group">
-                                            <label class="control-label">&nbsp;&nbsp;&nbsp;Fascility Name</label>
+                                            <label class="control-label">&nbsp;&nbsp;&nbsp;Facility Name</label>
                                             <input name="Fascility_Name" class="form-control" type="text" id="Fascility_Name" required>
                                         </div>
                                         <div class="form-group">
@@ -151,13 +176,14 @@
                                             <input name="WasteCollectionPricePerMonth" class="form-control" type="text" id="WasteCollectionPricePerMonth" required>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label">&nbsp;&nbsp;&nbsp;Fascility Description</label>
+                                            <label class="control-label">&nbsp;&nbsp;&nbsp;Facility Description</label>
                                             <textarea rows="4" cols="61" name="Fascility_Description" class="form-control" id="Fascility_Description" required></textarea>
                                         </div>
                                        
                                         <div class="modal-footer">
+                                            <input name="districtsId" id="districtId" type="hidden" />
                                             <input type="hidden" id="fascilityId" name="Fascility_Id" />
-                                            <input type="submit" value="Update Fascility" class="btn btn-primary" />
+                                            <input type="submit" value="Update Facility" class="btn btn-primary" />
                                         </div>
 
                                     </form>
@@ -174,6 +200,14 @@
         </div>
     </div>
 </div>
+}
+else
+{
+    <div class="alert alert-warning">
+        <strong>Sorry!</strong> You have not assigned district yet.
+    </div>
+}
+
 <script>
     function EditFascilityRecord(FascilityId) {
          var url = "/Fascilities/Edit/" + FascilityId;
@@ -189,7 +223,7 @@
                 $("#Fascility_Name").val(obj.Fascility_Name);
                 $("#Fascility_Description").val(obj.Fascility_Description);
                 $("#WasteCollectionPricePerMonth").val(obj.WasteCollectionPricePerMonth);
-
+                $("#districtId").val(obj.districtsId);
             }
         })
      }

@@ -38,6 +38,8 @@ namespace WasteMangement.Controllers
                              siteId = i.collectionSiteId,
                              binId = w.publicWasteBinId,
                              binName = w.publicWasteBinName,
+                             w.publicWasteBinNumber,
+                             w.publicWasteBinSiteManager,
                              binDescription = w.publicWasteBinDescription
                          }).ToList();
             List<publicWasteBin> publicWasteBins = new List<publicWasteBin>();
@@ -49,7 +51,9 @@ namespace WasteMangement.Controllers
                     siteName = item.siteName,
                     publicWasteBinId = item.binId,
                     publicWasteBinName = item.binName,
-                    publicWasteBinDescription = item.binDescription
+                    publicWasteBinDescription = item.binDescription,
+                    publicWasteBinNumber = item.publicWasteBinNumber,
+                    publicWasteBinSiteManager = item.publicWasteBinSiteManager
                 });
             }
             var query1 = (from i in db.collectionSites
@@ -86,7 +90,7 @@ namespace WasteMangement.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "DistrictAdmin")]
-        public ActionResult Create([Bind(Include = "publicWasteBinId,publicWasteBinName,publicWasteBinDescription,collectionSiteId,isDeleted")] publicWasteBin publicWasteBin)
+        public ActionResult Create([Bind(Include = "publicWasteBinId,publicWasteBinName,publicWasteBinDescription,collectionSiteId,isDeleted,publicWasteBinNumber,publicWasteBinSiteManager")] publicWasteBin publicWasteBin)
         {
             if (ModelState.IsValid)
             {
@@ -104,7 +108,7 @@ namespace WasteMangement.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "DistrictAdmin")]
-        public ActionResult Edit([Bind(Include = "publicWasteBinId,publicWasteBinName,publicWasteBinDescription,collectionSiteId,isDeleted")] publicWasteBin publicWasteBin)
+        public ActionResult Edit([Bind(Include = "publicWasteBinId,publicWasteBinName,publicWasteBinDescription,collectionSiteId,isDeleted,publicWasteBinNumber,publicWasteBinSiteManager")] publicWasteBin publicWasteBin)
         {
             if (ModelState.IsValid)
             {

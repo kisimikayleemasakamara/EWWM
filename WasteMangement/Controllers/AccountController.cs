@@ -75,25 +75,132 @@ namespace WasteMangement.Controllers
             }
         }
 
-        //
-        // GET: /Account/Login
-        [AllowAnonymous]
-        public ActionResult Login(string returnUrl)
-        {
-            ViewBag.ReturnUrl = returnUrl;
-            return View();
-        }
 
         //
         // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
+        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl,string role,string districtName)
         {
+            if(role == "DistrictAdmin")
+            {
+                var usr = (from ui in db.AspNetUsers
+                         join d in db.districtAdmins on ui.Id equals d.UserId
+                         join dis in db.districts on d.districtAdminId equals dis.districtAdminId
+                         where dis.name == districtName && ui.Email == model.Email
+                         && d.isDeleted == 0 && ui.isDeleted == 0 && dis.isDeleted == 0
+                         select ui);
+                if (usr.Count() != 0)
+                {
+                    if (!ModelState.IsValid)
+                    {
+                        return RedirectToAction("Login", "Home");
+                    }
+                    var exist1 = (from us in db.AspNetUsers
+                                  where
+                                  us.Email == model.Email && us.isDeleted == 1
+                                  select us).ToList();
+                    // This doesn't count login failures towards account lockout
+                    // To enable password failures to trigger account lockout, change to shouldLockout: true
+                    //var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+                    if (exist1.Count == 0)
+                    {
+                        try
+                        {
+                            var user = context.Users.Where(u => u.Email.Equals(model.Email)).Single(); // where db is ApplicationDbContext instance
+                            var result = await SignInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, shouldLockout: false);
+
+                            switch (result)
+                            {
+                                case SignInStatus.Success:
+                                    return RedirectToLocal(returnUrl);
+                                case SignInStatus.LockedOut:
+                                    return View("Lockout");
+                                case SignInStatus.RequiresVerification:
+                                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+                                case SignInStatus.Failure:
+                                default:
+                                    ModelState.AddModelError("", "Invalid login attempt.");
+                                    return RedirectToAction("Login", "Home");
+                            }
+                        }
+                        catch (InvalidOperationException)
+                        {
+                            TempData["message"] = "Invalid login attempt.";
+                            return RedirectToAction("Login", "Home");
+                        }
+                    }
+                    else
+                    {
+                        TempData["message"] = "Invalid login attempt.";
+                        return RedirectToAction("Login", "Home");
+                    }
+                }
+                else
+                {
+                    TempData["message"] = "Invalid login attempt.";
+                    return RedirectToAction("Login", "Home");
+                }
+            }
+            if(role == "SystemAdmin")
+            {
+                    if (!ModelState.IsValid)
+                    {
+                        return RedirectToAction("Login", "Home");
+                    }
+                    var exist1 = (from us in db.AspNetUsers
+                                  where
+                                  us.Email == model.Email && us.isDeleted == 1
+                                  select us).ToList();
+                    // This doesn't count login failures towards account lockout
+                    // To enable password failures to trigger account lockout, change to shouldLockout: true
+                    //var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
+                    if (exist1.Count == 0)
+                    {
+                        try
+                        {
+                        var em = "kisimikayleemasa@hotmail.com";
+                        if(!model.Email.Equals(em))
+                        {
+                            TempData["message"] = "Invalid login attempt.";
+                            return RedirectToAction("Login", "Home");
+                        }
+                            var user = context.Users.Where(u => u.Email.Equals(model.Email)).Single(); // where db is ApplicationDbContext instance
+
+                            var result = await SignInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, shouldLockout: false);
+
+                            switch (result)
+                            {
+                                case SignInStatus.Success:
+                                    return RedirectToLocal(returnUrl);
+                                case SignInStatus.LockedOut:
+                                    return View("Lockout");
+                                case SignInStatus.RequiresVerification:
+                                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+                                case SignInStatus.Failure:
+                                default:
+                                TempData["message"] = "Invalid login attempt.";
+                                return RedirectToAction("Login", "Home");
+                            }
+                        }
+                        catch (InvalidOperationException)
+                        {
+                        TempData["message"] = "Invalid login attempt.";
+                        return RedirectToAction("Login", "Home");
+                        }
+                }
+                
+            }
+            else if(role == "YouthAdmin")
+            {
+                TempData["message"] = "Invalid login attempt.";
+                return RedirectToAction("Login", "Home");
+            }
+            
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return RedirectToAction("Login", "Home");
             }
             var exist = (from us in db.AspNetUsers
                          where
@@ -119,20 +226,20 @@ namespace WasteMangement.Controllers
                             return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                         case SignInStatus.Failure:
                         default:
-                            ModelState.AddModelError("", "Invalid login attempt.");
-                            return View(model);
+                            TempData["message"] = "Invalid login attempt.";
+                            return RedirectToAction("Login", "Home");
                     }
                 }
                 catch (InvalidOperationException)
                 {
-                    ModelState.AddModelError("", "Invalid login attempt.");
-                    return View(model);
+                    TempData["message"] = "Invalid login attempt.";
+                    return RedirectToAction("Login", "Home");
                 }
             }
             else
             {
-                ModelState.AddModelError("", "Invalid login attempt.");
-                return View(model);
+                TempData["message"] = "Invalid login attempt.";
+                return RedirectToAction("Login", "Home");
             }
         }
 

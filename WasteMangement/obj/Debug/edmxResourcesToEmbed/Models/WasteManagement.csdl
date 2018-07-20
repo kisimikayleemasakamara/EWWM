@@ -181,6 +181,7 @@
     <NavigationProperty Name="region" Relationship="Self.FK_districts_region" FromRole="districts" ToRole="region" />
     <NavigationProperty Name="staffs" Relationship="Self.FK_staff_districts" FromRole="districts" ToRole="staff" />
     <NavigationProperty Name="YouthGroups" Relationship="Self.FK_YouthGroup_districts" FromRole="districts" ToRole="YouthGroup" />
+    <NavigationProperty Name="Fascilities" Relationship="wwmDbModel.FK_Fascility_districts" FromRole="district" ToRole="Fascility" />
   </EntityType>
   <EntityType Name="Fascility">
     <Key>
@@ -191,6 +192,8 @@
     <Property Name="Fascility_Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
     <Property Name="WasteCollectionPricePerMonth" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
     <Property Name="isDeleted" Type="Int32" Nullable="false" />
+    <Property Name="districtsId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="district" Relationship="wwmDbModel.FK_Fascility_districts" FromRole="Fascility" ToRole="district" />
   </EntityType>
   <EntityType Name="publicWasteBin">
     <Key>
@@ -202,6 +205,8 @@
     <Property Name="collectionSiteId" Type="Int32" Nullable="false" />
     <Property Name="isDeleted" Type="Int32" Nullable="false" />
     <NavigationProperty Name="collectionSite" Relationship="Self.FK_publicWasteBin_collectionSite" FromRole="publicWasteBin" ToRole="collectionSite" />
+    <Property Name="publicWasteBinNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="publicWasteBinSiteManager" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
   </EntityType>
   <EntityType Name="region">
     <Key>
@@ -659,5 +664,21 @@
       <End Role="AspNetRoles" EntitySet="AspNetRoles" />
       <End Role="AspNetUsers" EntitySet="AspNetUsers" />
     </AssociationSet>
+    <AssociationSet Name="FK_Fascility_districts" Association="wwmDbModel.FK_Fascility_districts">
+      <End Role="district" EntitySet="districts" />
+      <End Role="Fascility" EntitySet="Fascilities" />
+    </AssociationSet>
   </EntityContainer>
+  <Association Name="FK_Fascility_districts">
+    <End Type="wwmDbModel.district" Role="district" Multiplicity="1" />
+    <End Type="wwmDbModel.Fascility" Role="Fascility" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="district">
+        <PropertyRef Name="districtsId" />
+      </Principal>
+      <Dependent Role="Fascility">
+        <PropertyRef Name="districtsId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

@@ -7,6 +7,7 @@
     Layout = "~/Views/Shared/DistrictAdminDashboard.cshtml";
     wwmDbEntities db = new wwmDbEntities();
     var dId = 0;
+    string dname = "";
     string userID = User.Identity.GetUserId();
     var distId = (from a in db.districts
                   join b in db.districtAdmins on a.districtAdminId equals b.districtAdminId
@@ -14,11 +15,13 @@
                   && b.UserId == userID
                   select new
                   {
-                      a.districtsId
+                      a.districtsId,
+                      a.name
                   }).SingleOrDefault();
     if (distId != null)
     {
         dId = distId.districtsId;
+        dname = distId.name;
     }
 }
 @if (dId != 0)
@@ -84,7 +87,7 @@
                                     <!-- Modal content-->
                                     <div class="modal-content">
                                         <div class="modal-header" style="background-color:#061435;">
-                                            <center><h4 class="modal-title" style="text-align: center;font-weight: 700;color: white;">Delete Collection Site</h4></center>
+                                            <center><h4 class="modal-title" style="text-align: center;font-weight: 700;color: white;">Delete Collection Site (@dname)</h4></center>
                                             <button type="button" class="close" data-dismiss="modal" style="color: white;opacity: 1;">&times;</button>
 
                                         </div>
@@ -114,7 +117,7 @@
                                         <!-- Modal content-->
                                         <div class="modal-content">
                                             <div class="modal-header" style="background-color:#061435;">
-                                                <h4 class="modal-title" style="text-align: center;font-weight: 700;color: white;">Edit Collection Site</h4>
+                                                <h4 class="modal-title" style="text-align: center;font-weight: 700;color: white;">Edit Collection Site (@dname)</h4>
                                                 <button type="button" class="close" data-dismiss="modal" style="color: white;opacity: 1;">&times;</button>
 
                                             </div>
@@ -169,7 +172,7 @@
                             <!-- Modal content-->
                             <div class="modal-content">
                                 <div class="modal-header" style="background-color:#061435;">
-                                    <h4 class="modal-title" style="text-align:center;font-weight: 700;color: white;">Add Collection Site</h4>
+                                    <h4 class="modal-title" style="text-align:center;font-weight: 700;color: white;">Add Collection Site (@dname)</h4>
                                     <button type="button" class="close" data-dismiss="modal" style="color: white;opacity: 1;">&times;</button>
 
                                 </div>

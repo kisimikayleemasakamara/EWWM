@@ -128,6 +128,7 @@
                             </li>*@
                         <li id="sites"><a href="@Url.Action("CollectionSites", "Home")">Collection Sites<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>
                         <li id="bins"><a href="@Url.Action("PublicWasteBins","Home")">Public Waste Bins<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a></li>
+                        <li><a href="#">Landfills<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-envelope"></span></a></li>
                         @*<li><a href="#">Messages<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-envelope"></span></a></li>
                             <li class="dropdown">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">Settings <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-cog"></span></a>
@@ -160,7 +161,11 @@
     @RenderSection("scripts", required: false)
     <script>
         var selectedItem = sessionStorage.getItem("SelectedItem");
-        $('select').on('change', function () {
+        if (selectedItem != null)
+        {
+            $('#district').val(selectedItem);
+        }
+        $('#district').on('change', function () {
             var d = this.value;
             sessionStorage.setItem("SelectedItem", d);
             $.post("/Home/check",

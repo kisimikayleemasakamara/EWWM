@@ -24,8 +24,9 @@ namespace WasteMangement.Models
         public string youthGroupName { get; set; }
         public string youthGroupDescription { get; set; }
         public int districtsId { get; set; }
-        public int isDeleted { get; set; }
         public string districtName { get; set; }
+        public int isDeleted { get; set; }
+    
         public virtual district district { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<YouthGroupAdmin> YouthGroupAdmins { get; set; }

@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Microsoft.AspNet.Identity;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -18,9 +19,36 @@ namespace WasteMangement.Controllers
         // GET: Fascilities
         public ActionResult Index()
         {
-            return View((from d in db.Fascilities
-                         where d.isDeleted == 0
-                         select d).ToList());
+            string userID = User.Identity.GetUserId();
+            var query = (from a in db.Fascilities
+                         join b in db.districts on a.districtsId equals b.districtsId
+                         join c in db.districtAdmins on b.districtAdminId equals c.districtAdminId
+                         where b.isDeleted == 0 && a.isDeleted == 0
+                         && c.isDeleted == 0 && c.UserId == userID
+                         select new
+                         {
+                             Fascility_Id = a.Fascility_Id,
+                             Fascility_Name = a.Fascility_Name,
+                             Fascility_Description = a.Fascility_Description,
+                             WasteCollectionPricePerMonth = a.WasteCollectionPricePerMonth,
+                             districtName = b.name,
+                             districtId = b.districtsId
+
+                         }).ToList();
+            List<Fascility> facilities = new List<Fascility>();
+            foreach (var item in query)
+            {
+                facilities.Add(new Fascility()
+                {
+                    Fascility_Id = item.Fascility_Id,
+                    Fascility_Name = item.Fascility_Name,
+                    Fascility_Description = item.Fascility_Description,
+                    WasteCollectionPricePerMonth = item.WasteCollectionPricePerMonth,
+                    districtName = item.districtName,
+                    districtsId = item.districtId
+                });
+            }
+            return View(facilities);
         }
 
         // POST: Fascilities/Create
@@ -28,7 +56,7 @@ namespace WasteMangement.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Fascility_Id,Fascility_Name,Fascility_Description,WasteCollectionPricePerMonth")] Fascility fascility)
+        public ActionResult Create([Bind(Include = "Fascility_Id,Fascility_Name,Fascility_Description,WasteCollectionPricePerMonth,districtsId")] Fascility fascility)
         {
             if (ModelState.IsValid)
             {
@@ -65,7 +93,7 @@ namespace WasteMangement.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Fascility_Id,Fascility_Name,Fascility_Description,WasteCollectionPricePerMonth")] Fascility fascility)
+        public ActionResult Edit([Bind(Include = "Fascility_Id,Fascility_Name,Fascility_Description,WasteCollectionPricePerMonth,districtsId")] Fascility fascility)
         {
             if (ModelState.IsValid)
             {

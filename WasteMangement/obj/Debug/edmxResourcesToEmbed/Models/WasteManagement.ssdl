@@ -171,6 +171,7 @@
     <Property Name="Fascility_Description" Type="nvarchar(max)" />
     <Property Name="WasteCollectionPricePerMonth" Type="nvarchar" MaxLength="50" Nullable="false" />
     <Property Name="isDeleted" Type="int" Nullable="false" />
+    <Property Name="districtsId" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="publicWasteBin">
     <Key>
@@ -181,6 +182,8 @@
     <Property Name="publicWasteBinDescription" Type="varchar(max)" />
     <Property Name="collectionSiteId" Type="int" Nullable="false" />
     <Property Name="isDeleted" Type="int" Nullable="false" />
+    <Property Name="publicWasteBinNumber" Type="nvarchar(max)" />
+    <Property Name="publicWasteBinSiteManager" Type="nvarchar(max)" Nullable="false" />
   </EntityType>
   <EntityType Name="region">
     <Key>
@@ -420,6 +423,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_Fascility_districts">
+    <End Role="districts" Type="Self.districts" Multiplicity="1" />
+    <End Role="Fascility" Type="Self.Fascility" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="districts">
+        <PropertyRef Name="districtsId" />
+      </Principal>
+      <Dependent Role="Fascility">
+        <PropertyRef Name="districtsId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_publicWasteBin_collectionSite">
     <End Role="collectionSite" Type="Self.collectionSite" Multiplicity="1" />
     <End Role="publicWasteBin" Type="Self.publicWasteBin" Multiplicity="*" />
@@ -613,6 +628,10 @@
     <AssociationSet Name="FK_districts_region" Association="Self.FK_districts_region">
       <End Role="region" EntitySet="region" />
       <End Role="districts" EntitySet="districts" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Fascility_districts" Association="Self.FK_Fascility_districts">
+      <End Role="districts" EntitySet="districts" />
+      <End Role="Fascility" EntitySet="Fascility" />
     </AssociationSet>
     <AssociationSet Name="FK_publicWasteBin_collectionSite" Association="Self.FK_publicWasteBin_collectionSite">
       <End Role="collectionSite" EntitySet="collectionSite" />

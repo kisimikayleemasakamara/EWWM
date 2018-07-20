@@ -18,6 +18,10 @@ namespace WasteMangement.Models
         public string Fascility_Name { get; set; }
         public string Fascility_Description { get; set; }
         public string WasteCollectionPricePerMonth { get; set; }
+        public string districtName { get; set; }
         public int isDeleted { get; set; }
+        public int districtsId { get; set; }
+    
+        public virtual district district { get; set; }
     }
 }

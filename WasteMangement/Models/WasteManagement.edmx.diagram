@@ -50,6 +50,7 @@
         <AssociationConnector Association="wwmDbModel.FK_Staff_Task_staff" ManuallyRouted="false" />
         <AssociationConnector Association="wwmDbModel.FK_YouthGroupAdmin_YouthGroup" ManuallyRouted="false" />
         <AssociationConnector Association="wwmDbModel.AspNetUserRoles" ManuallyRouted="false" />
+        <AssociationConnector Association="wwmDbModel.FK_Fascility_districts" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

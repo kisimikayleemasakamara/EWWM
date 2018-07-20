@@ -169,6 +169,7 @@
     <EntitySetMapping Name="Fascilities">
       <EntityTypeMapping TypeName="wwmDbModel.Fascility">
         <MappingFragment StoreEntitySet="Fascility">
+          <ScalarProperty Name="districtsId" ColumnName="districtsId" />
           <ScalarProperty Name="Fascility_Id" ColumnName="Fascility_Id" />
           <ScalarProperty Name="Fascility_Name" ColumnName="Fascility_Name" />
           <ScalarProperty Name="Fascility_Description" ColumnName="Fascility_Description" />
@@ -180,6 +181,8 @@
     <EntitySetMapping Name="publicWasteBins">
       <EntityTypeMapping TypeName="wwmDbModel.publicWasteBin">
         <MappingFragment StoreEntitySet="publicWasteBin">
+          <ScalarProperty Name="publicWasteBinSiteManager" ColumnName="publicWasteBinSiteManager" />
+          <ScalarProperty Name="publicWasteBinNumber" ColumnName="publicWasteBinNumber" />
           <ScalarProperty Name="publicWasteBinId" ColumnName="publicWasteBinId" />
           <ScalarProperty Name="publicWasteBinName" ColumnName="publicWasteBinName" />
           <ScalarProperty Name="publicWasteBinDescription" ColumnName="publicWasteBinDescription" />

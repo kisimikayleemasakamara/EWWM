@@ -176,6 +176,7 @@
           <Property Name="Fascility_Description" Type="nvarchar(max)" />
           <Property Name="WasteCollectionPricePerMonth" Type="nvarchar" MaxLength="50" Nullable="false" />
           <Property Name="isDeleted" Type="int" Nullable="false" />
+          <Property Name="districtsId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="publicWasteBin">
           <Key>
@@ -186,6 +187,8 @@
           <Property Name="publicWasteBinDescription" Type="varchar(max)" />
           <Property Name="collectionSiteId" Type="int" Nullable="false" />
           <Property Name="isDeleted" Type="int" Nullable="false" />
+          <Property Name="publicWasteBinNumber" Type="nvarchar(max)" />
+          <Property Name="publicWasteBinSiteManager" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
         <EntityType Name="region">
           <Key>
@@ -425,6 +428,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Fascility_districts">
+          <End Role="districts" Type="Self.districts" Multiplicity="1" />
+          <End Role="Fascility" Type="Self.Fascility" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="districts">
+              <PropertyRef Name="districtsId" />
+            </Principal>
+            <Dependent Role="Fascility">
+              <PropertyRef Name="districtsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_publicWasteBin_collectionSite">
           <End Role="collectionSite" Type="Self.collectionSite" Multiplicity="1" />
           <End Role="publicWasteBin" Type="Self.publicWasteBin" Multiplicity="*" />
@@ -618,6 +633,10 @@
           <AssociationSet Name="FK_districts_region" Association="Self.FK_districts_region">
             <End Role="region" EntitySet="region" />
             <End Role="districts" EntitySet="districts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Fascility_districts" Association="Self.FK_Fascility_districts">
+            <End Role="districts" EntitySet="districts" />
+            <End Role="Fascility" EntitySet="Fascility" />
           </AssociationSet>
           <AssociationSet Name="FK_publicWasteBin_collectionSite" Association="Self.FK_publicWasteBin_collectionSite">
             <End Role="collectionSite" EntitySet="collectionSite" />
@@ -845,6 +864,7 @@
           <NavigationProperty Name="region" Relationship="Self.FK_districts_region" FromRole="districts" ToRole="region" />
           <NavigationProperty Name="staffs" Relationship="Self.FK_staff_districts" FromRole="districts" ToRole="staff" />
           <NavigationProperty Name="YouthGroups" Relationship="Self.FK_YouthGroup_districts" FromRole="districts" ToRole="YouthGroup" />
+          <NavigationProperty Name="Fascilities" Relationship="wwmDbModel.FK_Fascility_districts" FromRole="district" ToRole="Fascility" />
         </EntityType>
         <EntityType Name="Fascility">
           <Key>
@@ -855,6 +875,8 @@
           <Property Name="Fascility_Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="WasteCollectionPricePerMonth" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="isDeleted" Type="Int32" Nullable="false" />
+          <Property Name="districtsId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="district" Relationship="wwmDbModel.FK_Fascility_districts" FromRole="Fascility" ToRole="district" />
         </EntityType>
         <EntityType Name="publicWasteBin">
           <Key>
@@ -866,6 +888,8 @@
           <Property Name="collectionSiteId" Type="Int32" Nullable="false" />
           <Property Name="isDeleted" Type="Int32" Nullable="false" />
           <NavigationProperty Name="collectionSite" Relationship="Self.FK_publicWasteBin_collectionSite" FromRole="publicWasteBin" ToRole="collectionSite" />
+          <Property Name="publicWasteBinNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="publicWasteBinSiteManager" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="region">
           <Key>
@@ -1323,7 +1347,23 @@
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
           </AssociationSet>
+          <AssociationSet Name="FK_Fascility_districts" Association="wwmDbModel.FK_Fascility_districts">
+            <End Role="district" EntitySet="districts" />
+            <End Role="Fascility" EntitySet="Fascilities" />
+          </AssociationSet>
         </EntityContainer>
+        <Association Name="FK_Fascility_districts">
+          <End Type="wwmDbModel.district" Role="district" Multiplicity="1" />
+          <End Type="wwmDbModel.Fascility" Role="Fascility" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="district">
+              <PropertyRef Name="districtsId" />
+            </Principal>
+            <Dependent Role="Fascility">
+              <PropertyRef Name="districtsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1498,6 +1538,7 @@
           <EntitySetMapping Name="Fascilities">
             <EntityTypeMapping TypeName="wwmDbModel.Fascility">
               <MappingFragment StoreEntitySet="Fascility">
+                <ScalarProperty Name="districtsId" ColumnName="districtsId" />
                 <ScalarProperty Name="Fascility_Id" ColumnName="Fascility_Id" />
                 <ScalarProperty Name="Fascility_Name" ColumnName="Fascility_Name" />
                 <ScalarProperty Name="Fascility_Description" ColumnName="Fascility_Description" />
@@ -1509,6 +1550,8 @@
           <EntitySetMapping Name="publicWasteBins">
             <EntityTypeMapping TypeName="wwmDbModel.publicWasteBin">
               <MappingFragment StoreEntitySet="publicWasteBin">
+                <ScalarProperty Name="publicWasteBinSiteManager" ColumnName="publicWasteBinSiteManager" />
+                <ScalarProperty Name="publicWasteBinNumber" ColumnName="publicWasteBinNumber" />
                 <ScalarProperty Name="publicWasteBinId" ColumnName="publicWasteBinId" />
                 <ScalarProperty Name="publicWasteBinName" ColumnName="publicWasteBinName" />
                 <ScalarProperty Name="publicWasteBinDescription" ColumnName="publicWasteBinDescription" />
