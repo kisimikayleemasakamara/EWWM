@@ -17,13 +17,14 @@ namespace WasteMangement.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public district()
         {
+            this.Clients = new HashSet<Client>();
             this.complaints = new HashSet<complaint>();
             this.constituencies = new HashSet<constituency>();
+            this.Fascilities = new HashSet<Fascility>();
             this.staffs = new HashSet<staff>();
             this.YouthGroups = new HashSet<YouthGroup>();
-            this.Fascilities = new HashSet<Fascility>();
         }
-    
+
         public int districtsId { get; set; }
         public int regionId { get; set; }
         public string regionName { get; set; }
@@ -32,7 +33,8 @@ namespace WasteMangement.Models
         public string name { get; set; }
         public string description { get; set; }
         public int isDeleted { get; set; }
-    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Client> Clients { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<complaint> complaints { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
@@ -40,10 +42,10 @@ namespace WasteMangement.Models
         public virtual districtAdmin districtAdmin { get; set; }
         public virtual region region { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Fascility> Fascilities { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<staff> staffs { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<YouthGroup> YouthGroups { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Fascility> Fascilities { get; set; }
     }
 }

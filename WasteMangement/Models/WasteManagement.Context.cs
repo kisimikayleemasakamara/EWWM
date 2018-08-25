@@ -45,7 +45,7 @@ namespace WasteMangement.Models
         public virtual DbSet<section> sections { get; set; }
         public virtual DbSet<staff> staffs { get; set; }
         public virtual DbSet<Staff_Task> Staff_Task { get; set; }
-        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
+        public virtual DbSet<UserRole> UserRoles { get; set; }
         public virtual DbSet<ward> wards { get; set; }
         public virtual DbSet<YouthGroup> YouthGroups { get; set; }
         public virtual DbSet<YouthGroupAdmin> YouthGroupAdmins { get; set; }

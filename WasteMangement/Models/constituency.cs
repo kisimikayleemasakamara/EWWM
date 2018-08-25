@@ -19,7 +19,7 @@ namespace WasteMangement.Models
         {
             this.wards = new HashSet<ward>();
         }
-    
+
         public int constituenciesId { get; set; }
         public int districtsId { get; set; }
         public string name { get; set; }

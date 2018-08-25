@@ -42,9 +42,11 @@
                         <tr>
                             <th class="text-center">Site Name</th>
                             <th class="text-center">Site Manager</th>
+
                             <th class="text-center">Site Number</th>
-                            <th class="text-center">Site Description</th>
+                            <th class="text-center">Schedule</th>
                             <th class="text-center">Community Name</th>
+                           
                             <th class="text-center">Actions</th>
                         </tr>
                     </thead>
@@ -56,14 +58,9 @@
                                 <td class="text-center">@item.collectionSiteName</td>
                                 <td class="text-center">@item.collectionSiteManager</td>
                                 <td class="text-center">@item.collectionSiteNumber</td>
-                                @if (item.collectionSiteDescription.Length >= 10)
-                                {
-                                    <td class="text-center">@item.collectionSiteDescription.Substring(0, 10)....</td>
-                                }
-                                else
-                                {
-                                    <td class="text-center">@item.collectionSiteDescription</td>
-                                }
+                                <td class="text-center">@item.startDay between @item.startDayTimefrom@item.sstime - @item.startDayTimetill@item.sltime
+                                <br /> and @item.tilDay between @item.tillDayTimefrom@item.tstime - @item.tillDayTimetill@item.tltime
+                               
                                 <td class="text-center">@item.communityName</td>
                                 <td class="text-center">
                                     <button class="btn btn-info" data-toggle="modal" data-target="#editSite @item.collectionSiteId">Edit</button> |
@@ -149,10 +146,395 @@
                                                         <input name="collectionSiteManager" class="form-control" type="text" value="@item.collectionSiteManager" required>
                                                     </div>
                                                     <div class="form-group">
+                                                         <div class="row">
+                                                        <label class="control-label col-md-6">&nbsp;&nbsp;&nbsp;Start Day</label>
+                                                        <label class="control-label col-md-6">&nbsp;&nbsp;&nbsp;End Day</label>
+                                                             </div>
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <select name="startDay" class="form-control" required>
+                                                                        <option value="@item.startDay">@item.startDay</option>
+                                                                        @if (item.startDay != "Monday")
+                                                                        {
+                                                                            <option value="Monday">Monday</option>
+                                                                        }
+                                                                        @if (item.startDay != "Tuesday")
+                                                                        {
+                                                                            <option value="Tuesday">Tuesday</option>
+                                                                        }
+                                                                        @if (item.startDay != "Wednesday")
+                                                                        {
+                                                                            <option value="Wednesday">Wednesday</option>
+                                                                        }
+                                                                        @if (item.startDay != "Thursday")
+                                                                        {
+                                                                            <option value="Thursday">Thursday</option>
+                                                                        }
+                                                                        @if (item.startDay != "Friday")
+                                                                        {
+                                                                            <option value="Friday">Friday</option>
+                                                                        }
+                                                                        @if (item.startDay != "Saturday")
+                                                                        {
+                                                                            <option value="Saturday">Saturday</option>
+                                                                        }
+                                                                        @if (item.startDay != "Sunday")
+                                                                        {
+                                                                            <option value="Sunday">Sunday</option>
+                                                                        }
+                                                                       
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <div class="col-md-6">
+                                                                <div class="form-group">
+                                                                    <select name="tilDay" class="form-control" required>
+                                                                        <option value="@item.tilDay">@item.tilDay</option>
+                                                                        @if (item.startDay != "Monday")
+                                                                        {
+                                                                            <option value="Monday">Monday</option>
+                                                                        }
+                                                                        @if (item.startDay != "Tuesday")
+                                                                        {
+                                                                            <option value="Tuesday">Tuesday</option>
+                                                                        }
+                                                                        @if (item.startDay != "Wednesday")
+                                                                        {
+                                                                            <option value="Wednesday">Wednesday</option>
+                                                                        }
+                                                                        @if (item.startDay != "Thursday")
+                                                                        {
+                                                                            <option value="Thursday">Thursday</option>
+                                                                        }
+                                                                        @if (item.startDay != "Friday")
+                                                                        {
+                                                                            <option value="Friday">Friday</option>
+                                                                        }
+                                                                        @if (item.startDay != "Saturday")
+                                                                        {
+                                                                            <option value="Saturday">Saturday</option>
+                                                                        }
+                                                                        @if (item.startDay != "Sunday")
+                                                                        {
+                                                                            <option value="Sunday">Sunday</option>
+                                                                        }
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                       
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label">&nbsp;&nbsp;&nbsp;Start Time</label>
+                                                        <div class="row">
+                                                            
+                                                            <div class="col-md-3">
+                                                                <div class="form-group">
+                                                                    <select name="startDayTimefrom" class="form-control" required>
+                                                                        <option value="@item.startDayTimefrom">@item.startDayTimefrom</option>
+                                                                        @if (item.startDayTimefrom != "1")
+                                                                        {
+                                                                            <option value="1">1</option>
+                                                                        }
+                                                                        @if (item.startDayTimefrom != "2")
+                                                                        {
+                                                                            <option value="2">2</option>
+                                                                        }
+                                                                        @if (item.startDayTimefrom != "3")
+                                                                        {
+                                                                            <option value="3">3</option>
+                                                                        }
+                                                                        @if (item.startDayTimefrom != "4")
+                                                                        {
+                                                                            <option value="4">4</option>
+                                                                        }
+                                                                        @if (item.startDayTimefrom != "5")
+                                                                        {
+                                                                            <option value="5">5</option>
+                                                                        }
+                                                                        @if (item.startDayTimefrom != "6")
+                                                                        {
+                                                                            <option value="6">6</option>
+                                                                        }
+                                                                        @if (item.startDayTimefrom != "7")
+                                                                        {
+                                                                            <option value="7">7</option>
+                                                                        }
+                                                                        @if (item.startDayTimefrom != "8")
+                                                                        {
+                                                                            <option value="8">8</option>
+                                                                        }
+                                                                        @if (item.startDayTimefrom != "9")
+                                                                        {
+                                                                            <option value="9">9</option>
+                                                                        }
+                                                                        @if (item.startDayTimefrom != "10")
+                                                                        {
+                                                                            <option value="10">10</option>
+                                                                        }
+                                                                        @if (item.startDayTimefrom != "11")
+                                                                        {
+                                                                            <option value="11">11</option>
+                                                                        }
+                                                                        @if (item.startDayTimefrom != "12")
+                                                                        {
+                                                                            <option value="12">12</option>
+                                                                        }
+                                                                    </select>
+                                                                    
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="form-group">
+                                                                    <select name="sstime" class="form-control" required>
+                                                                        <option value="@item.sstime">@item.sstime</option>
+                                                                        @if (item.sstime != "AM")
+                                                                        {
+                                                                            <option value="AM">AM</option>
+                                                                        }
+                                                                       @if (item.sstime != "PM")
+                                                                       {
+                                                                        <option value="PM">PM</option>
+                                                                       }
+                                                                        
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="form-group">
+                                                                    <select name="startDayTimetill" class="form-control" required>
+                                                                        <option value="@item.startDayTimetill">@item.startDayTimetill</option>
+                                                                        @if (item.startDayTimetill != "1")
+                                                                        {
+                                                                            <option value="1">1</option>
+                                                                        }
+                                                                        @if (item.startDayTimetill != "2")
+                                                                        {
+                                                                            <option value="2">2</option>
+                                                                        }
+                                                                        @if (item.startDayTimetill != "3")
+                                                                        {
+                                                                            <option value="3">3</option>
+                                                                        }
+                                                                        @if (item.startDayTimetill != "4")
+                                                                        {
+                                                                            <option value="4">4</option>
+                                                                        }
+                                                                        @if (item.startDayTimetill != "5")
+                                                                        {
+                                                                            <option value="5">5</option>
+                                                                        }
+                                                                        @if (item.startDayTimetill != "6")
+                                                                        {
+                                                                            <option value="6">6</option>
+                                                                        }
+                                                                        @if (item.startDayTimetill != "7")
+                                                                        {
+                                                                            <option value="7">7</option>
+                                                                        }
+                                                                        @if (item.startDayTimetill != "8")
+                                                                        {
+                                                                            <option value="8">8</option>
+                                                                        }
+                                                                        @if (item.startDayTimetill != "9")
+                                                                        {
+                                                                            <option value="9">9</option>
+                                                                        }
+                                                                        @if (item.startDayTimetill != "10")
+                                                                        {
+                                                                            <option value="10">10</option>
+                                                                        }
+                                                                        @if (item.startDayTimetill != "11")
+                                                                        {
+                                                                            <option value="11">11</option>
+                                                                        }
+                                                                        @if (item.startDayTimetill != "12")
+                                                                        {
+                                                                            <option value="12">12</option>
+                                                                        }
+                                                                    </select>
+
+                                                                   
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="form-group">
+                                                                    <select name="sltime" class="form-control" required>
+                                                                        <option value="@item.sltime">@item.sltime</option>
+                                                                        @if (item.sltime != "AM")
+                                                                        {
+                                                                            <option value="AM">AM</option>
+                                                                        }
+                                                                        @if (item.sltime != "PM")
+                                                                        {
+                                                                            <option value="PM">PM</option>
+                                                                        }
+
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label class="control-label">&nbsp;&nbsp;&nbsp;End Time</label>
+                                                        <div class="row">
+
+                                                            <div class="col-md-3">
+                                                                <div class="form-group">
+                                                                    <select name="tillDayTimefrom" class="form-control" required>
+                                                                        <option value="@item.tillDayTimefrom">@item.tillDayTimefrom</option>
+                                                                        @if (item.tillDayTimefrom != "1")
+                                                                        {
+                                                                            <option value="1">1</option>
+                                                                        }
+                                                                        @if (item.tillDayTimefrom != "2")
+                                                                        {
+                                                                            <option value="2">2</option>
+                                                                        }
+                                                                        @if (item.tillDayTimefrom != "3")
+                                                                        {
+                                                                            <option value="3">3</option>
+                                                                        }
+                                                                        @if (item.tillDayTimefrom != "4")
+                                                                        {
+                                                                            <option value="4">4</option>
+                                                                        }
+                                                                        @if (item.tillDayTimefrom != "5")
+                                                                        {
+                                                                            <option value="5">5</option>
+                                                                        }
+                                                                        @if (item.tillDayTimefrom != "6")
+                                                                        {
+                                                                            <option value="6">6</option>
+                                                                        }
+                                                                        @if (item.tillDayTimefrom != "7")
+                                                                        {
+                                                                            <option value="7">7</option>
+                                                                        }
+                                                                        @if (item.tillDayTimefrom != "8")
+                                                                        {
+                                                                            <option value="8">8</option>
+                                                                        }
+                                                                        @if (item.tillDayTimefrom != "9")
+                                                                        {
+                                                                            <option value="9">9</option>
+                                                                        }
+                                                                        @if (item.tillDayTimefrom != "10")
+                                                                        {
+                                                                            <option value="10">10</option>
+                                                                        }
+                                                                        @if (item.tillDayTimefrom != "11")
+                                                                        {
+                                                                            <option value="11">11</option>
+                                                                        }
+                                                                        @if (item.tillDayTimefrom != "12")
+                                                                        {
+                                                                            <option value="12">12</option>
+                                                                        }
+                                                                    </select>
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="form-group">
+                                                                    <select name="tstime" class="form-control" required>
+                                                                        <option value="@item.tstime">@item.tstime</option>
+                                                                        @if (item.tstime != "AM")
+                                                                        {
+                                                                            <option value="AM">AM</option>
+                                                                        }
+                                                                        @if (item.tstime != "PM")
+                                                                        {
+                                                                            <option value="PM">PM</option>
+                                                                        }
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="form-group">
+                                                                    <select name="tillDayTimetill" class="form-control" required>
+                                                                        <option value="@item.tillDayTimetill">@item.tillDayTimetill</option>
+                                                                        @if (item.tillDayTimetill != "1")
+                                                                        {
+                                                                            <option value="1">1</option>
+                                                                        }
+                                                                        @if (item.tillDayTimetill != "2")
+                                                                        {
+                                                                            <option value="2">2</option>
+                                                                        }
+                                                                        @if (item.tillDayTimetill != "3")
+                                                                        {
+                                                                            <option value="3">3</option>
+                                                                        }
+                                                                        @if (item.tillDayTimetill != "4")
+                                                                        {
+                                                                            <option value="4">4</option>
+                                                                        }
+                                                                        @if (item.tillDayTimetill != "5")
+                                                                        {
+                                                                            <option value="5">5</option>
+                                                                        }
+                                                                        @if (item.tillDayTimetill != "6")
+                                                                        {
+                                                                            <option value="6">6</option>
+                                                                        }
+                                                                        @if (item.tillDayTimetill != "7")
+                                                                        {
+                                                                            <option value="7">7</option>
+                                                                        }
+                                                                        @if (item.tillDayTimetill != "8")
+                                                                        {
+                                                                            <option value="8">8</option>
+                                                                        }
+                                                                        @if (item.tillDayTimetill != "9")
+                                                                        {
+                                                                            <option value="9">9</option>
+                                                                        }
+                                                                        @if (item.tillDayTimetill != "10")
+                                                                        {
+                                                                            <option value="10">10</option>
+                                                                        }
+                                                                        @if (item.tillDayTimetill != "11")
+                                                                        {
+                                                                            <option value="11">11</option>
+                                                                        }
+                                                                        @if (item.tillDayTimetill != "12")
+                                                                        {
+                                                                            <option value="12">12</option>
+                                                                        }
+                                                                    </select>
+
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="form-group">
+                                                                    <select name="tltime" class="form-control" required>
+                                                                        <option value="@item.tltime">@item.tltime</option>
+                                                                        @if (item.tltime != "AM")
+                                                                        {
+                                                                            <option value="AM">AM</option>
+                                                                        }
+                                                                        @if (item.tltime != "PM")
+                                                                        {
+                                                                            <option value="PM">PM</option>
+                                                                        }
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="form-group">
                                                         <label class="control-label">&nbsp;&nbsp;&nbsp;Site Description</label>
                                                         <textarea rows="4" cols="61" name="collectionSiteDescription" class="form-control" required>@item.collectionSiteDescription</textarea>
                                                     </div>
                                                     <input name="collectionSiteId" value="@item.collectionSiteId" type="hidden" />
+                                                    <input name="communitiesId" value="@item.communitiesId" type="hidden" />
                                                     <div class="modal-footer">
                                                         <input type="submit" value="Update Site" class="btn btn-primary" />
                                                     </div>
@@ -204,6 +586,240 @@
                                             <label class="control-label">&nbsp;&nbsp;&nbsp;Site Manager</label>
                                             <input name="collectionSiteManager" class="form-control" type="text" required>
                                         </div>
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <label class="control-label col-md-6">&nbsp;&nbsp;&nbsp;Start Day</label>
+                                                <label class="control-label col-md-6">&nbsp;&nbsp;&nbsp;End Day</label>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <select name="startDay" class="form-control" required>
+                                    
+                                                                <option value="Monday">Monday</option>
+                                                
+                                                            
+                                                                <option value="Tuesday">Tuesday</option>
+                                                           
+                                                                <option value="Wednesday">Wednesday</option>
+                                                           
+                                                                <option value="Thursday">Thursday</option>
+                                                           
+                                                                <option value="Friday">Friday</option>
+
+                                                                <option value="Saturday">Saturday</option>
+                                                           
+                                                                <option value="Sunday">Sunday</option>
+                                                     
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <select name="tilDay" class="form-control" required>
+                                                           
+                                                           
+                                                                <option value="Monday">Monday</option>
+                                                           
+                                                                <option value="Tuesday">Tuesday</option>
+                                                           
+                                                                <option value="Wednesday">Wednesday</option>
+                                                           
+                                                                <option value="Thursday">Thursday</option>
+                                                           
+                                                                <option value="Friday">Friday</option>
+                                                          
+                                                                <option value="Saturday">Saturday</option>
+                                                           
+                                                                <option value="Sunday">Sunday</option>
+                                                            
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label">&nbsp;&nbsp;&nbsp;Start Time</label>
+                                            <div class="row">
+
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <select name="startDayTimefrom" class="form-control" required>
+                                                           
+                                                            
+                                                                <option value="1">1</option>
+                                                                  <option value="2">2</option>
+                                                           
+                                                                <option value="3">3</option>
+                                                           
+                                                                <option value="4">4</option>
+                                                           
+                                                                <option value="5">5</option>
+                                                            
+                                                                <option value="6">6</option>
+                                                           
+                                                                <option value="7">7</option>
+                                                           
+                                                                <option value="8">8</option>
+                                                            
+                                                                <option value="9">9</option>
+                                                            
+                                                                <option value="10">10</option>
+                                                            
+                                                                <option value="11">11</option>
+                                                            
+                                                                <option value="12">12</option>
+                                                            
+                                                        </select>
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <select name="sstime" class="form-control" required>
+                                                            <option value="AM">AM</option>
+                                                            <option value="PM">PM</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <select name="startDayTimetill" class="form-control" required>
+                                                           
+                                                           
+                                                                <option value="1">1</option>
+                                                           
+                                                                <option value="2">2</option>
+                                                           
+                                                                <option value="3">3</option>
+                                                           
+                                                                <option value="4">4</option>
+                                                           
+                                                                <option value="5">5</option>
+                                                           
+                                                                <option value="6">6</option>
+                                                           
+                                                                <option value="7">7</option>
+                                                            
+                                                                <option value="8">8</option>
+                                                          
+                                                                <option value="9">9</option>
+                                                           
+                                                                <option value="10">10</option>
+                                                          
+                                                                <option value="11">11</option>
+                                                           
+                                                                <option value="12">12</option>
+                                                            
+                                                        </select>
+
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <select name="sltime" class="form-control" required>
+                                                            <option value="AM">AM</option>
+                                                            <option value="PM">PM</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label">&nbsp;&nbsp;&nbsp;End Time</label>
+                                            <div class="row">
+
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <select name="tillDayTimefrom" class="form-control" required>
+                                                           
+                                                                <option value="1">1</option>
+                                                           
+                                                                <option value="2">2</option>
+                                                                <option value="3">3</option>
+                                                            
+                                                                <option value="4">4</option>
+                                                           
+                                                                <option value="5">5</option>
+                                                            
+                                                                <option value="6">6</option>
+                                                          
+                                                                <option value="7">7</option>
+                                                           
+                                                                <option value="8">8</option>
+                                                           
+                                                                <option value="9">9</option>
+                                                           
+                                                                <option value="10">10</option>
+                                                           
+                                                                <option value="11">11</option>
+                                                           
+                                                                <option value="12">12</option>
+                                                            
+                                                        </select>
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <select name="tstime" class="form-control" required>
+                                                            <option value="AM">AM</option>
+                                                            <option value="PM">PM</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <select name="tillDayTimetill" class="form-control" required>
+                                                            
+                                                                <option value="1">1</option>
+                                                            
+                                                            
+                                                                <option value="2">2</option>
+                                                           
+                                                                <option value="3">3</option>
+                                                           
+                                                                <option value="4">4</option>
+                                                           
+                                                                <option value="5">5</option>
+                                                           
+                                                                <option value="6">6</option>
+                                                           
+                                                                <option value="7">7</option>
+                                                           
+                                                                <option value="8">8</option>
+                                                           
+                                                                <option value="9">9</option>
+                                                           
+                                                                <option value="10">10</option>
+                                                           
+                                                                <option value="11">11</option>
+                                                            
+                                                                <option value="12">12</option>
+                                                            
+                                                        </select>
+
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="form-group">
+                                                        <select name="tltime" class="form-control" required>
+                                                            <option value="AM">AM</option>
+                                                            <option value="PM">PM</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
                                         <div class="form-group">
                                             <label class="control-label">&nbsp;&nbsp;&nbsp;Site Description</label>
                                             <textarea rows="4" cols="61" name="collectionSiteDescription" class="form-control" required></textarea>

@@ -19,7 +19,7 @@ namespace WasteMangement.Models
         {
             this.sections = new HashSet<section>();
         }
-    
+
         public int wardId { get; set; }
         public int constituenciesId { get; set; }
         public string name { get; set; }

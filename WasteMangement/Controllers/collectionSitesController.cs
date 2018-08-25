@@ -39,7 +39,17 @@ namespace WasteMangement.Controllers
                              siteId = i.collectionSiteId,
                              siteDescription = i.collectionSiteDescription,
                              manager = i.collectionSiteManager,
-                             Number = i.collectionSiteNumber
+                             Number = i.collectionSiteNumber,
+                             i.startDay,
+                             i.startDayTimefrom,
+                             i.startDayTimetill,
+                             i.tilDay,
+                             i.tillDayTimefrom,
+                             i.tillDayTimetill,
+                             i.sstime,
+                             i.sltime,
+                             i.tstime,
+                             i.tltime
                          }).ToList();
             List<collectionSite> collectionSites = new List<collectionSite>();
             foreach (var item in query)
@@ -52,7 +62,17 @@ namespace WasteMangement.Controllers
                     collectionSiteManager = item.manager,
                     collectionSiteDescription = item.siteDescription,
                     collectionSiteNumber = item.Number,
-                    collectionSiteId = item.siteId
+                    collectionSiteId = item.siteId,
+                    startDay = item.startDay,
+                    startDayTimefrom = item.startDayTimefrom,
+                    startDayTimetill = item.startDayTimetill,
+                    tilDay = item.tilDay,
+                    tillDayTimefrom = item.tillDayTimefrom,
+                    tillDayTimetill = item.tillDayTimetill,
+                    sstime = item.sstime,
+                    sltime =  item.sltime,
+                    tltime =  item.tltime,
+                    tstime = item.tstime
                 });
             }
             var query1 = (from z in db.communities
@@ -88,7 +108,7 @@ namespace WasteMangement.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "DistrictAdmin")]
-        public ActionResult Create([Bind(Include = "collectionSiteId,communitiesId,collectionSiteManager,collectionSiteName,collectionSiteNumber,collectionSiteDescription,isDeleted")] collectionSite collectionSite)
+        public ActionResult Create(collectionSite collectionSite)
         {
             if (ModelState.IsValid)
             {
@@ -107,7 +127,7 @@ namespace WasteMangement.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "DistrictAdmin")]
-        public ActionResult Edit([Bind(Include = "collectionSiteId,communitiesId,collectionSiteManager,collectionSiteName,collectionSiteNumber,collectionSiteDescription,isDeleted")] collectionSite collectionSite)
+        public ActionResult Edit(collectionSite collectionSite)
         {
             if (ModelState.IsValid)
             {

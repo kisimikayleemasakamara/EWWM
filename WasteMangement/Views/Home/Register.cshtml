@@ -1,0 +1,202 @@
+﻿@using WasteMangement.Models
+@model WasteMangement.Models.RegisterViewModel
+@{
+    ViewBag.Title = "Register";
+    var district = Session["district"];
+    wwmDbEntities db = new wwmDbEntities();
+    var q = (from d in db.YouthGroups
+             where d.isDeleted == 0
+             select d).ToList();
+}
+
+<br /><br />
+<div class="" style="padding-left:10%;margin-bottom:50px;">
+    <div style="border:1px solid black; text-align:center;" class="col-md-10 col-md-offset-2">
+        <center><h2>Register as Client</h2></center>
+        @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal body-content", role = "form",id="formId" }))
+        {
+            @Html.AntiForgeryToken()
+            <hr />
+            @Html.ValidationSummary("", new { @class = "text-danger" })
+            @*<div class="form-group" style="margin-top:50px;">
+                <label class="control-label col-md-5" for="cutomerID">Cusomer ID</label>
+                <input type="text" name="customerID"  class="form-control col-md-7"/>
+            </div>*@
+            <div class="form-group">
+                <label class="control-label col-md-5" for="Email">Email</label>
+                <input type="email" name="Email" class="form-control col-md-7" id="email"/>
+                <span id="memail"></span>
+                <br /><span id="emailpattern"></span>
+            </div>
+            
+            <div class="form-group">
+                <label class="control-label col-md-5" for="FirstName">First Name</label>
+                <input type="text" name="FirstName" class="form-control col-md-7" id="fn"/>
+                <span id="mfn"></span>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-5" for="LastName">Last Name</label>
+                <input type="text" name="LastName" class="form-control col-md-7" id="ln"/>
+                <span id="mln"></span>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-5" for="PhoneNo">Phone Number</label>
+                <input type="tel" id="phn" name="PhoneNo"
+                       placeholder="1234-456-7890" class="form-control col-md-7"
+                       />
+                <span id="mphn"></span>
+               <br /> <span id="phnpattern"></span>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-5" for="FacilityType">Facility Type</label>
+                <select type="text" name="FacilityType" class="form-control col-md-7" id="fas">
+                    <option value=""> Select Facility Type</option>
+                    @if (ViewBag.fascilities != null)
+                    {
+                        foreach (var item in ViewBag.fascilities)
+                        {
+                            <option value="@item.Fascility_Id">@item.Fascility_Name</option>
+                        }
+                    }
+                </select>
+                <span id="mfas"></span>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-5" for="Address">Address</label>
+                <input type="text" name="Address" class="form-control col-md-7" id="add"/>
+                <span id="madd"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-5" for="districtName">District</label>
+                <input type="text" name="districtName" class="form-control col-md-7" value="@district" readonly id="dis"/>
+                <span id="mdis"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-5" for="YouthGroup">Youth Group</label>
+                <select type="text" name="YouthGroup" class="form-control col-md-7" id="youth">
+                    <option value=""> Select Group</option>
+                    @if (q != null)
+                    {
+                        foreach (var item in q)
+                        {
+                            <option value="@item.youthGroupTypeId">@item.youthGroupName</option>
+                        }
+                    }
+                </select>
+                <span id="myouth"></span>
+            </div>
+
+            <div class="form-group">
+                <div class="right" style="">
+                    <input type="submit" class="btn btn-primary btn-lg" value="Register" id="btnclick"/>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+@Scripts.Render("~/bundles/jquery")
+<script>
+    $("#btnclick").click(function (e) {
+        e.preventDefault();
+        var c = 0;
+        var phoneFormat = new RegExp("[0-9]{3}-[0-9]{3}-[0-9]{4}");
+        var emailFormat = new RegExp("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?");
+        if (!emailFormat.test($('#email').val())) {
+            $('#emailpattern').html('Email is not valid').css('color', 'red');
+            c = 1;
+        }
+        if (!$('#email').val()) {
+            $('#memail').html('Email Required').css('color', 'red');
+            c = 1;
+        }
+        if (!$('#fn').val()) {
+            $('#mfn').html('First Name Required').css('color', 'red');
+            c = 1;
+        }
+        if (!$('#ln').val()) {
+            $('#mln').html('Last Name Required').css('color', 'red');
+            c = 1;
+        }
+        if (!$('#phn').val()) {
+            $('#mphn').html('Phone number Required').css('color', 'red');
+            c = 1;
+        }
+        if (!phoneFormat.test($('#phn').val())) {
+            $('#phnpattern').html('Phone number is not valid').css('color', 'red');
+            c = 1;
+        }
+        if (!$('#fas').val()) {
+            $('#mfas').html('Fascility Required').css('color', 'red');
+            c = 1;
+        }
+        if (!$('#dis').val() || $('#dis').val() == "--Select A District--") {
+            $('#mdis').html('District Required').css('color', 'red');
+            c = 1;
+        }
+        if (!$('#youth').val()) {
+            $('#myouth').html('Youth Group Required').css('color', 'red');
+            c = 1;
+        }
+        if (!$('#add').val()) {
+            $('#madd').html('Address Required').css('color', 'red');
+            c = 1;
+        }
+        if (c == 0) {
+            ok();
+
+        }
+        else
+        {
+            $('#fn').val($('#fn').val());
+            $('#ln').val($('#ln').val());
+            $('#phn').val($('#phn').val());
+            $('#email').val($('#email').val());
+            $('#add').val($('#add').val());
+            $('#dis').val($('#dis').val());
+            $('#fas').val($('#fas').val());
+            $('#youth').val($('#youth').val());
+        }
+    });
+    </script>
+<script>
+    function ok()
+    {
+        $("#formId").submit();
+    }
+</script>
+<script>
+    $('#fn').on('keyup', function () {
+        $('#mfn').html('')
+    });
+    $('#ln').on('keyup', function () {
+        $('#mln').html('')
+    });
+    $('#phn').on('keyup', function () {
+        $('#mphn').html('')
+    });
+    $('#add').on('keyup', function () {
+        $('#madd').html('');
+    });
+    $('#email').on('keyup', function () {
+        $('#memail').html('');
+    });
+</script>
+<script>
+    var phoneFormat = new RegExp("[0-9]{3}-[0-9]{3}-[0-9]{4}");
+    var emailFormat = new RegExp("[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?");
+    $('#phn').on('keyup', function () {
+        if (phoneFormat.test($('#phn').val())) {
+            $('#phnpattern').html('');
+        }
+    });
+    $('#email').on('keyup', function () {
+        if (emailFormat.test($('#email').val())) {
+            $('#emailpattern').html('');
+        }
+    });
+
+</script>

@@ -75,14 +75,17 @@
         </EntityType>
         <EntityType Name="Client">
           <Key>
-            <PropertyRef Name="youthGroupId" />
+            <PropertyRef Name="clientId" />
           </Key>
-          <Property Name="youthGroupId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="youthGroupName" Type="varchar" MaxLength="50" Nullable="false" />
-          <Property Name="youthGroupDescription" Type="nvarchar(max)" />
-          <Property Name="isApproved" Type="bit" Nullable="false" />
-          <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="isDeleted" Type="int" Nullable="false" />
+          <Property Name="clientId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="secondName" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Email" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="PhoneNo" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Fascility_Id" Type="int" Nullable="false" />
+          <Property Name="Address" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="youthGroupTypeId" Type="int" Nullable="false" />
+          <Property Name="districtsId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="collectionSite">
           <Key>
@@ -95,6 +98,16 @@
           <Property Name="collectionSiteNumber" Type="nvarchar(max)" />
           <Property Name="collectionSiteDescription" Type="nvarchar(max)" />
           <Property Name="isDeleted" Type="int" Nullable="false" />
+          <Property Name="startDay" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="startDayTimefrom" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="startDayTimetill" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="tilDay" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="tillDayTimefrom" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="tillDayTimetill" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="sstime" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="sltime" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="tstime" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="tltime" Type="nchar" MaxLength="10" Nullable="false" />
         </EntityType>
         <EntityType Name="communities">
           <Key>
@@ -235,15 +248,14 @@
           <Property Name="task_start_date" Type="datetime" Nullable="false" />
           <Property Name="task_end_date" Type="datetime" Nullable="false" />
         </EntityType>
-        <EntityType Name="sysdiagrams">
+        <EntityType Name="UserRoles">
           <Key>
-            <PropertyRef Name="diagram_id" />
+            <PropertyRef Name="id" />
           </Key>
-          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="principal_id" Type="int" Nullable="false" />
-          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="version" Type="int" />
-          <Property Name="definition" Type="varbinary(max)" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="role" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="userId" Type="nvarchar" MaxLength="128" Nullable="false" />
         </EntityType>
         <EntityType Name="ward">
           <Key>
@@ -276,6 +288,42 @@
           <Property Name="UserId" Type="nvarchar" MaxLength="128" Nullable="false" />
           <Property Name="youthGroupTypeId" Type="int" Nullable="false" />
         </EntityType>
+        <Association Name="FK_Client_districts">
+          <End Role="districts" Type="Self.districts" Multiplicity="1" />
+          <End Role="Client" Type="Self.Client" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="districts">
+              <PropertyRef Name="districtsId" />
+            </Principal>
+            <Dependent Role="Client">
+              <PropertyRef Name="districtsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Client_Fascility">
+          <End Role="Fascility" Type="Self.Fascility" Multiplicity="1" />
+          <End Role="Client" Type="Self.Client" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Fascility">
+              <PropertyRef Name="Fascility_Id" />
+            </Principal>
+            <Dependent Role="Client">
+              <PropertyRef Name="Fascility_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Client_YouthGroup">
+          <End Role="YouthGroup" Type="Self.YouthGroup" Multiplicity="1" />
+          <End Role="Client" Type="Self.Client" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="YouthGroup">
+              <PropertyRef Name="youthGroupTypeId" />
+            </Principal>
+            <Dependent Role="Client">
+              <PropertyRef Name="youthGroupTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_collectionSite_communities">
           <End Role="communities" Type="Self.communities" Multiplicity="1" />
           <End Role="collectionSite" Type="Self.collectionSite" Multiplicity="*" />
@@ -500,6 +548,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_UserRoles_AspNetUsers">
+          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
+          <End Role="UserRoles" Type="Self.UserRoles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="AspNetUsers">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="UserRoles">
+              <PropertyRef Name="userId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_ward_constituencies">
           <End Role="constituencies" Type="Self.constituencies" Multiplicity="1" />
           <End Role="ward" Type="Self.ward" Multiplicity="*" />
@@ -521,18 +581,6 @@
             </Principal>
             <Dependent Role="YouthGroup">
               <PropertyRef Name="districtsId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_youthGroup_districts1">
-          <End Role="AspNetUsers" Type="Self.AspNetUsers" Multiplicity="1" />
-          <End Role="Client" Type="Self.Client" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="AspNetUsers">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Client">
-              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -582,10 +630,22 @@
           <EntitySet Name="section" EntityType="Self.section" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="staff" EntityType="Self.staff" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Staff_Task" EntityType="Self.Staff_Task" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserRoles" EntityType="Self.UserRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ward" EntityType="Self.ward" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="YouthGroup" EntityType="Self.YouthGroup" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="YouthGroupAdmin" EntityType="Self.YouthGroupAdmin" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Client_districts" Association="Self.FK_Client_districts">
+            <End Role="districts" EntitySet="districts" />
+            <End Role="Client" EntitySet="Client" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Client_Fascility" Association="Self.FK_Client_Fascility">
+            <End Role="Fascility" EntitySet="Fascility" />
+            <End Role="Client" EntitySet="Client" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Client_YouthGroup" Association="Self.FK_Client_YouthGroup">
+            <End Role="YouthGroup" EntitySet="YouthGroup" />
+            <End Role="Client" EntitySet="Client" />
+          </AssociationSet>
           <AssociationSet Name="FK_collectionSite_communities" Association="Self.FK_collectionSite_communities">
             <End Role="communities" EntitySet="communities" />
             <End Role="collectionSite" EntitySet="collectionSite" />
@@ -658,6 +718,10 @@
             <End Role="staff" EntitySet="staff" />
             <End Role="Staff_Task" EntitySet="Staff_Task" />
           </AssociationSet>
+          <AssociationSet Name="FK_UserRoles_AspNetUsers" Association="Self.FK_UserRoles_AspNetUsers">
+            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+            <End Role="UserRoles" EntitySet="UserRoles" />
+          </AssociationSet>
           <AssociationSet Name="FK_ward_constituencies" Association="Self.FK_ward_constituencies">
             <End Role="constituencies" EntitySet="constituencies" />
             <End Role="ward" EntitySet="ward" />
@@ -665,10 +729,6 @@
           <AssociationSet Name="FK_YouthGroup_districts" Association="Self.FK_YouthGroup_districts">
             <End Role="districts" EntitySet="districts" />
             <End Role="YouthGroup" EntitySet="YouthGroup" />
-          </AssociationSet>
-          <AssociationSet Name="FK_youthGroup_districts1" Association="Self.FK_youthGroup_districts1">
-            <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="Client" EntitySet="Client" />
           </AssociationSet>
           <AssociationSet Name="FK_YouthGroupAdmin_AspNetUsers" Association="Self.FK_YouthGroupAdmin_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
@@ -749,21 +809,26 @@
           <NavigationProperty Name="AspNetUserLogins" Relationship="Self.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" FromRole="AspNetUsers" ToRole="AspNetUserLogins" />
           <NavigationProperty Name="Discussions" Relationship="Self.FK_Discussion_AspNetUsers" FromRole="AspNetUsers" ToRole="Discussion" />
           <NavigationProperty Name="districtAdmins" Relationship="Self.FK_districtAdmin_AspNetUsers" FromRole="AspNetUsers" ToRole="districtAdmin" />
-          <NavigationProperty Name="Clients" Relationship="Self.FK_youthGroup_districts1" FromRole="AspNetUsers" ToRole="Client" />
+          <NavigationProperty Name="UserRoles" Relationship="Self.FK_UserRoles_AspNetUsers" FromRole="AspNetUsers" ToRole="UserRoles" />
           <NavigationProperty Name="YouthGroupAdmins" Relationship="Self.FK_YouthGroupAdmin_AspNetUsers" FromRole="AspNetUsers" ToRole="YouthGroupAdmin" />
           <NavigationProperty Name="AspNetRoles" Relationship="Self.AspNetUserRoles" FromRole="AspNetUsers" ToRole="AspNetRoles" />
         </EntityType>
         <EntityType Name="Client">
           <Key>
-            <PropertyRef Name="youthGroupId" />
+            <PropertyRef Name="clientId" />
           </Key>
-          <Property Name="youthGroupId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="youthGroupName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="youthGroupDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="isApproved" Type="Boolean" Nullable="false" />
-          <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="isDeleted" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_youthGroup_districts1" FromRole="Client" ToRole="AspNetUsers" />
+          <Property Name="clientId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="secondName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="PhoneNo" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Fascility_Id" Type="Int32" Nullable="false" />
+          <Property Name="Address" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="youthGroupTypeId" Type="Int32" Nullable="false" />
+          <Property Name="districtsId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="district" Relationship="Self.FK_Client_districts" FromRole="Client" ToRole="districts" />
+          <NavigationProperty Name="Fascility" Relationship="Self.FK_Client_Fascility" FromRole="Client" ToRole="Fascility" />
+          <NavigationProperty Name="YouthGroup" Relationship="Self.FK_Client_YouthGroup" FromRole="Client" ToRole="YouthGroup" />
         </EntityType>
         <EntityType Name="collectionSite">
           <Key>
@@ -776,8 +841,18 @@
           <Property Name="collectionSiteNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="collectionSiteDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="isDeleted" Type="Int32" Nullable="false" />
+          <Property Name="startDay" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="startDayTimefrom" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="startDayTimetill" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="tilDay" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="tillDayTimefrom" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="tillDayTimetill" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="community" Relationship="Self.FK_collectionSite_communities" FromRole="collectionSite" ToRole="communities" />
           <NavigationProperty Name="publicWasteBins" Relationship="Self.FK_publicWasteBin_collectionSite" FromRole="collectionSite" ToRole="publicWasteBin" />
+          <Property Name="sstime" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="sltime" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="tstime" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="tltime" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="true" />
         </EntityType>
         <EntityType Name="community">
           <Key>
@@ -858,13 +933,14 @@
           <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="isDeleted" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Clients" Relationship="Self.FK_Client_districts" FromRole="districts" ToRole="Client" />
           <NavigationProperty Name="complaints" Relationship="Self.FK_complaint_districts" FromRole="districts" ToRole="complaint" />
           <NavigationProperty Name="constituencies" Relationship="Self.FK_constituencies_districts" FromRole="districts" ToRole="constituencies" />
           <NavigationProperty Name="districtAdmin" Relationship="Self.FK_districts_districtAdmin" FromRole="districts" ToRole="districtAdmin" />
           <NavigationProperty Name="region" Relationship="Self.FK_districts_region" FromRole="districts" ToRole="region" />
+          <NavigationProperty Name="Fascilities" Relationship="Self.FK_Fascility_districts" FromRole="districts" ToRole="Fascility" />
           <NavigationProperty Name="staffs" Relationship="Self.FK_staff_districts" FromRole="districts" ToRole="staff" />
           <NavigationProperty Name="YouthGroups" Relationship="Self.FK_YouthGroup_districts" FromRole="districts" ToRole="YouthGroup" />
-          <NavigationProperty Name="Fascilities" Relationship="wwmDbModel.FK_Fascility_districts" FromRole="district" ToRole="Fascility" />
         </EntityType>
         <EntityType Name="Fascility">
           <Key>
@@ -876,7 +952,8 @@
           <Property Name="WasteCollectionPricePerMonth" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="isDeleted" Type="Int32" Nullable="false" />
           <Property Name="districtsId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="district" Relationship="wwmDbModel.FK_Fascility_districts" FromRole="Fascility" ToRole="district" />
+          <NavigationProperty Name="Clients" Relationship="Self.FK_Client_Fascility" FromRole="Fascility" ToRole="Client" />
+          <NavigationProperty Name="district" Relationship="Self.FK_Fascility_districts" FromRole="Fascility" ToRole="districts" />
         </EntityType>
         <EntityType Name="publicWasteBin">
           <Key>
@@ -887,9 +964,9 @@
           <Property Name="publicWasteBinDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="collectionSiteId" Type="Int32" Nullable="false" />
           <Property Name="isDeleted" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="collectionSite" Relationship="Self.FK_publicWasteBin_collectionSite" FromRole="publicWasteBin" ToRole="collectionSite" />
           <Property Name="publicWasteBinNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="publicWasteBinSiteManager" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="publicWasteBinSiteManager" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="collectionSite" Relationship="Self.FK_publicWasteBin_collectionSite" FromRole="publicWasteBin" ToRole="collectionSite" />
         </EntityType>
         <EntityType Name="region">
           <Key>
@@ -943,15 +1020,15 @@
           <Property Name="task_end_date" Type="DateTime" Nullable="false" Precision="3" />
           <NavigationProperty Name="staff" Relationship="Self.FK_Staff_Task_staff" FromRole="Staff_Task" ToRole="staff" />
         </EntityType>
-        <EntityType Name="sysdiagram">
+        <EntityType Name="UserRole">
           <Key>
-            <PropertyRef Name="diagram_id" />
+            <PropertyRef Name="id" />
           </Key>
-          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="principal_id" Type="Int32" Nullable="false" />
-          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="version" Type="Int32" />
-          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="role" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="userId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="AspNetUser" Relationship="Self.FK_UserRoles_AspNetUsers" FromRole="UserRoles" ToRole="AspNetUsers" />
         </EntityType>
         <EntityType Name="ward">
           <Key>
@@ -973,9 +1050,10 @@
           <Property Name="youthGroupName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="youthGroupDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="districtsId" Type="Int32" Nullable="false" />
+          <Property Name="isDeleted" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Clients" Relationship="Self.FK_Client_YouthGroup" FromRole="YouthGroup" ToRole="Client" />
           <NavigationProperty Name="district" Relationship="Self.FK_YouthGroup_districts" FromRole="YouthGroup" ToRole="districts" />
           <NavigationProperty Name="YouthGroupAdmins" Relationship="Self.FK_YouthGroupAdmin_YouthGroup" FromRole="YouthGroup" ToRole="YouthGroupAdmin" />
-          <Property Name="isDeleted" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="YouthGroupAdmin">
           <Key>
@@ -1042,15 +1120,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_youthGroup_districts1">
+        <Association Name="FK_UserRoles_AspNetUsers">
           <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1" />
-          <End Role="Client" Type="Self.Client" Multiplicity="*" />
+          <End Role="UserRoles" Type="Self.UserRole" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="AspNetUsers">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="Client">
-              <PropertyRef Name="UserId" />
+            <Dependent Role="UserRoles">
+              <PropertyRef Name="userId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1063,6 +1141,42 @@
             </Principal>
             <Dependent Role="YouthGroupAdmin">
               <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Client_districts">
+          <End Role="districts" Type="Self.district" Multiplicity="1" />
+          <End Role="Client" Type="Self.Client" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="districts">
+              <PropertyRef Name="districtsId" />
+            </Principal>
+            <Dependent Role="Client">
+              <PropertyRef Name="districtsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Client_Fascility">
+          <End Role="Fascility" Type="Self.Fascility" Multiplicity="1" />
+          <End Role="Client" Type="Self.Client" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Fascility">
+              <PropertyRef Name="Fascility_Id" />
+            </Principal>
+            <Dependent Role="Client">
+              <PropertyRef Name="Fascility_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Client_YouthGroup">
+          <End Role="YouthGroup" Type="Self.YouthGroup" Multiplicity="1" />
+          <End Role="Client" Type="Self.Client" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="YouthGroup">
+              <PropertyRef Name="youthGroupTypeId" />
+            </Principal>
+            <Dependent Role="Client">
+              <PropertyRef Name="youthGroupTypeId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1174,6 +1288,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Fascility_districts">
+          <End Role="districts" Type="Self.district" Multiplicity="1" />
+          <End Role="Fascility" Type="Self.Fascility" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="districts">
+              <PropertyRef Name="districtsId" />
+            </Principal>
+            <Dependent Role="Fascility">
+              <PropertyRef Name="districtsId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_staff_districts">
           <End Role="districts" Type="Self.district" Multiplicity="1" />
           <End Role="staff" Type="Self.staff" Multiplicity="*" />
@@ -1259,7 +1385,7 @@
           <EntitySet Name="sections" EntityType="Self.section" />
           <EntitySet Name="staffs" EntityType="Self.staff" />
           <EntitySet Name="Staff_Task" EntityType="Self.Staff_Task" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <EntitySet Name="UserRoles" EntityType="Self.UserRole" />
           <EntitySet Name="wards" EntityType="Self.ward" />
           <EntitySet Name="YouthGroups" EntityType="Self.YouthGroup" />
           <EntitySet Name="YouthGroupAdmins" EntityType="Self.YouthGroupAdmin" />
@@ -1279,13 +1405,25 @@
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="districtAdmin" EntitySet="districtAdmins" />
           </AssociationSet>
-          <AssociationSet Name="FK_youthGroup_districts1" Association="Self.FK_youthGroup_districts1">
+          <AssociationSet Name="FK_UserRoles_AspNetUsers" Association="Self.FK_UserRoles_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
-            <End Role="Client" EntitySet="Clients" />
+            <End Role="UserRoles" EntitySet="UserRoles" />
           </AssociationSet>
           <AssociationSet Name="FK_YouthGroupAdmin_AspNetUsers" Association="Self.FK_YouthGroupAdmin_AspNetUsers">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="YouthGroupAdmin" EntitySet="YouthGroupAdmins" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Client_districts" Association="Self.FK_Client_districts">
+            <End Role="districts" EntitySet="districts" />
+            <End Role="Client" EntitySet="Clients" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Client_Fascility" Association="Self.FK_Client_Fascility">
+            <End Role="Fascility" EntitySet="Fascilities" />
+            <End Role="Client" EntitySet="Clients" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Client_YouthGroup" Association="Self.FK_Client_YouthGroup">
+            <End Role="YouthGroup" EntitySet="YouthGroups" />
+            <End Role="Client" EntitySet="Clients" />
           </AssociationSet>
           <AssociationSet Name="FK_collectionSite_communities" Association="Self.FK_collectionSite_communities">
             <End Role="communities" EntitySet="communities" />
@@ -1323,6 +1461,10 @@
             <End Role="region" EntitySet="regions" />
             <End Role="districts" EntitySet="districts" />
           </AssociationSet>
+          <AssociationSet Name="FK_Fascility_districts" Association="Self.FK_Fascility_districts">
+            <End Role="districts" EntitySet="districts" />
+            <End Role="Fascility" EntitySet="Fascilities" />
+          </AssociationSet>
           <AssociationSet Name="FK_staff_districts" Association="Self.FK_staff_districts">
             <End Role="districts" EntitySet="districts" />
             <End Role="staff" EntitySet="staffs" />
@@ -1347,23 +1489,7 @@
             <End Role="AspNetRoles" EntitySet="AspNetRoles" />
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
           </AssociationSet>
-          <AssociationSet Name="FK_Fascility_districts" Association="wwmDbModel.FK_Fascility_districts">
-            <End Role="district" EntitySet="districts" />
-            <End Role="Fascility" EntitySet="Fascilities" />
-          </AssociationSet>
         </EntityContainer>
-        <Association Name="FK_Fascility_districts">
-          <End Type="wwmDbModel.district" Role="district" Multiplicity="1" />
-          <End Type="wwmDbModel.Fascility" Role="Fascility" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="district">
-              <PropertyRef Name="districtsId" />
-            </Principal>
-            <Dependent Role="Fascility">
-              <PropertyRef Name="districtsId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1435,18 +1561,25 @@
           <EntitySetMapping Name="Clients">
             <EntityTypeMapping TypeName="wwmDbModel.Client">
               <MappingFragment StoreEntitySet="Client">
-                <ScalarProperty Name="youthGroupId" ColumnName="youthGroupId" />
-                <ScalarProperty Name="youthGroupName" ColumnName="youthGroupName" />
-                <ScalarProperty Name="youthGroupDescription" ColumnName="youthGroupDescription" />
-                <ScalarProperty Name="isApproved" ColumnName="isApproved" />
-                <ScalarProperty Name="UserId" ColumnName="UserId" />
-                <ScalarProperty Name="isDeleted" ColumnName="isDeleted" />
+                <ScalarProperty Name="clientId" ColumnName="clientId" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="secondName" ColumnName="secondName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="PhoneNo" ColumnName="PhoneNo" />
+                <ScalarProperty Name="Fascility_Id" ColumnName="Fascility_Id" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+                <ScalarProperty Name="youthGroupTypeId" ColumnName="youthGroupTypeId" />
+                <ScalarProperty Name="districtsId" ColumnName="districtsId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="collectionSites">
             <EntityTypeMapping TypeName="wwmDbModel.collectionSite">
               <MappingFragment StoreEntitySet="collectionSite">
+                <ScalarProperty Name="tltime" ColumnName="tltime" />
+                <ScalarProperty Name="tstime" ColumnName="tstime" />
+                <ScalarProperty Name="sltime" ColumnName="sltime" />
+                <ScalarProperty Name="sstime" ColumnName="sstime" />
                 <ScalarProperty Name="collectionSiteId" ColumnName="collectionSiteId" />
                 <ScalarProperty Name="communitiesId" ColumnName="communitiesId" />
                 <ScalarProperty Name="collectionSiteManager" ColumnName="collectionSiteManager" />
@@ -1454,6 +1587,12 @@
                 <ScalarProperty Name="collectionSiteNumber" ColumnName="collectionSiteNumber" />
                 <ScalarProperty Name="collectionSiteDescription" ColumnName="collectionSiteDescription" />
                 <ScalarProperty Name="isDeleted" ColumnName="isDeleted" />
+                <ScalarProperty Name="startDay" ColumnName="startDay" />
+                <ScalarProperty Name="startDayTimefrom" ColumnName="startDayTimefrom" />
+                <ScalarProperty Name="startDayTimetill" ColumnName="startDayTimetill" />
+                <ScalarProperty Name="tilDay" ColumnName="tilDay" />
+                <ScalarProperty Name="tillDayTimefrom" ColumnName="tillDayTimefrom" />
+                <ScalarProperty Name="tillDayTimetill" ColumnName="tillDayTimetill" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1538,25 +1677,25 @@
           <EntitySetMapping Name="Fascilities">
             <EntityTypeMapping TypeName="wwmDbModel.Fascility">
               <MappingFragment StoreEntitySet="Fascility">
-                <ScalarProperty Name="districtsId" ColumnName="districtsId" />
                 <ScalarProperty Name="Fascility_Id" ColumnName="Fascility_Id" />
                 <ScalarProperty Name="Fascility_Name" ColumnName="Fascility_Name" />
                 <ScalarProperty Name="Fascility_Description" ColumnName="Fascility_Description" />
                 <ScalarProperty Name="WasteCollectionPricePerMonth" ColumnName="WasteCollectionPricePerMonth" />
                 <ScalarProperty Name="isDeleted" ColumnName="isDeleted" />
+                <ScalarProperty Name="districtsId" ColumnName="districtsId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="publicWasteBins">
             <EntityTypeMapping TypeName="wwmDbModel.publicWasteBin">
               <MappingFragment StoreEntitySet="publicWasteBin">
-                <ScalarProperty Name="publicWasteBinSiteManager" ColumnName="publicWasteBinSiteManager" />
-                <ScalarProperty Name="publicWasteBinNumber" ColumnName="publicWasteBinNumber" />
                 <ScalarProperty Name="publicWasteBinId" ColumnName="publicWasteBinId" />
                 <ScalarProperty Name="publicWasteBinName" ColumnName="publicWasteBinName" />
                 <ScalarProperty Name="publicWasteBinDescription" ColumnName="publicWasteBinDescription" />
                 <ScalarProperty Name="collectionSiteId" ColumnName="collectionSiteId" />
                 <ScalarProperty Name="isDeleted" ColumnName="isDeleted" />
+                <ScalarProperty Name="publicWasteBinNumber" ColumnName="publicWasteBinNumber" />
+                <ScalarProperty Name="publicWasteBinSiteManager" ColumnName="publicWasteBinSiteManager" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1609,14 +1748,13 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="sysdiagrams">
-            <EntityTypeMapping TypeName="wwmDbModel.sysdiagram">
-              <MappingFragment StoreEntitySet="sysdiagrams">
+          <EntitySetMapping Name="UserRoles">
+            <EntityTypeMapping TypeName="wwmDbModel.UserRole">
+              <MappingFragment StoreEntitySet="UserRoles">
+                <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="version" ColumnName="version" />
-                <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="role" ColumnName="role" />
+                <ScalarProperty Name="userId" ColumnName="userId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1634,11 +1772,11 @@
           <EntitySetMapping Name="YouthGroups">
             <EntityTypeMapping TypeName="wwmDbModel.YouthGroup">
               <MappingFragment StoreEntitySet="YouthGroup">
-                <ScalarProperty Name="isDeleted" ColumnName="isDeleted" />
                 <ScalarProperty Name="youthGroupTypeId" ColumnName="youthGroupTypeId" />
                 <ScalarProperty Name="youthGroupName" ColumnName="youthGroupName" />
                 <ScalarProperty Name="youthGroupDescription" ColumnName="youthGroupDescription" />
                 <ScalarProperty Name="districtsId" ColumnName="districtsId" />
+                <ScalarProperty Name="isDeleted" ColumnName="isDeleted" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

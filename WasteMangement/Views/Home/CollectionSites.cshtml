@@ -36,14 +36,14 @@ else
 <div style="padding-left:10%;">
     <p style="font-size:large;">
         Click a ward in Bombali District to know view all the collection sites of that ward.
-         Click the link “<a href="@Url.Action("AllCollectionSites","Home")">All Collection Sites</a>” to view all collection sites of a District.
+         Click the link “<a href="@Url.Action("AllCollectionSites","Home",new { district = district})">All Collection Sites</a>” to view all collection sites of a District.
     </p>
     <div style="border:1px solid black;">
         <div class="row" style="margin-top:20px;">
             @foreach (var item in groups)
             {
                 <div class="col-md-4" style="text-align:center;">
-                    <a href="@Url.Action("CollectionSiteWard", "Home",new { wardNumber = 1 })"><div class="badge" style="text-align:center;">@item.name</div></a>
+                    <a href="@Url.Action("CollectionSiteWard", "Home",new { wardNumber = item.wardId})"><div class="badge" style="text-align:center;">@item.name</div></a>
                 </div>
             }
           @* <a href="@Url.Action("CollectionSiteWard", "Home",new { wardNumber = 1 })"><div class="badge" style="text-align:center;">Ward 1</div></a>*@

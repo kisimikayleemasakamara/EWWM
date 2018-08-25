@@ -20,7 +20,7 @@ namespace WasteMangement.Models
         public int isDeleted { get; set; }
         public string UserId { get; set; }
         public int youthGroupTypeId { get; set; }
-    
+
         public virtual AspNetUser AspNetUser { get; set; }
         public virtual YouthGroup YouthGroup { get; set; }
     }

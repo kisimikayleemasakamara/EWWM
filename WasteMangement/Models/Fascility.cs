@@ -14,6 +14,12 @@ namespace WasteMangement.Models
     
     public partial class Fascility
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Fascility()
+        {
+            this.Clients = new HashSet<Client>();
+        }
+
         public int Fascility_Id { get; set; }
         public string Fascility_Name { get; set; }
         public string Fascility_Description { get; set; }
@@ -21,7 +27,9 @@ namespace WasteMangement.Models
         public string districtName { get; set; }
         public int isDeleted { get; set; }
         public int districtsId { get; set; }
-    
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Client> Clients { get; set; }
         public virtual district district { get; set; }
     }
 }

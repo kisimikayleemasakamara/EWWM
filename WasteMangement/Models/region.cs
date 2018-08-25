@@ -19,7 +19,7 @@ namespace WasteMangement.Models
         {
             this.districts = new HashSet<district>();
         }
-    
+
         public int regionId { get; set; }
         public int countryId { get; set; }
         public string region_name { get; set; }

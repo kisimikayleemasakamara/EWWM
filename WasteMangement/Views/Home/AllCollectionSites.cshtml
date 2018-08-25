@@ -1,9 +1,10 @@
-﻿
+﻿@model IEnumerable<WasteMangement.Models.collectionSite>
 @{
     ViewBag.Title = "All Collection Sites";
+    var district = Session["district"];
 }
 
-<center><h2>All Collection Sites in Bombali District grouped by Wards</h2></center>
+<center><h2>All Collection Sites in @district District grouped by Wards</h2></center>
 <div style="padding-left:10%" ;>
     <div class="table-responsive">
         <table class="table" style="border:2px solid grey;">
@@ -11,92 +12,56 @@
                 <tr style="border:2px solid grey;">
                     <th scope="col">Site Name</th>
                     <th scope="col">Site Manager</th>
+                    <th scope="col">Site Number</th>
                     <th scope="col">Collection Schedule</th>
-                    <th scope="col">Description</th>
+                    <th scope="col" style="width:30%">Description</th>
                 </tr>
             </thead>
-            <thead>
-                <tr style="border:2px solid grey;">
-                    <th scope="col" colspan="4">Ward 1</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>
-                        Lama Site
-                    </td>
-                    <td>
-                        Mohammad Alie
-                    </td>
-                    <td>
-                        Tuesdays between 10AM – 11AM <br />and Saturdays between 1PM to 2PM
-                    </td>
-                    <td>
-                        This site is named after the street<br /> in which it is located.
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Dunia Site
-                    </td>
-                    <td>
-                        Sheka Kamara
-                    </td>
-                    <td>
-                        Wednesdays between 10AM – 11AM <br />and Thursdays between 1PM to 2PM
-                    </td>
-                    <td>
-                        This site is named after the Dunia Cinema hall<br /> closed to the Makeni City Market.
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-            </tbody>
-            <thead>
-                <tr style="border:2px solid grey;">
-                    <th scope="col" colspan="4">Ward 2</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>
-                        Lama Site
-                    </td>
-                    <td>
-                        Mohammad Alie
-                    </td>
-                    <td>
-                        Tuesdays between 10AM – 11AM <br />and Saturdays between 1PM to 2PM
-                    </td>
-                    <td>
-                        This site is named after the street<br /> in which it is located.
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Dunia Site
-                    </td>
-                    <td>
-                        Sheka Kamara
-                    </td>
-                    <td>
-                        Wednesdays between 10AM – 11AM <br />and Thursdays between 1PM to 2PM
-                    </td>
-                    <td>
-                        This site is named after the Dunia Cinema hall<br /> closed to the Makeni City Market.
-                    </td>
-                </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-            </tbody>
+            @foreach (var item1 in ViewBag.wards)
+            {
+                <thead>
+                    <tr style="border:2px solid grey;">
+                        <th scope="col" colspan="4">@item1.name</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                   @foreach (var item in Model)
+                   {
+                       if (item1.name == item.wardName)
+                       {
+
+
+                    <tr>
+                        <td>
+                            @item.collectionSiteName
+                        </td>
+                        <td>
+                            @item.collectionSiteManager
+                        </td>
+                        <td>
+                            @item.collectionSiteNumber
+                        </td>
+                        <td>
+                            @item.startDay between @item.startDayTimefrom@item.sstime – @item.startDayTimetill@item.sltime
+                            <br />and @item.tilDay between @item.tillDayTimefrom@item.tstime to @item.tillDayTimetill@item.tltime
+                        </td>
+                        <td>
+                            @item.collectionSiteDescription
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                       }
+                   }
+                </tbody>
+            }
+          
         </table>
     </div>
 </div>

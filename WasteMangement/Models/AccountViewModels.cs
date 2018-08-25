@@ -89,7 +89,7 @@ namespace WasteMangement.Models
 
         [Required]
         [DisplayName("Facility Type")]
-        public string FacilityType { get; set; }
+        public int FacilityType { get; set; }
 
         [Required]
         [DisplayName("Address")]
@@ -97,21 +97,11 @@ namespace WasteMangement.Models
 
         [Required]
         [DisplayName("Youth Group")]
-        public string YouthGroup { get; set; }
+        public int YouthGroup { get; set; }
 
         [Required]
-        public int isDeleted { get; set; }
+        public string districtName { get; set; }
 
-        [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
-        [DataType(DataType.Password)]
-        [Display(Name = "Password")]
-        public string Password { get; set; }
-
-        [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
-        public string ConfirmPassword { get; set; }
 
         public RegisterViewModel()
         {

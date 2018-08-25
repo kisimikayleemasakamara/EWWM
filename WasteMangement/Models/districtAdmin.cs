@@ -19,7 +19,7 @@ namespace WasteMangement.Models
         {
             this.districts = new HashSet<district>();
         }
-    
+
         public int districtAdminId { get; set; }
         public string name { get; set; }
         public string description { get; set; }
@@ -27,7 +27,7 @@ namespace WasteMangement.Models
         public string PhoneNo { get; set; }
         public string Email { get; set; }
         public int isDeleted { get; set; }
-    
+
         public virtual AspNetUser AspNetUser { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<district> districts { get; set; }

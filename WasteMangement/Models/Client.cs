@@ -14,13 +14,18 @@ namespace WasteMangement.Models
     
     public partial class Client
     {
-        public int youthGroupId { get; set; }
-        public string youthGroupName { get; set; }
-        public string youthGroupDescription { get; set; }
-        public bool isApproved { get; set; }
-        public string UserId { get; set; }
-        public int isDeleted { get; set; }
+        public int clientId { get; set; }
+        public string FirstName { get; set; }
+        public string secondName { get; set; }
+        public string Email { get; set; }
+        public string PhoneNo { get; set; }
+        public int Fascility_Id { get; set; }
+        public string Address { get; set; }
+        public int youthGroupTypeId { get; set; }
+        public int districtsId { get; set; }
     
-        public virtual AspNetUser AspNetUser { get; set; }
+        public virtual district district { get; set; }
+        public virtual Fascility Fascility { get; set; }
+        public virtual YouthGroup YouthGroup { get; set; }
     }
 }

@@ -17,11 +17,11 @@
                   {
                       a.districtsId,
                       a.name
-                  }).SingleOrDefault();
+                  });
     if (distId != null)
     {
-        dId = distId.districtsId;
-        dname = distId.name;
+        dId = distId.SingleOrDefault().districtsId;
+        dname = distId.SingleOrDefault().name;
     }
 }
 @if (dId != 0)

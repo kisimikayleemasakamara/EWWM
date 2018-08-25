@@ -66,18 +66,25 @@
     <EntitySetMapping Name="Clients">
       <EntityTypeMapping TypeName="wwmDbModel.Client">
         <MappingFragment StoreEntitySet="Client">
-          <ScalarProperty Name="youthGroupId" ColumnName="youthGroupId" />
-          <ScalarProperty Name="youthGroupName" ColumnName="youthGroupName" />
-          <ScalarProperty Name="youthGroupDescription" ColumnName="youthGroupDescription" />
-          <ScalarProperty Name="isApproved" ColumnName="isApproved" />
-          <ScalarProperty Name="UserId" ColumnName="UserId" />
-          <ScalarProperty Name="isDeleted" ColumnName="isDeleted" />
+          <ScalarProperty Name="clientId" ColumnName="clientId" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="secondName" ColumnName="secondName" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="PhoneNo" ColumnName="PhoneNo" />
+          <ScalarProperty Name="Fascility_Id" ColumnName="Fascility_Id" />
+          <ScalarProperty Name="Address" ColumnName="Address" />
+          <ScalarProperty Name="youthGroupTypeId" ColumnName="youthGroupTypeId" />
+          <ScalarProperty Name="districtsId" ColumnName="districtsId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="collectionSites">
       <EntityTypeMapping TypeName="wwmDbModel.collectionSite">
         <MappingFragment StoreEntitySet="collectionSite">
+          <ScalarProperty Name="tltime" ColumnName="tltime" />
+          <ScalarProperty Name="tstime" ColumnName="tstime" />
+          <ScalarProperty Name="sltime" ColumnName="sltime" />
+          <ScalarProperty Name="sstime" ColumnName="sstime" />
           <ScalarProperty Name="collectionSiteId" ColumnName="collectionSiteId" />
           <ScalarProperty Name="communitiesId" ColumnName="communitiesId" />
           <ScalarProperty Name="collectionSiteManager" ColumnName="collectionSiteManager" />
@@ -85,6 +92,12 @@
           <ScalarProperty Name="collectionSiteNumber" ColumnName="collectionSiteNumber" />
           <ScalarProperty Name="collectionSiteDescription" ColumnName="collectionSiteDescription" />
           <ScalarProperty Name="isDeleted" ColumnName="isDeleted" />
+          <ScalarProperty Name="startDay" ColumnName="startDay" />
+          <ScalarProperty Name="startDayTimefrom" ColumnName="startDayTimefrom" />
+          <ScalarProperty Name="startDayTimetill" ColumnName="startDayTimetill" />
+          <ScalarProperty Name="tilDay" ColumnName="tilDay" />
+          <ScalarProperty Name="tillDayTimefrom" ColumnName="tillDayTimefrom" />
+          <ScalarProperty Name="tillDayTimetill" ColumnName="tillDayTimetill" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -169,25 +182,25 @@
     <EntitySetMapping Name="Fascilities">
       <EntityTypeMapping TypeName="wwmDbModel.Fascility">
         <MappingFragment StoreEntitySet="Fascility">
-          <ScalarProperty Name="districtsId" ColumnName="districtsId" />
           <ScalarProperty Name="Fascility_Id" ColumnName="Fascility_Id" />
           <ScalarProperty Name="Fascility_Name" ColumnName="Fascility_Name" />
           <ScalarProperty Name="Fascility_Description" ColumnName="Fascility_Description" />
           <ScalarProperty Name="WasteCollectionPricePerMonth" ColumnName="WasteCollectionPricePerMonth" />
           <ScalarProperty Name="isDeleted" ColumnName="isDeleted" />
+          <ScalarProperty Name="districtsId" ColumnName="districtsId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="publicWasteBins">
       <EntityTypeMapping TypeName="wwmDbModel.publicWasteBin">
         <MappingFragment StoreEntitySet="publicWasteBin">
-          <ScalarProperty Name="publicWasteBinSiteManager" ColumnName="publicWasteBinSiteManager" />
-          <ScalarProperty Name="publicWasteBinNumber" ColumnName="publicWasteBinNumber" />
           <ScalarProperty Name="publicWasteBinId" ColumnName="publicWasteBinId" />
           <ScalarProperty Name="publicWasteBinName" ColumnName="publicWasteBinName" />
           <ScalarProperty Name="publicWasteBinDescription" ColumnName="publicWasteBinDescription" />
           <ScalarProperty Name="collectionSiteId" ColumnName="collectionSiteId" />
           <ScalarProperty Name="isDeleted" ColumnName="isDeleted" />
+          <ScalarProperty Name="publicWasteBinNumber" ColumnName="publicWasteBinNumber" />
+          <ScalarProperty Name="publicWasteBinSiteManager" ColumnName="publicWasteBinSiteManager" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -240,14 +253,13 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="sysdiagrams">
-      <EntityTypeMapping TypeName="wwmDbModel.sysdiagram">
-        <MappingFragment StoreEntitySet="sysdiagrams">
+    <EntitySetMapping Name="UserRoles">
+      <EntityTypeMapping TypeName="wwmDbModel.UserRole">
+        <MappingFragment StoreEntitySet="UserRoles">
+          <ScalarProperty Name="id" ColumnName="id" />
           <ScalarProperty Name="name" ColumnName="name" />
-          <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-          <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-          <ScalarProperty Name="version" ColumnName="version" />
-          <ScalarProperty Name="definition" ColumnName="definition" />
+          <ScalarProperty Name="role" ColumnName="role" />
+          <ScalarProperty Name="userId" ColumnName="userId" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -265,11 +277,11 @@
     <EntitySetMapping Name="YouthGroups">
       <EntityTypeMapping TypeName="wwmDbModel.YouthGroup">
         <MappingFragment StoreEntitySet="YouthGroup">
-          <ScalarProperty Name="isDeleted" ColumnName="isDeleted" />
           <ScalarProperty Name="youthGroupTypeId" ColumnName="youthGroupTypeId" />
           <ScalarProperty Name="youthGroupName" ColumnName="youthGroupName" />
           <ScalarProperty Name="youthGroupDescription" ColumnName="youthGroupDescription" />
           <ScalarProperty Name="districtsId" ColumnName="districtsId" />
+          <ScalarProperty Name="isDeleted" ColumnName="isDeleted" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

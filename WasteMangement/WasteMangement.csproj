@@ -252,7 +252,7 @@
       <DependentUpon>WasteManagement.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\StringCypher.cs" />
-    <Compile Include="Models\sysdiagram.cs">
+    <Compile Include="Models\UserRole.cs">
       <DependentUpon>WasteManagement.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\ward.cs">
@@ -781,7 +781,7 @@
     <Content Include="Views\Account\ExternalLoginFailure.cshtml" />
     <Content Include="Views\Account\ForgotPassword.cshtml" />
     <Content Include="Views\Account\ForgotPasswordConfirmation.cshtml" />
-    <Content Include="Views\Account\Register.cshtml" />
+    <Content Include="Views\Home\Register.cshtml" />
     <Content Include="Views\Account\ResetPassword.cshtml" />
     <Content Include="Views\Account\ResetPasswordConfirmation.cshtml" />
     <Content Include="Views\Account\SendCode.cshtml" />

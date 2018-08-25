@@ -23,13 +23,24 @@ namespace WasteMangement.Models
         public int collectionSiteId { get; set; }
         public int communitiesId { get; set; }
         public string collectionSiteManager { get; set; }
-        public string communityName { get; set; }
         public string collectionSiteName { get; set; }
         public string collectionSiteNumber { get; set; }
         public string collectionSiteDescription { get; set; }
         public int isDeleted { get; set; }
-    
+        public string startDay { get; set; }
+        public string startDayTimefrom { get; set; }
+        public string startDayTimetill { get; set; }
+        public string tilDay { get; set; }
+        public string tillDayTimefrom { get; set; }
+        public string tillDayTimetill { get; set; }
+        public string sstime { get; set; }
+        public string sltime { get; set; }
+        public string tstime { get; set; }
+        public string tltime { get; set; }
+        public string communityName { get; set; }
         public virtual community community { get; set; }
+        public string wardName { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<publicWasteBin> publicWasteBins { get; set; }
     }

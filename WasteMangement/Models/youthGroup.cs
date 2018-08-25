@@ -17,16 +17,20 @@ namespace WasteMangement.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public YouthGroup()
         {
+            this.Clients = new HashSet<Client>();
             this.YouthGroupAdmins = new HashSet<YouthGroupAdmin>();
         }
-    
+
         public int youthGroupTypeId { get; set; }
         public string youthGroupName { get; set; }
         public string youthGroupDescription { get; set; }
         public int districtsId { get; set; }
         public string districtName { get; set; }
         public int isDeleted { get; set; }
-    
+
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Client> Clients { get; set; }
         public virtual district district { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<YouthGroupAdmin> YouthGroupAdmins { get; set; }
